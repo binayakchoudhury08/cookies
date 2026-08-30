@@ -1,0 +1,9 @@
+# Only editor/OS noise. Nothing here may exclude site assets —
+# the *.webp frames in assets/ are the site.
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+node_modules/
+.vercel
+scratch_*
