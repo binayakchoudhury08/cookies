@@ -312,6 +312,21 @@
     }
 
     /* ═══ NAV — Clean Seamless Topbar ═══ */
+    
+    /* Nazar Ritual Protective Dot in Topbar Rightmost Corner */
+    .nazar-dot {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0.75;
+      display: inline-block;
+      margin-left: 2px;
+      flex: none;
+      box-shadow: 0 0 2px rgba(38, 20, 8, 0.4);
+      cursor: default;
+    }
+
     .nav {
       position: fixed;
       top: 0;
@@ -336,7 +351,22 @@
     }
 
     @media (min-width: 820px) {
-      .nav {
+      
+    /* Nazar Ritual Protective Dot in Topbar Rightmost Corner */
+    .nazar-dot {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0.75;
+      display: inline-block;
+      margin-left: 2px;
+      flex: none;
+      box-shadow: 0 0 2px rgba(38, 20, 8, 0.4);
+      cursor: default;
+    }
+
+    .nav {
         padding: 18px 48px;
       }
     }
@@ -415,8 +445,8 @@
     }
 
     .icon-btn {
-      width: 38px;
-      height: 38px;
+      width: 33px;
+      height: 33px;
       border-radius: 50%;
       border: 0;
       cursor: pointer;
@@ -1044,30 +1074,7 @@
       pointer-events: none;
     }
 
-    /* Dynamic SVG Crack Fissures */
-    .crack-svg-overlay {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 5;
-    }
 
-    .crack-line {
-      fill: none;
-      stroke: #261408;
-      stroke-width: 2.5;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      opacity: 0;
-      filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.4));
-      transition: opacity 0.3s var(--ease), stroke-dashoffset 0.4s var(--ease);
-    }
-
-    .crack-line.is-active {
-      opacity: 0.9;
-    }
 
     /* Crunch Meter */
     .crunch-meter-box {
@@ -2301,7 +2308,22 @@
       }
 
       /* Clean Nav on Mobile */
-      .nav {
+      
+    /* Nazar Ritual Protective Dot in Topbar Rightmost Corner */
+    .nazar-dot {
+      width: 4.5px;
+      height: 4.5px;
+      border-radius: 50%;
+      background: var(--ink);
+      opacity: 0.75;
+      display: inline-block;
+      margin-left: 2px;
+      flex: none;
+      box-shadow: 0 0 2px rgba(38, 20, 8, 0.4);
+      cursor: default;
+    }
+
+    .nav {
         padding: 12px 16px;
         gap: 12px;
       }
@@ -2718,6 +2740,7 @@
         <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
       <a class="btn btn--sm" href="#shop">Shop Drops</a>
+      <span class="nazar-dot" title="Nazar Battu / Good Luck Ritual" aria-hidden="true"></span>
     </div>
   </header>
 
@@ -3086,14 +3109,7 @@
               <img id="shatter-img" class="shatter-cookie-img" src="assets/img/cookie-artisan-master.webp"
                 alt="Authentic CRUMBLY Artisanal Coin Cookie" draggable="false">
 
-              <!-- Dynamic SVG Crack Fissures Overlay -->
-              <svg class="crack-svg-overlay" id="crack-svg-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <path class="crack-line crack-1" d="M 50,50 Q 30,35 15,15" />
-                <path class="crack-line crack-2" d="M 50,50 Q 65,30 85,15" />
-                <path class="crack-line crack-3" d="M 50,50 Q 30,68 15,85" />
-                <path class="crack-line crack-4" d="M 50,50 Q 72,70 85,85" />
-                <path class="crack-line crack-5" d="M 50,20 L 50,80 M 20,50 L 80,50" />
-              </svg>
+
 
               <!-- 5 Tactile Touch Stress Points (Disappear completely when tapped) -->
               <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Top-Left Corner"></button>
@@ -3809,9 +3825,7 @@
 
           brokenCount++;
 
-          // Activate SVG crack line
-          const crackLine = document.querySelector(`.crack-${brokenCount}`);
-          if (crackLine) crackLine.classList.add('is-active');
+
 
           // Micro scale pop
           cookieImg.className = `shatter-cookie-img is-broken-${brokenCount}`;
@@ -3855,7 +3869,7 @@
         }
         finale.classList.remove('is-active');
 
-        document.querySelectorAll('.crack-line').forEach(l => l.classList.remove('is-active'));
+
 
         pins.forEach(p => {
           p.classList.remove('is-used');
