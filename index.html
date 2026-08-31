@@ -842,7 +842,7 @@
       box-shadow: 0 24px 55px -12px rgba(38, 20, 8, 0.2);
     }
 
-    /* Interactive Image / Video Media Container with Swipe / Toggle */
+    /* Video-Only Media Container for 4 Flavours */
     .flav-media-box {
       position: relative;
       width: 100%;
@@ -852,60 +852,16 @@
       user-select: none;
     }
 
-    .flav-media-track {
-      display: flex;
-      width: 200%;
-      height: 100%;
-      transition: transform 0.4s var(--ease);
-    }
-
-    .flav-media-item {
-      width: 50%;
-      height: 100%;
-      flex: 0 0 50%;
-      position: relative;
-      background: #180D04;
-    }
-
-    .flav-media-item img,
-    .flav-media-item video {
+    .flav-card-video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.6s var(--ease);
     }
 
-    /* Media Toggle Mode Switcher (Image / Video) */
-    .flav-mode-toggle {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      z-index: 10;
-      display: flex;
-      background: rgba(38, 20, 8, 0.75);
-      backdrop-filter: blur(8px);
-      padding: 2.5px;
-      border-radius: 99px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .flav-mode-btn {
-      border: 0;
-      background: transparent;
-      color: #F4E8DC;
-      font-size: 9px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 3px 8px;
-      border-radius: 99px;
-      cursor: pointer;
-      transition: background 0.2s var(--ease), color 0.2s var(--ease);
-    }
-
-    .flav-mode-btn.is-active {
-      background: #F4E8DC;
-      color: #261408;
+    .flav-card-slide:hover .flav-card-video {
+      transform: scale(1.04);
     }
 
     .flav-card-content {
@@ -2724,7 +2680,7 @@
           <span class="kicker">Discover Our 4 Artisanal Flavours</span>
           <h2 class="dsp h2-flavours" id="fl-h">Our flavours</h2>
           <p class="sub" style="margin:10px auto 0;text-align:center;max-width:54ch">
-            Swipe to explore our lineup. Toggle between poster and video for each flavour.
+            Swipe to explore our lineup. Watch each artisanal flavour baked to perfection.
           </p>
         </div>
 
@@ -2733,23 +2689,12 @@
           <button class="flav-nav-btn flav-nav-prev" id="flav-slide-prev" aria-label="Previous Flavour">‹</button>
           <button class="flav-nav-btn flav-nav-next" id="flav-slide-next" aria-label="Next Flavour">›</button>
 
-          <!-- Horizontal One-Row Track -->
+          <!-- Horizontal One-Row Track (Video Only) -->
           <div class="flavours-row-track" id="flavours-track">
-            <!-- Flavour 1: Double Chocolate (Pre-Order Available) -->
+            <!-- Flavour 1: Double Chocolate (Video Only · Pre-Order Available) -->
             <article class="flav-card-slide" data-flav-card="choc">
               <div class="flav-media-box">
-                <div class="flav-mode-toggle">
-                  <button class="flav-mode-btn is-active" type="button" data-view="image">Poster</button>
-                  <button class="flav-mode-btn" type="button" data-view="video">Video</button>
-                </div>
-                <div class="flav-media-track">
-                  <div class="flav-media-item">
-                    <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate Poster" loading="lazy">
-                  </div>
-                  <div class="flav-media-item">
-                    <video src="Chocolate.mp4" playsinline loop muted preload="metadata" poster="assets/img/slide-double-chocolate.webp"></video>
-                  </div>
-                </div>
+                <video class="flav-card-video" src="Chocolate.mp4" playsinline autoplay loop muted preload="auto"></video>
               </div>
 
               <div class="flav-card-content">
@@ -2764,21 +2709,10 @@
               </div>
             </article>
 
-            <!-- Flavour 2: Madagascar Vanilla (VIP Access) -->
+            <!-- Flavour 2: Madagascar Vanilla (Video Only · VIP Access) -->
             <article class="flav-card-slide" data-flav-card="van">
               <div class="flav-media-box">
-                <div class="flav-mode-toggle">
-                  <button class="flav-mode-btn is-active" type="button" data-view="image">Poster</button>
-                  <button class="flav-mode-btn" type="button" data-view="video">Video</button>
-                </div>
-                <div class="flav-media-track">
-                  <div class="flav-media-item">
-                    <img src="assets/img/slide-vanilla.webp" alt="CRUMBLY Madagascar Vanilla Poster" loading="lazy">
-                  </div>
-                  <div class="flav-media-item">
-                    <video src="Vanilla.mp4" playsinline loop muted preload="metadata" poster="assets/img/slide-vanilla.webp"></video>
-                  </div>
-                </div>
+                <video class="flav-card-video" src="Vanilla.mp4" playsinline autoplay loop muted preload="auto"></video>
               </div>
 
               <div class="flav-card-content">
@@ -2793,21 +2727,10 @@
               </div>
             </article>
 
-            <!-- Flavour 3: Red Velvet (VIP Access - Updated Video) -->
+            <!-- Flavour 3: Red Velvet (Video Only · VIP Access) -->
             <article class="flav-card-slide" data-flav-card="red">
               <div class="flav-media-box">
-                <div class="flav-mode-toggle">
-                  <button class="flav-mode-btn is-active" type="button" data-view="image">Poster</button>
-                  <button class="flav-mode-btn" type="button" data-view="video">Video</button>
-                </div>
-                <div class="flav-media-track">
-                  <div class="flav-media-item">
-                    <img src="assets/img/slide-red-velvet.webp" alt="CRUMBLY Red Velvet Poster" loading="lazy">
-                  </div>
-                  <div class="flav-media-item">
-                    <video src="red velvet new.mp4" playsinline loop muted preload="metadata" poster="assets/img/slide-red-velvet.webp"></video>
-                  </div>
-                </div>
+                <video class="flav-card-video" src="red velvet new.mp4" playsinline autoplay loop muted preload="auto"></video>
               </div>
 
               <div class="flav-card-content">
@@ -2822,21 +2745,10 @@
               </div>
             </article>
 
-            <!-- Flavour 4: Oats Cookie (VIP Access) -->
+            <!-- Flavour 4: Oats Cookie (Video Only · VIP Access) -->
             <article class="flav-card-slide" data-flav-card="oats">
               <div class="flav-media-box">
-                <div class="flav-mode-toggle">
-                  <button class="flav-mode-btn is-active" type="button" data-view="image">Poster</button>
-                  <button class="flav-mode-btn" type="button" data-view="video">Video</button>
-                </div>
-                <div class="flav-media-track">
-                  <div class="flav-media-item">
-                    <img src="assets/img/slide-oats.webp" alt="CRUMBLY Oats Cookie Poster" loading="lazy">
-                  </div>
-                  <div class="flav-media-item">
-                    <video src="oats.mp4" playsinline loop muted preload="metadata" poster="assets/img/slide-oats.webp"></video>
-                  </div>
-                </div>
+                <video class="flav-card-video" src="oats.mp4" playsinline autoplay loop muted preload="auto"></video>
               </div>
 
               <div class="flav-card-content">
@@ -3432,37 +3344,32 @@
     };
 
     /* ══════════════════════════════════════════════════════════
-       OUR 4 FLAVOURS — INTERACTIVE IMAGE / VIDEO TOGGLE & SWIPER
+       OUR 4 FLAVOURS — VIDEO ONLY AUTOPLAY LOOP & SWIPER
        ══════════════════════════════════════════════════════════ */
     (() => {
-      const cards = document.querySelectorAll('[data-flav-card]');
+      const videos = document.querySelectorAll('.flav-card-video');
 
-      cards.forEach(card => {
-        const track = card.querySelector('.flav-media-track');
-        const btns = card.querySelectorAll('.flav-mode-btn');
-        const video = card.querySelector('video');
+      // Auto-play all flavour videos seamlessly in loop
+      videos.forEach(v => {
+        v.muted = true;
+        v.playsInline = true;
+        v.loop = true;
+        v.play().catch(() => {});
+      });
 
-        if (!track || !btns.length) return;
-
-        btns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            btns.forEach(b => b.classList.remove('is-active'));
-            btn.classList.add('is-active');
-
-            const view = btn.dataset.view;
-            if (view === 'video') {
-              track.style.transform = 'translateX(-50%)';
-              if (video) {
-                video.currentTime = 0;
-                video.play().catch(() => {});
-              }
+      if ('IntersectionObserver' in window) {
+        const videoObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.play().catch(() => {});
             } else {
-              track.style.transform = 'translateX(0%)';
-              if (video) video.pause();
+              entry.target.pause();
             }
           });
-        });
-      });
+        }, { threshold: 0.15 });
+
+        videos.forEach(v => videoObserver.observe(v));
+      }
 
       // Horizontal swipe slider navigation arrows
       const trackEl = document.getElementById('flavours-track');
@@ -3471,10 +3378,10 @@
 
       if (trackEl && prevBtn && nextBtn) {
         prevBtn.addEventListener('click', () => {
-          trackEl.scrollBy({ left: -300, behavior: 'smooth' });
+          trackEl.scrollBy({ left: -320, behavior: 'smooth' });
         });
         nextBtn.addEventListener('click', () => {
-          trackEl.scrollBy({ left: 300, behavior: 'smooth' });
+          trackEl.scrollBy({ left: 320, behavior: 'smooth' });
         });
       }
     })();
