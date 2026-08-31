@@ -35,7 +35,7 @@ document.body.classList.remove('nojs');
         }
       },
 
-      SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbwRqts8nDTSnJIHT5UznYPXIeGwTpf_fThGVA3VKXKEy_FmezeZiw8kB6d11vfOQj_aMg/exec"
+      SHEET_ENDPOINT: "https://script.google.com/macros/s/AKfycbx-ud6q067GRkB_Ec3RtxKsgCq4XnRGTSzbP9WlEhusNuopik43BQ5ObzQmJ1wIad9H/exec"
     };
 
     /* ══════════════════════════════════════════════════════════
