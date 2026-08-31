@@ -146,12 +146,13 @@ document.body.classList.remove('nojs');
       });
     })();
 
-    /* ══════════════════════════════════════════════════════════
+        /* ══════════════════════════════════════════════════════════
        ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
        ══════════════════════════════════════════════════════════ */
     (() => {
       const stage = document.getElementById('shatter-stage');
       const cookieContainer = document.getElementById('shatter-cookie-container');
+      const cookieAssembly = document.getElementById('cookie-assembly');
       const canvas = document.getElementById('crumb-physics-canvas');
       const pins = document.querySelectorAll('[data-pin]');
       const pieces = document.querySelectorAll('.cookie-piece');
@@ -164,7 +165,10 @@ document.body.classList.remove('nojs');
       const meterVal = document.getElementById('crunch-meter-val');
       const tapPrompt = document.getElementById('cookie-tap-prompt');
 
-      if (!cookieContainer || !canvas) return;
+      if (!cookieContainer || !canvas) {
+        console.warn('Cookie Break elements missing from DOM');
+        return;
+      }
 
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -187,15 +191,15 @@ document.body.classList.remove('nojs');
           this.x = x;
           this.y = y;
           const angle = Math.random() * Math.PI * 2;
-          const speed = isBig ? (Math.random() * 8 + 4) : (Math.random() * 12 + 3);
+          const speed = isBig ? (Math.random() * 9 + 5) : (Math.random() * 12 + 3);
           this.vx = Math.cos(angle) * speed;
           this.vy = Math.sin(angle) * speed - (Math.random() * 4 + 2);
-          this.gravity = 0.35;
-          this.size = isBig ? (Math.random() * 10 + 6) : (Math.random() * 5 + 2);
+          this.gravity = 0.38;
+          this.size = isBig ? (Math.random() * 11 + 6) : (Math.random() * 5 + 2);
           this.rot = Math.random() * Math.PI;
-          this.rotSpeed = (Math.random() - 0.5) * 0.25;
+          this.rotSpeed = (Math.random() - 0.5) * 0.3;
           this.alpha = 1;
-          this.decay = Math.random() * 0.015 + 0.012;
+          this.decay = Math.random() * 0.018 + 0.012;
           const colors = ['#3B1D0E', '#261408', '#C48847', '#D49B5A', '#E8B878', '#5E3B24'];
           this.color = colors[Math.floor(Math.random() * colors.length)];
           this.isCircle = Math.random() > 0.4;
@@ -228,7 +232,7 @@ document.body.classList.remove('nojs');
         }
       }
 
-      function spawnParticles(originX, originY, count = 30, bigBurst = false) {
+      function spawnParticles(originX, originY, count = 35, bigBurst = false) {
         for (let i = 0; i < count; i++) {
           particles.push(new CrumbParticle(originX, originY, bigBurst));
         }
@@ -263,7 +267,7 @@ document.body.classList.remove('nojs');
 
           const t = actx.currentTime;
 
-          // Layer 1: Crisp high-frequency biscuit snap noise
+          // Layer 1: Crisp biscuit snap noise
           const snapLen = actx.sampleRate * 0.07;
           const snapBuf = actx.createBuffer(1, snapLen, actx.sampleRate);
           const snapData = snapBuf.getChannelData(0);
@@ -324,96 +328,102 @@ document.body.classList.remove('nojs');
       };
 
       function breakPieceById(id, clickX, clickY) {
-        const targetPiece = document.getElementById(`cookie-piece-${id}`);
-        const targetPin = document.querySelector(`.break-pin[data-pin="${id}"]`);
+        try {
+          const targetPiece = document.getElementById(`cookie-piece-${id}`);
+          const targetPin = document.querySelector(`.break-pin[data-pin="${id}"]`);
 
-        if (targetPiece && targetPiece.classList.contains('is-detached')) return;
+          if (targetPiece && targetPiece.classList.contains('is-detached')) return;
 
-        if (tapPrompt) tapPrompt.classList.add('is-hidden');
-        if (cookieAssembly) cookieAssembly.classList.add('has-fractured');
+          if (tapPrompt) tapPrompt.classList.add('is-hidden');
+          if (cookieAssembly) cookieAssembly.classList.add('has-fractured');
 
-        // Trigger impact jolt animation
-        if (cookieContainer) {
-          cookieContainer.classList.remove('is-impacting');
-          void cookieContainer.offsetWidth; // Force reflow
-          cookieContainer.classList.add('is-impacting');
-        }
+          // Impact shake
+          if (cookieContainer) {
+            cookieContainer.classList.remove('is-impacting');
+            void cookieContainer.offsetWidth;
+            cookieContainer.classList.add('is-impacting');
+          }
 
-        // Play crisp audio
-        playCookieCrunchSound();
+          // Sound
+          playCookieCrunchSound();
 
-        const sRect = stage.getBoundingClientRect();
-        let burstX = sRect.width / 2;
-        let burstY = sRect.height / 2;
+          // Particle burst
+          const sRect = stage.getBoundingClientRect();
+          let burstX = sRect.width / 2;
+          let burstY = sRect.height / 2;
 
-        if (clickX !== undefined && clickY !== undefined) {
-          burstX = clickX - sRect.left;
-          burstY = clickY - sRect.top;
-        } else if (targetPin) {
-          const pRect = targetPin.getBoundingClientRect();
-          burstX = pRect.left - sRect.left + pRect.width / 2;
-          burstY = pRect.top - sRect.top + pRect.height / 2;
-        }
+          if (clickX !== undefined && clickY !== undefined) {
+            burstX = clickX - sRect.left;
+            burstY = clickY - sRect.top;
+          } else if (targetPin) {
+            const pRect = targetPin.getBoundingClientRect();
+            burstX = pRect.left - sRect.left + pRect.width / 2;
+            burstY = pRect.top - sRect.top + pRect.height / 2;
+          }
 
-        // Emit realistic crumb burst
-        spawnParticles(burstX, burstY, 40, false);
+          spawnParticles(burstX, burstY, 40, false);
 
-        if (targetPin) {
-          targetPin.classList.add('is-used');
-          targetPin.style.opacity = '0';
-          targetPin.style.visibility = 'hidden';
-          targetPin.style.pointerEvents = 'none';
-        }
+          if (targetPin) {
+            targetPin.classList.add('is-used');
+            targetPin.style.opacity = '0';
+            targetPin.style.visibility = 'hidden';
+            targetPin.style.pointerEvents = 'none';
+          }
 
-        if (targetPiece) {
-          targetPiece.classList.add('is-detached');
-        }
+          if (targetPiece) {
+            targetPiece.classList.add('is-detached');
+          }
 
-        brokenCount++;
+          brokenCount++;
 
-        if (stepsInfo[brokenCount]) {
-          const info = stepsInfo[brokenCount];
-          if (pill) pill.textContent = info.pill;
-          if (title) title.textContent = info.title;
-          if (desc) desc.textContent = info.desc;
-          if (meterVal) meterVal.textContent = info.integrity;
-          if (meterFill) meterFill.style.width = info.pct;
-        }
+          if (stepsInfo[brokenCount]) {
+            const info = stepsInfo[brokenCount];
+            if (pill) pill.textContent = info.pill;
+            if (title) title.textContent = info.title;
+            if (desc) desc.textContent = info.desc;
+            if (meterVal) meterVal.textContent = info.integrity;
+            if (meterFill) meterFill.style.width = info.pct;
+          }
 
-        if (brokenCount >= 5 || id === '5') {
-          spawnParticles(sRect.width / 2, sRect.height / 2, 85, true);
+          if (brokenCount >= 5 || id === '5') {
+            spawnParticles(sRect.width / 2, sRect.height / 2, 90, true);
 
-          document.querySelectorAll('.cookie-piece').forEach(p => p.classList.add('is-detached'));
+            document.querySelectorAll('.cookie-piece').forEach(p => p.classList.add('is-detached'));
 
-          if (cookieContainer) cookieContainer.classList.add('is-revealed');
-          pins.forEach(p => {
-            p.classList.add('is-used');
-            p.style.opacity = '0';
-            p.style.visibility = 'hidden';
-            p.style.pointerEvents = 'none';
-            p.style.display = 'none';
-          });
+            if (cookieContainer) cookieContainer.classList.add('is-revealed');
+            pins.forEach(p => {
+              p.classList.add('is-used');
+              p.style.opacity = '0';
+              p.style.visibility = 'hidden';
+              p.style.pointerEvents = 'none';
+              p.style.display = 'none';
+            });
 
-          setTimeout(() => {
-            if (finale) finale.classList.add('is-active');
-          }, 350);
+            setTimeout(() => {
+              if (finale) finale.classList.add('is-active');
+            }, 350);
+          }
+        } catch (err) {
+          console.error('Error in breakPieceById:', err);
         }
       }
 
-      // Attach click handlers to touch pins
+      // Attach click listeners to all pins
       pins.forEach(pin => {
         pin.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
-          const id = pin.dataset.pin;
+          const id = pin.getAttribute('data-pin');
           breakPieceById(id, e.clientX, e.clientY);
         });
       });
 
-      // Also allow clicking directly on each cookie piece!
+      // Attach click listeners to all cookie pieces
       pieces.forEach(piece => {
         piece.addEventListener('click', (e) => {
+          e.preventDefault();
           e.stopPropagation();
-          const id = piece.dataset.piece;
+          const id = piece.getAttribute('data-piece');
           breakPieceById(id, e.clientX, e.clientY);
         });
       });
@@ -750,12 +760,14 @@ document.body.classList.remove('nojs');
     /* ══ Nav Scroll State ══ */
     (() => {
       const nav = document.querySelector('[data-nav]');
+      if (!nav) return;
+      const hero = document.getElementById('home');
       const onScroll = () => {
-        const h = hero ? hero.offsetHeight - innerHeight * 0.9 : 300;
-        nav.classList.toggle('is-solid', scrollY > h);
+        const h = hero ? hero.offsetHeight - window.innerHeight * 0.9 : 300;
+        nav.classList.toggle('is-solid', window.scrollY > h);
       };
       onScroll();
-      addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('scroll', onScroll, { passive: true });
     })();
 
     /* ══ Reveals & Link Highlight ══ */
