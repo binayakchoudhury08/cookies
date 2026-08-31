@@ -807,3 +807,28 @@ if ('IntersectionObserver' in window) {
     }
   });
 })();
+
+/* ══ Hidden Team Admin Portal Access Shortcut (Ctrl+Shift+A or 3-tap on Nazar dot) ══ */
+(() => {
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+      e.preventDefault();
+      window.location.href = 'admin.html';
+    }
+  });
+
+  const nazarDot = document.querySelector('.nazar-dot');
+  if (nazarDot) {
+    let tapCount = 0;
+    let tapTimer = null;
+    nazarDot.style.cursor = 'pointer';
+    nazarDot.addEventListener('click', () => {
+      tapCount++;
+      clearTimeout(tapTimer);
+      if (tapCount >= 3) {
+        window.location.href = 'admin.html';
+      }
+      tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
+    });
+  }
+})();
