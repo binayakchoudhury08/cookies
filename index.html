@@ -865,23 +865,23 @@
     }
 
     .flav-card-content {
-      padding: clamp(18px, 2vw, 24px) clamp(16px, 1.8vw, 20px);
+      padding: 12px 14px 14px;
       display: flex;
       flex-direction: column;
       flex: 1;
       text-align: left;
-      gap: 6px;
+      gap: 3px;
     }
 
     .flav-card-badge {
       align-self: flex-start;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 800;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 4px 10px;
+      padding: 2.5px 7px;
       border-radius: 99px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
 
     .flav-badge-live {
@@ -897,21 +897,27 @@
 
     .flav-card-title {
       font-family: var(--display);
-      font-size: clamp(17px, 1.8vw, 20px);
+      font-size: 15px;
       font-weight: 800;
       color: var(--ink);
+      line-height: 1.2;
     }
 
     .flav-card-desc {
-      font-size: 13px;
+      font-size: 11.5px;
       color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 8px;
+      line-height: 1.4;
+      margin-bottom: 6px;
     }
 
     .flav-card-cta {
       margin-top: auto;
-      padding-top: 6px;
+      padding-top: 4px;
+    }
+
+    .flav-card-cta .btn {
+      padding: 9px 14px;
+      font-size: 10.5px;
     }
 
     /* Flavour Row Nav Arrows */
@@ -2689,7 +2695,7 @@
           <button class="flav-nav-btn flav-nav-prev" id="flav-slide-prev" aria-label="Previous Flavour">‹</button>
           <button class="flav-nav-btn flav-nav-next" id="flav-slide-next" aria-label="Next Flavour">›</button>
 
-          <!-- Horizontal One-Row Track (Video Only) -->
+          <!-- Horizontal One-Row Track (Video Only · Compact Details) -->
           <div class="flavours-row-track" id="flavours-track">
             <!-- Flavour 1: Double Chocolate (Video Only · Pre-Order Available) -->
             <article class="flav-card-slide" data-flav-card="choc">
@@ -2701,7 +2707,7 @@
                 <span class="flav-card-badge flav-badge-live">⚡ Available to Order</span>
                 <h3 class="flav-card-title">Double Chocolate</h3>
                 <p class="flav-card-desc">
-                  Small Cookies. Big Satisfaction. Rich dark cocoa coin cookies baked with 100% pure butter and zero palm oil.
+                  Dark cocoa coin cookies with 100% pure dairy butter &amp; 0% palm oil.
                 </p>
                 <div class="flav-card-cta">
                   <a class="btn btn--sm" href="#shop" style="width:100%;">Order Chocolate ➔</a>
@@ -2719,7 +2725,7 @@
                 <span class="flav-card-badge flav-badge-vip">🍦 VIP ACCESS ONLY</span>
                 <h3 class="flav-card-title">Madagascar Vanilla</h3>
                 <p class="flav-card-desc">
-                  Classic Flavour. Timeless Crunch. Madagascar bourbon vanilla and creamery butter. Dropping this Friday.
+                  Bourbon vanilla caviar &amp; golden butter. Dropping this Friday.
                 </p>
                 <div class="flav-card-cta">
                   <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
@@ -2737,7 +2743,7 @@
                 <span class="flav-card-badge flav-badge-vip">🍓 VIP ACCESS ONLY</span>
                 <h3 class="flav-card-title">Red Velvet</h3>
                 <p class="flav-card-desc">
-                  Soft. Velvety. Simply Irresistible. Cocoa and buttermilk notes topped with white chocolate drops.
+                  Cocoa buttermilk dough topped with white chocolate drops.
                 </p>
                 <div class="flav-card-cta">
                   <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
@@ -2755,7 +2761,7 @@
                 <span class="flav-card-badge flav-badge-vip">🌾 VIP ACCESS ONLY</span>
                 <h3 class="flav-card-title">Oats Cookie</h3>
                 <p class="flav-card-desc">
-                  Wholesome Oats. Perfectly Crunchy. Toasted rolled oats and creamery butter for clean, wholesome crunch.
+                  Toasted rolled oats &amp; creamery butter for clean crunch.
                 </p>
                 <div class="flav-card-cta">
                   <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
