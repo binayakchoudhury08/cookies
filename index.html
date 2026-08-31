@@ -1016,6 +1016,113 @@
       }
     }
 
+    
+    /* Floating Tap Prompt on Cookie Stage */
+    .cookie-tap-prompt {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--ink);
+      border-radius: 99px;
+      padding: 6px 14px;
+      box-shadow: 0 6px 20px rgba(38, 20, 8, 0.12);
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: tapPromptFloat 2.4s ease-in-out infinite alternate;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .cookie-tap-prompt.is-hidden {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.9);
+      pointer-events: none;
+    }
+
+    .cookie-tap-icon {
+      font-size: 14px;
+      animation: tapBounce 1.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes tapPromptFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    @keyframes tapBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-3px) scale(1.15); }
+    }
+
+    /* Pin Icons Inside Touch Buttons */
+    .break-pin .pin-icon {
+      font-size: 14px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s var(--ease);
+      pointer-events: none;
+    }
+
+    .break-pin:hover .pin-icon {
+      transform: scale(1.2);
+    }
+
+    /* 3-Step Icon Guide */
+    .break-icon-guide {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .break-icon-guide {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    .break-guide-item {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .break-guide-icon {
+      font-size: 18px;
+      flex: none;
+    }
+
+    .break-guide-text strong {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .break-guide-text span {
+      display: block;
+      font-size: 9.5px;
+      color: var(--muted);
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+
     .shatter-stage {
       position: relative;
       display: flex;
@@ -1029,6 +1136,113 @@
     }
 
     /* Advanced Physics Shatter Stage & Canvas */
+    
+    /* Floating Tap Prompt on Cookie Stage */
+    .cookie-tap-prompt {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--ink);
+      border-radius: 99px;
+      padding: 6px 14px;
+      box-shadow: 0 6px 20px rgba(38, 20, 8, 0.12);
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: tapPromptFloat 2.4s ease-in-out infinite alternate;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .cookie-tap-prompt.is-hidden {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.9);
+      pointer-events: none;
+    }
+
+    .cookie-tap-icon {
+      font-size: 14px;
+      animation: tapBounce 1.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes tapPromptFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    @keyframes tapBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-3px) scale(1.15); }
+    }
+
+    /* Pin Icons Inside Touch Buttons */
+    .break-pin .pin-icon {
+      font-size: 14px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s var(--ease);
+      pointer-events: none;
+    }
+
+    .break-pin:hover .pin-icon {
+      transform: scale(1.2);
+    }
+
+    /* 3-Step Icon Guide */
+    .break-icon-guide {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .break-icon-guide {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    .break-guide-item {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .break-guide-icon {
+      font-size: 18px;
+      flex: none;
+    }
+
+    .break-guide-text strong {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .break-guide-text span {
+      display: block;
+      font-size: 9.5px;
+      color: var(--muted);
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+
     .shatter-stage {
       position: relative;
       display: flex;
@@ -2516,7 +2730,114 @@
         border-radius: 18px;
       }
 
-      .shatter-stage {
+      
+    /* Floating Tap Prompt on Cookie Stage */
+    .cookie-tap-prompt {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      z-index: 10;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #FFFFFF;
+      border: 1.5px solid var(--ink);
+      border-radius: 99px;
+      padding: 6px 14px;
+      box-shadow: 0 6px 20px rgba(38, 20, 8, 0.12);
+      font-size: 11.5px;
+      font-weight: 800;
+      color: var(--ink);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      animation: tapPromptFloat 2.4s ease-in-out infinite alternate;
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .cookie-tap-prompt.is-hidden {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.9);
+      pointer-events: none;
+    }
+
+    .cookie-tap-icon {
+      font-size: 14px;
+      animation: tapBounce 1.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes tapPromptFloat {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-4px); }
+    }
+
+    @keyframes tapBounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-3px) scale(1.15); }
+    }
+
+    /* Pin Icons Inside Touch Buttons */
+    .break-pin .pin-icon {
+      font-size: 14px;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      transition: transform 0.2s var(--ease);
+      pointer-events: none;
+    }
+
+    .break-pin:hover .pin-icon {
+      transform: scale(1.2);
+    }
+
+    /* 3-Step Icon Guide */
+    .break-icon-guide {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+
+    @media (max-width: 600px) {
+      .break-icon-guide {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
+    .break-guide-item {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .break-guide-icon {
+      font-size: 18px;
+      flex: none;
+    }
+
+    .break-guide-text strong {
+      display: block;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+
+    .break-guide-text span {
+      display: block;
+      font-size: 9.5px;
+      color: var(--muted);
+      line-height: 1.25;
+      margin-top: 1px;
+    }
+
+    .shatter-stage {
         min-height: 270px;
         border-radius: 14px;
       }
@@ -3104,19 +3425,33 @@
             <!-- Dynamic Real-Time Crumb Physics Canvas -->
             <canvas id="crumb-physics-canvas" class="crumb-canvas"></canvas>
 
+            <!-- Floating Tap Guide Icon Prompt -->
+            <div class="cookie-tap-prompt" id="cookie-tap-prompt">
+              <span class="cookie-tap-icon">👆</span>
+              <span class="cookie-tap-text">Tap to Break!</span>
+            </div>
+
             <div class="shatter-cookie-container" id="shatter-cookie-container">
               <!-- Authentic Artisanal 3D Coin Cookie -->
               <img id="shatter-img" class="shatter-cookie-img" src="assets/img/cookie-artisan-master.webp"
                 alt="Authentic CRUMBLY Artisanal Coin Cookie" draggable="false">
 
-
-
-              <!-- 5 Tactile Touch Stress Points (Disappear completely when tapped) -->
-              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Top-Left Corner"></button>
-              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Top-Right Corner"></button>
-              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Bottom-Left Corner"></button>
-              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Bottom-Right Corner"></button>
-              <button class="break-pin pin--5" type="button" data-pin="5" aria-label="Break Center Core"></button>
+              <!-- 5 Tactile Touch Stress Points with Snap Icons (Disappear completely when tapped) -->
+              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Top-Left Corner">
+                <span class="pin-icon">💥</span>
+              </button>
+              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Top-Right Corner">
+                <span class="pin-icon">💥</span>
+              </button>
+              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Bottom-Left Corner">
+                <span class="pin-icon">💥</span>
+              </button>
+              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Bottom-Right Corner">
+                <span class="pin-icon">💥</span>
+              </button>
+              <button class="break-pin pin--5" type="button" data-pin="5" aria-label="Break Center Core">
+                <span class="pin-icon">⚡</span>
+              </button>
 
               <!-- Seamless Borderless Pure Brand Reveal -->
               <div class="finale-reveal" id="finale-reveal">
@@ -3129,16 +3464,41 @@
           </div>
 
           <div class="shatter-info">
-            <span class="kicker" id="break-status-pill">Step 1 of 5 · Tap any touchpoint to snap</span>
-            <h3 class="dsp h3" id="break-title">Tap points to snap butter crust</h3>
-            <p class="sub" id="break-desc" style="font-size:14px;line-height:1.55;">
-              Experience the 100% pure dairy butter snap. Tap the stress points to trigger real-time particle fractures and reveal the brand emblem.
+            <span class="kicker" id="break-status-pill">💥 Step 1 of 5 · Tap stress points to break</span>
+            <h3 class="dsp h3" id="break-title">Tap points to break cookie</h3>
+            <p class="sub" id="break-desc" style="font-size:13.5px;line-height:1.5;">
+              Experience the 100% pure dairy butter snap. Follow the touch icons to trigger real-time particle fractures.
             </p>
+
+            <!-- 3-Step Visual Icon Guide -->
+            <div class="break-icon-guide">
+              <div class="break-guide-item">
+                <span class="break-guide-icon">👆</span>
+                <div class="break-guide-text">
+                  <strong>1. Tap Points</strong>
+                  <span>Touch corners to fracture</span>
+                </div>
+              </div>
+              <div class="break-guide-item">
+                <span class="break-guide-icon">💥</span>
+                <div class="break-guide-text">
+                  <strong>2. Crumb Burst</strong>
+                  <span>Feel the real butter snap</span>
+                </div>
+              </div>
+              <div class="break-guide-item">
+                <span class="break-guide-icon">✨</span>
+                <div class="break-guide-text">
+                  <strong>3. Reveal Emblem</strong>
+                  <span>Snap center to unveil</span>
+                </div>
+              </div>
+            </div>
 
             <!-- Tactile Crunch Pressure Meter -->
             <div class="crunch-meter-box">
               <div class="crunch-meter-header">
-                <span>Cookie Crust Integrity</span>
+                <span>🍪 Cookie Integrity</span>
                 <span id="crunch-meter-val">100% Intact</span>
               </div>
               <div class="crunch-meter-track">
@@ -3801,9 +4161,13 @@
         5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.', integrity: '0% · Shattered', pct: '0%' }
       };
 
+      const tapPrompt = document.getElementById('cookie-tap-prompt');
+
       pins.forEach(pin => {
         pin.addEventListener('click', (e) => {
           if (pin.classList.contains('is-used')) return;
+
+          if (tapPrompt) tapPrompt.classList.add('is-hidden');
 
           // Sound effect
           playCookieCrunchSound();
@@ -3879,7 +4243,8 @@
           p.style.pointerEvents = '';
         });
 
-        pill.textContent = 'Step 1 of 5 · Tap any touchpoint to snap';
+        if (tapPrompt) tapPrompt.classList.remove('is-hidden');
+        pill.textContent = '💥 Step 1 of 5 · Tap stress points to break';
         title.textContent = 'Tap points to snap butter crust';
         desc.textContent = 'Experience the 100% pure dairy butter snap. Tap the stress points to trigger real-time particle fractures and reveal the brand emblem.';
         if (meterVal) meterVal.textContent = '100% Intact';
