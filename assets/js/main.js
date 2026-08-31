@@ -152,9 +152,9 @@ document.body.classList.remove('nojs');
     (() => {
       const stage = document.getElementById('shatter-stage');
       const cookieContainer = document.getElementById('shatter-cookie-container');
-      const cookieImg = document.getElementById('shatter-img');
       const canvas = document.getElementById('crumb-physics-canvas');
       const pins = document.querySelectorAll('[data-pin]');
+      const pieces = document.querySelectorAll('.cookie-piece');
       const finale = document.getElementById('finale-reveal');
       const pill = document.getElementById('break-status-pill');
       const title = document.getElementById('break-title');
@@ -162,8 +162,9 @@ document.body.classList.remove('nojs');
       const resetBtn = document.getElementById('reset-break-btn');
       const meterFill = document.getElementById('crunch-meter-fill');
       const meterVal = document.getElementById('crunch-meter-val');
+      const tapPrompt = document.getElementById('cookie-tap-prompt');
 
-      if (!cookieImg || !canvas) return;
+      if (!cookieContainer || !canvas) return;
 
       const ctx = canvas.getContext('2d');
       let particles = [];
@@ -195,7 +196,6 @@ document.body.classList.remove('nojs');
           this.rotSpeed = (Math.random() - 0.5) * 0.25;
           this.alpha = 1;
           this.decay = Math.random() * 0.015 + 0.012;
-          // Cookie color tones: chocolate chips (#3B1D0E), golden butter (#C48847), crumb amber (#E2A458)
           const colors = ['#3B1D0E', '#261408', '#C48847', '#D49B5A', '#E8B878', '#5E3B24'];
           this.color = colors[Math.floor(Math.random() * colors.length)];
           this.isCircle = Math.random() > 0.4;
@@ -236,6 +236,7 @@ document.body.classList.remove('nojs');
       }
 
       function renderParticles() {
+        if (!stage) return;
         const rect = stage.getBoundingClientRect();
         ctx.clearRect(0, 0, rect.width, rect.height);
 
@@ -260,7 +261,6 @@ document.body.classList.remove('nojs');
           const actx = new AudioCtx();
           if (actx.state === 'suspended') actx.resume();
 
-          // Noise burst buffer for crisp biscuit snap
           const bufferSize = actx.sampleRate * 0.08;
           const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
           const data = buffer.getChannelData(0);
@@ -311,103 +311,120 @@ document.body.classList.remove('nojs');
         5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.', integrity: '0% · Shattered', pct: '0%' }
       };
 
-      const tapPrompt = document.getElementById('cookie-tap-prompt');
+      function breakPieceById(id, clickX, clickY) {
+        const targetPiece = document.getElementById(`cookie-piece-${id}`);
+        const targetPin = document.querySelector(`.break-pin[data-pin="${id}"]`);
 
-            pins.forEach(pin => {
-        pin.addEventListener('click', (e) => {
-          if (pin.classList.contains('is-used')) return;
+        if (targetPiece && targetPiece.classList.contains('is-detached')) return;
 
-          if (tapPrompt) tapPrompt.classList.add('is-hidden');
+        if (tapPrompt) tapPrompt.classList.add('is-hidden');
 
-          // Sound effect
-          playCookieCrunchSound();
+        playCookieCrunchSound();
 
-          // Get pin origin on canvas
-          const sRect = stage.getBoundingClientRect();
-          const pRect = pin.getBoundingClientRect();
-          const originX = pRect.left - sRect.left + pRect.width / 2;
-          const originY = pRect.top - sRect.top + pRect.height / 2;
+        const sRect = stage.getBoundingClientRect();
+        let burstX = sRect.width / 2;
+        let burstY = sRect.height / 2;
 
-          // Spawn realistic crumb burst
-          spawnParticles(originX, originY, 30, false);
-
-          // Make clicked pin instantly invisible
-          pin.classList.add('is-used');
-          pin.style.opacity = '0';
-          pin.style.visibility = 'hidden';
-          pin.style.pointerEvents = 'none';
-
-          const pinId = pin.dataset.pin;
-          brokenCount++;
-
-          // Physically detach and remove the corresponding cookie piece
-          const targetPiece = document.getElementById(`cookie-piece-${pinId}`);
-          if (targetPiece) {
-            targetPiece.classList.add('is-detached');
-          }
-
-          if (stepsInfo[brokenCount]) {
-            const info = stepsInfo[brokenCount];
-            pill.textContent = info.pill;
-            title.textContent = info.title;
-            desc.textContent = info.desc;
-            if (meterVal) meterVal.textContent = info.integrity;
-            if (meterFill) meterFill.style.width = info.pct;
-          }
-
-          /* Final Grand Snap (Center or All 5 broken) */
-          if (brokenCount >= 5) {
-            // Massive particle burst from center
-            spawnParticles(sRect.width / 2, sRect.height / 2, 80, true);
-
-            // Detach center piece if not already
-            const centerPiece = document.getElementById('cookie-piece-5');
-            if (centerPiece) centerPiece.classList.add('is-detached');
-
-            if (cookieContainer) cookieContainer.classList.add('is-revealed');
-            pins.forEach(p => {
-              p.classList.add('is-used');
-              p.style.opacity = '0';
-              p.style.visibility = 'hidden';
-              p.style.pointerEvents = 'none';
-              p.style.display = 'none';
-            });
-
-            setTimeout(() => {
-              finale.classList.add('is-active');
-            }, 350);
-          }
-        });
-      });
-
-      resetBtn.addEventListener('click', () => {
-        brokenCount = 0;
-        if (cookieContainer) {
-          cookieContainer.classList.remove('is-revealed');
-          cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+        if (clickX !== undefined && clickY !== undefined) {
+          burstX = clickX - sRect.left;
+          burstY = clickY - sRect.top;
+        } else if (targetPin) {
+          const pRect = targetPin.getBoundingClientRect();
+          burstX = pRect.left - sRect.left + pRect.width / 2;
+          burstY = pRect.top - sRect.top + pRect.height / 2;
         }
-        finale.classList.remove('is-active');
 
-        // Restore all physical cookie pieces
-        document.querySelectorAll('.cookie-piece').forEach(p => {
-          p.classList.remove('is-detached');
+        spawnParticles(burstX, burstY, 35, false);
+
+        if (targetPin) {
+          targetPin.classList.add('is-used');
+          targetPin.style.opacity = '0';
+          targetPin.style.visibility = 'hidden';
+          targetPin.style.pointerEvents = 'none';
+        }
+
+        if (targetPiece) {
+          targetPiece.classList.add('is-detached');
+        }
+
+        brokenCount++;
+
+        if (stepsInfo[brokenCount]) {
+          const info = stepsInfo[brokenCount];
+          if (pill) pill.textContent = info.pill;
+          if (title) title.textContent = info.title;
+          if (desc) desc.textContent = info.desc;
+          if (meterVal) meterVal.textContent = info.integrity;
+          if (meterFill) meterFill.style.width = info.pct;
+        }
+
+        if (brokenCount >= 5 || id === '5') {
+          spawnParticles(sRect.width / 2, sRect.height / 2, 85, true);
+
+          document.querySelectorAll('.cookie-piece').forEach(p => p.classList.add('is-detached'));
+
+          if (cookieContainer) cookieContainer.classList.add('is-revealed');
+          pins.forEach(p => {
+            p.classList.add('is-used');
+            p.style.opacity = '0';
+            p.style.visibility = 'hidden';
+            p.style.pointerEvents = 'none';
+            p.style.display = 'none';
+          });
+
+          setTimeout(() => {
+            if (finale) finale.classList.add('is-active');
+          }, 350);
+        }
+      }
+
+      // Attach click handlers to touch pins
+      pins.forEach(pin => {
+        pin.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = pin.dataset.pin;
+          breakPieceById(id, e.clientX, e.clientY);
         });
-
-        pins.forEach(p => {
-          p.classList.remove('is-used');
-          p.style.display = '';
-          p.style.opacity = '';
-          p.style.visibility = '';
-          p.style.pointerEvents = '';
-        });
-
-        if (tapPrompt) tapPrompt.classList.remove('is-hidden');
-        pill.textContent = '💥 Step 1 of 5 · Tap stress points to break';
-        title.textContent = 'Tap points to break cookie';
-        desc.textContent = 'Experience the 100% pure dairy butter snap. Follow the touch icons to trigger real-time particle fractures.';
-        if (meterVal) meterVal.textContent = '100% Intact';
-        if (meterFill) meterFill.style.width = '100%';
       });
+
+      // Also allow clicking directly on each cookie piece!
+      pieces.forEach(piece => {
+        piece.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = piece.dataset.piece;
+          breakPieceById(id, e.clientX, e.clientY);
+        });
+      });
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          brokenCount = 0;
+          if (cookieContainer) {
+            cookieContainer.classList.remove('is-revealed');
+            cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+          }
+          if (finale) finale.classList.remove('is-active');
+
+          document.querySelectorAll('.cookie-piece').forEach(p => {
+            p.classList.remove('is-detached');
+          });
+
+          pins.forEach(p => {
+            p.classList.remove('is-used');
+            p.style.display = '';
+            p.style.opacity = '';
+            p.style.visibility = '';
+            p.style.pointerEvents = '';
+          });
+
+          if (tapPrompt) tapPrompt.classList.remove('is-hidden');
+          if (pill) pill.textContent = '💥 Step 1 of 5 · Tap stress points to break';
+          if (title) title.textContent = 'Tap points to break cookie';
+          if (desc) desc.textContent = 'Experience the 100% pure dairy butter snap. Follow the touch icons to trigger real-time particle fractures.';
+          if (meterVal) meterVal.textContent = '100% Intact';
+          if (meterFill) meterFill.style.width = '100%';
+        });
+      }
     })();
 
     /* ══════════════════════════════════════════════════════════
