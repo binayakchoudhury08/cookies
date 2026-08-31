@@ -1005,6 +1005,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      perspective: 1000px;
     }
 
     .shatter-cookie-img {
@@ -1012,19 +1013,39 @@
       height: 100%;
       object-fit: contain;
       filter: drop-shadow(0 15px 30px rgba(38, 20, 8, 0.25));
-      transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
+      will-change: transform, opacity;
     }
 
-    .shatter-cookie-img.is-broken-1 { clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%, 0 40%); }
-    .shatter-cookie-img.is-broken-2 { clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 100%, 0 100%, 0 40%); }
-    .shatter-cookie-img.is-broken-3 { clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 40% 100%, 0 60%, 0 40%); }
-    .shatter-cookie-img.is-broken-4 { clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 60% 80%, 40% 60%, 0 40%); }
-    .shatter-cookie-img.is-broken-5 { opacity: 0; transform: scale(0.4) rotate(45deg); }
+    /* Glitch-Free Organic Fracture States */
+    .shatter-cookie-img.is-broken-1 {
+      transform: rotate(-3deg) scale(0.98);
+      filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25)) brightness(1.02);
+    }
+    .shatter-cookie-img.is-broken-2 {
+      transform: rotate(4deg) scale(0.96);
+      filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.28)) brightness(1.04);
+    }
+    .shatter-cookie-img.is-broken-3 {
+      transform: rotate(-6deg) scale(0.93);
+      filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.3)) brightness(1.06);
+    }
+    .shatter-cookie-img.is-broken-4 {
+      transform: rotate(8deg) scale(0.88);
+      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.35)) brightness(1.08);
+    }
+    .shatter-cookie-img.is-broken-5 {
+      opacity: 0;
+      transform: scale(1.2) rotate(15deg);
+      pointer-events: none;
+      filter: blur(4px);
+    }
 
+    /* Seamless Borderless Brand Reveal */
     .finale-reveal {
       position: absolute;
       inset: 0;
-      z-index: 10;
+      z-index: 15;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -1032,8 +1053,8 @@
       text-align: center;
       opacity: 0;
       pointer-events: none;
-      transform: scale(0.6);
-      transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+      transform: scale(0.7);
+      transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
       padding: 10px;
     }
 
@@ -1043,55 +1064,56 @@
       transform: scale(1);
     }
 
+    /* 100% Borderless, Clean Natural Brand Typography Emblem */
     .finale-big-card {
-      width: min(96%, 290px);
-      aspect-ratio: 1 / 1;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 10px;
-      background: #F4E8DC;
-      padding: 24px 20px;
-      border-radius: 26px;
-      border: 2.5px solid var(--ink);
-      box-shadow: 0 20px 50px rgba(38, 20, 8, 0.25);
-      animation: finaleFloat 3s ease-in-out infinite alternate;
+      gap: 8px;
+      background: transparent;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      animation: finaleFloat 3.5s ease-in-out infinite alternate;
     }
 
     .finale-wordmark-huge {
       font-family: var(--brand-font);
-      font-size: 52px;
+      font-size: clamp(52px, 8.5vw, 68px);
       font-weight: 700;
       color: var(--ink);
-      line-height: 1;
+      line-height: 0.95;
       letter-spacing: -0.02em;
       text-transform: lowercase;
-      margin-top: 4px;
+      margin: 0;
+      filter: drop-shadow(0 8px 24px rgba(38, 20, 8, 0.2));
     }
 
     .finale-tagline-big {
       font-family: var(--body);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 800;
-      letter-spacing: 0.26em;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
       color: var(--accent);
-      border-top: 1.5px solid rgba(38, 20, 8, 0.15);
-      padding-top: 10px;
-      width: 90%;
+      margin-top: 6px;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
     }
 
     @keyframes finaleFloat {
       0% { transform: translateY(0); }
-      100% { transform: translateY(-6px); }
+      100% { transform: translateY(-8px); }
     }
 
+    /* Touch Pins / Dots: Disappear Completely on Click & on Break */
     .break-pin {
       position: absolute;
       z-index: 12;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: #FFFFFF;
       border: 2px solid var(--ink);
@@ -1101,7 +1123,8 @@
       place-items: center;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(38, 20, 8, 0.25);
-      transition: transform 0.3s var(--ease), opacity 0.3s var(--ease), background 0.3s var(--ease);
+      transition: transform 0.25s var(--ease), opacity 0.25s var(--ease), visibility 0.25s var(--ease);
+      touch-action: manipulation;
     }
 
     .break-pin::after {
@@ -1110,23 +1133,33 @@
       height: 10px;
       border-radius: 50%;
       background: var(--ink);
-      transition: transform 0.3s var(--ease);
+      transition: transform 0.25s var(--ease);
     }
 
     .break-pin:hover {
-      transform: scale(1.3);
+      transform: scale(1.25);
       background: var(--bg);
     }
 
     .break-pin:hover::after {
-      transform: scale(1.3);
+      transform: scale(1.25);
       background: var(--accent);
     }
 
+    /* Invisible once clicked / used */
     .break-pin.is-used {
-      opacity: 0.15;
-      pointer-events: none;
-      transform: scale(0.6);
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      transform: scale(0) !important;
+    }
+
+    /* All pins vanish completely when final reveal is active */
+    .shatter-cookie-container.is-revealed .break-pin {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      display: none !important;
     }
 
     .pin--1 { top: 14%; left: 14%; }
@@ -3458,9 +3491,10 @@
     })();
 
     /* ══════════════════════════════════════════════════════════
-       INTERACTIVE COOKIE SHATTER & BIG LOGO REVEAL
+       INTERACTIVE COOKIE SHATTER & CLEAN BORDERLESS BRAND REVEAL
        ══════════════════════════════════════════════════════════ */
     (() => {
+      const cookieContainer = document.querySelector('.shatter-cookie-container');
       const cookieImg = document.getElementById('shatter-img');
       const pins = document.querySelectorAll('[data-pin]');
       const finale = document.getElementById('finale-reveal');
@@ -3473,21 +3507,39 @@
 
       let brokenCount = 0;
 
+      // Realistic cookie crack frame sequence
+      const cookieFrames = {
+        1: 'assets/img/ck2.webp',
+        2: 'assets/img/ck3.webp',
+        3: 'assets/img/ck4.webp',
+        4: 'assets/img/ck4.webp',
+        5: 'assets/img/ck4.webp'
+      };
+
       const stepsInfo = {
-        1: { pill: 'Step 2 of 5 · Top-Left Shattered!', title: '0% Palm Oil — Pure Butter Craft', desc: 'Top-left piece broken! We left cheap palm oil out. Made only with pure creamery butter.' },
-        2: { pill: 'Step 3 of 5 · Top-Right Shattered!', title: 'One-Bite Coin Geometry', desc: 'Top-right piece broken! Compact coin shape designed for zero keyboard crumbs.' },
-        3: { pill: 'Step 4 of 5 · Bottom-Left Shattered!', title: 'One-Bite Perfection', desc: 'Bottom-left piece broken! No biting in half — pop the entire cookie in.' },
-        4: { pill: 'Step 5 of 5 · Break The Center Core!', title: 'Micro Portion Control', desc: 'Bottom-right piece broken! Now tap the center core to crumble the entire cookie!' },
-        5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Finale Reveal!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.' }
+        1: { pill: 'Step 2 of 5 · Top-Left Fractured!', title: '0% Palm Oil — Pure Butter Craft', desc: 'First bite crumbled! We left cheap palm oil out. Made only with pure creamery butter.' },
+        2: { pill: 'Step 3 of 5 · Top-Right Fractured!', title: 'One-Bite Coin Geometry', desc: 'Second section broken! Compact coin shape designed for zero keyboard crumbs.' },
+        3: { pill: 'Step 4 of 5 · Bottom-Left Crumbled!', title: 'One-Bite Perfection', desc: 'Third section crumbled! No biting in half — pop the entire cookie in.' },
+        4: { pill: 'Step 5 of 5 · Tap Center to Reveal!', title: 'Micro Portion Control', desc: 'Final touchpoint! Tap the center to crumble the cookie and reveal the brand emblem!' },
+        5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Reveal!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.' }
       };
 
       pins.forEach(pin => {
         pin.addEventListener('click', () => {
           if (pin.classList.contains('is-used')) return;
 
+          // Make clicked pin instantly invisible
           pin.classList.add('is-used');
+          pin.style.opacity = '0';
+          pin.style.visibility = 'hidden';
+          pin.style.pointerEvents = 'none';
+
           brokenCount++;
 
+          // Transition cookie image smoothly
+          if (cookieFrames[brokenCount]) {
+            cookieImg.src = cookieFrames[brokenCount];
+          }
           cookieImg.className = `shatter-cookie-img is-broken-${brokenCount}`;
 
           if (stepsInfo[brokenCount]) {
@@ -3499,18 +3551,37 @@
 
           /* Finale emergence reveal when all 5 broken */
           if (brokenCount >= 5) {
+            if (cookieContainer) cookieContainer.classList.add('is-revealed');
+            pins.forEach(p => {
+              p.classList.add('is-used');
+              p.style.opacity = '0';
+              p.style.visibility = 'hidden';
+              p.style.pointerEvents = 'none';
+              p.style.display = 'none';
+            });
+
             setTimeout(() => {
               finale.classList.add('is-active');
-            }, 300);
+            }, 250);
           }
         });
       });
 
       resetBtn.addEventListener('click', () => {
         brokenCount = 0;
+        cookieImg.src = 'assets/img/ck1.webp';
         cookieImg.className = 'shatter-cookie-img';
+        if (cookieContainer) cookieContainer.classList.remove('is-revealed');
         finale.classList.remove('is-active');
-        pins.forEach(p => p.classList.remove('is-used'));
+
+        pins.forEach(p => {
+          p.classList.remove('is-used');
+          p.style.display = '';
+          p.style.opacity = '';
+          p.style.visibility = '';
+          p.style.pointerEvents = '';
+        });
+
         pill.textContent = 'Step 1 of 5 · Tap any touchpoint to break';
         title.textContent = 'Tap points to crumble';
         desc.textContent = 'Click each corner and center point on the cookie to shatter it piece by piece and reveal the brand emblem inside.';
