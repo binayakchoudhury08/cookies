@@ -313,7 +313,7 @@ document.body.classList.remove('nojs');
 
       const tapPrompt = document.getElementById('cookie-tap-prompt');
 
-      pins.forEach(pin => {
+            pins.forEach(pin => {
         pin.addEventListener('click', (e) => {
           if (pin.classList.contains('is-used')) return;
 
@@ -329,7 +329,7 @@ document.body.classList.remove('nojs');
           const originY = pRect.top - sRect.top + pRect.height / 2;
 
           // Spawn realistic crumb burst
-          spawnParticles(originX, originY, 25, false);
+          spawnParticles(originX, originY, 30, false);
 
           // Make clicked pin instantly invisible
           pin.classList.add('is-used');
@@ -337,12 +337,14 @@ document.body.classList.remove('nojs');
           pin.style.visibility = 'hidden';
           pin.style.pointerEvents = 'none';
 
+          const pinId = pin.dataset.pin;
           brokenCount++;
 
-
-
-          // Micro scale pop
-          cookieImg.className = `shatter-cookie-img is-broken-${brokenCount}`;
+          // Physically detach and remove the corresponding cookie piece
+          const targetPiece = document.getElementById(`cookie-piece-${pinId}`);
+          if (targetPiece) {
+            targetPiece.classList.add('is-detached');
+          }
 
           if (stepsInfo[brokenCount]) {
             const info = stepsInfo[brokenCount];
@@ -353,10 +355,14 @@ document.body.classList.remove('nojs');
             if (meterFill) meterFill.style.width = info.pct;
           }
 
-          /* Final Grand Snap */
+          /* Final Grand Snap (Center or All 5 broken) */
           if (brokenCount >= 5) {
             // Massive particle burst from center
-            spawnParticles(sRect.width / 2, sRect.height / 2, 70, true);
+            spawnParticles(sRect.width / 2, sRect.height / 2, 80, true);
+
+            // Detach center piece if not already
+            const centerPiece = document.getElementById('cookie-piece-5');
+            if (centerPiece) centerPiece.classList.add('is-detached');
 
             if (cookieContainer) cookieContainer.classList.add('is-revealed');
             pins.forEach(p => {
@@ -369,21 +375,23 @@ document.body.classList.remove('nojs');
 
             setTimeout(() => {
               finale.classList.add('is-active');
-            }, 300);
+            }, 350);
           }
         });
       });
 
       resetBtn.addEventListener('click', () => {
         brokenCount = 0;
-        cookieImg.className = 'shatter-cookie-img';
         if (cookieContainer) {
           cookieContainer.classList.remove('is-revealed');
           cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
         }
         finale.classList.remove('is-active');
 
-
+        // Restore all physical cookie pieces
+        document.querySelectorAll('.cookie-piece').forEach(p => {
+          p.classList.remove('is-detached');
+        });
 
         pins.forEach(p => {
           p.classList.remove('is-used');
@@ -395,8 +403,8 @@ document.body.classList.remove('nojs');
 
         if (tapPrompt) tapPrompt.classList.remove('is-hidden');
         pill.textContent = '💥 Step 1 of 5 · Tap stress points to break';
-        title.textContent = 'Tap points to snap butter crust';
-        desc.textContent = 'Experience the 100% pure dairy butter snap. Tap the stress points to trigger real-time particle fractures and reveal the brand emblem.';
+        title.textContent = 'Tap points to break cookie';
+        desc.textContent = 'Experience the 100% pure dairy butter snap. Follow the touch icons to trigger real-time particle fractures.';
         if (meterVal) meterVal.textContent = '100% Intact';
         if (meterFill) meterFill.style.width = '100%';
       });
