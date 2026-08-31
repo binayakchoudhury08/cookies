@@ -519,6 +519,7 @@ document.body.classList.remove('nojs');
       const vipName = document.getElementById('vip-name');
       const vipPhone = document.getElementById('vip-phone');
       const vipEmail = document.getElementById('vip-email');
+      const vipAddress = document.getElementById('vip-address');
       const chkVan = document.getElementById('vip-check-vanilla');
       const chkRed = document.getElementById('vip-check-redvelvet');
       const chkOats = document.getElementById('vip-check-oats');
@@ -531,6 +532,7 @@ document.body.classList.remove('nojs');
         const nm = vipName.value.trim();
         const ph = vipPhone.value.trim();
         const em = vipEmail.value.trim();
+        const addr = vipAddress ? vipAddress.value.trim() : '';
 
         if (!nm) { vipErr.textContent = 'Please enter your name.'; vipName.focus(); return; }
         if (!em || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)) {
@@ -557,6 +559,7 @@ document.body.classList.remove('nojs');
           name: nm,
           email: em,
           phone: ph,
+          address: addr,
           timestamp: new Date().toISOString()
         };
 

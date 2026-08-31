@@ -1,6 +1,6 @@
 # CRUMBLY™ — Google Apps Script Setup (VIP Access & Waitlist)
 
-This Google Apps Script captures VIP early-access signups (for **Madagascar Vanilla**, **Red Velvet**, and **Wholesome Oats**) directly into your private Google Sheet in real time.
+This Google Apps Script captures VIP early-access signups (including **Name**, **Email**, **Phone**, **Delivery Address**, and **Flavours**) directly into your private Google Sheet in real time.
 
 ---
 
@@ -8,18 +8,17 @@ This Google Apps Script captures VIP early-access signups (for **Madagascar Vani
 
 1. Create a new [Google Sheet](https://sheets.new).
 2. Set the sheet tab name to **`Sheet1`**.
-3. In **Row 1**, set these headers in **Columns A through H**:
+3. In **Row 1**, set these headers in **Columns A through I**:
 
-| A | B | C | D | E | F | G | H |
-|---|---|---|---|---|---|---|---|
-| **Timestamp** | **Name** | **Email** | **Phone** | **Flavours Requested** | **Submission Type** | **Referrer** | **User Agent** |
+| A | B | C | D | E | F | G | H | I |
+|---|---|---|---|---|---|---|---|---|
+| **Timestamp** | **Name** | **Email** | **Phone** | **Delivery Address** | **Flavours Requested** | **Submission Type** | **Referrer** | **User Agent** |
 
 ---
 
 ## 2 · Add the Google Apps Script
 
-1. In your Google Sheet, click **Extensions → Apps Script**.
-2. Delete everything inside the editor and paste the following code:
+In your Google Sheet: **Extensions → Apps Script**. Paste this code:
 
 ```javascript
 /**
@@ -32,7 +31,7 @@ const SHEET_NAME = 'Sheet1';
 
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(30000); // 30s lock for concurrent requests
+  lock.waitLock(30000);
   
   try {
     const p = (e && e.parameter) || {};
@@ -40,6 +39,7 @@ function doPost(e) {
     const name     = String(p.name || '').trim();
     const email    = String(p.email || '').trim().toLowerCase();
     const phone    = String(p.phone || '').trim();
+    const address  = String(p.address || '').trim();
     const flavours = String(p.flavours || '').trim();
     const type     = String(p.type || 'VIP Access Waitlist').trim();
     const referrer = String(p.referrer || '').trim();
@@ -63,12 +63,13 @@ function doPost(e) {
         'Name',
         'Email',
         'Phone',
+        'Delivery Address',
         'Flavours Requested',
         'Submission Type',
         'Referrer',
         'User Agent'
       ]);
-      const headerRange = sheet.getRange(1, 1, 1, 8);
+      const headerRange = sheet.getRange(1, 1, 1, 9);
       headerRange.setFontWeight('bold');
       headerRange.setBackground('#261408');
       headerRange.setFontColor('#FFFDF9');
@@ -92,12 +93,13 @@ function doPost(e) {
     // Leading quote preserves formatting for +91 phone numbers
     const phoneFormatted = phone ? (phone.startsWith('+') || phone.startsWith("'") ? phone : "'" + phone) : '';
     
-    // Append the row
+    // Append the lead row with Address in column E
     sheet.appendRow([
       timestampFormatted,
       name,
       email,
       phoneFormatted,
+      address,
       flavours || 'All Drops',
       type,
       referrer,
@@ -133,28 +135,8 @@ function createJsonResponse(data) {
 
 ## 3 · Deploy as Web App
 
-1. Click **Deploy → New deployment** (top right blue button).
-2. Click the ⚙️ gear icon next to *Select type* and select **Web app**.
-3. Configure settings:
-   - **Description**: `CRUMBLY VIP Waitlist v2`
-   - **Execute as**: `Me (your-email@gmail.com)`
-   - **Who has access**: `Anyone` *(Crucial: must be Anyone so website visitors can submit without Google login)*.
-4. Click **Deploy**.
-5. Grant permissions if prompted by clicking **Review permissions → Advanced → Go to Untitled project (unsafe) → Allow**.
-6. Copy the generated **Web app URL** (e.g. `https://script.google.com/macros/s/AKfycb.../exec`).
-
----
-
-## 4 · Connect to Website
-
-In `assets/js/main.js`, update the `SHEET_ENDPOINT` inside `CRUMBLY_CONFIG`:
-
-```javascript
-const CRUMBLY_CONFIG = {
-  SHOPIFY_DOMAIN: "wbqudn-4r.myshopify.com",
-  WHATSAPP_NUMBER: "917069666910",
-  HELPLINE_NUMBER: "917069666910",
-  HELPLINE_NUMBER_2: "917008246057",
-  SHEET_ENDPOINT: "PASTE_YOUR_COPIED_URL_HERE"
-};
-```
+1. Click **Deploy → New deployment**.
+2. Select **Web app**.
+3. Set **Execute as**: `Me`.
+4. Set **Who has access**: **`Anyone`**.
+5. Click **Deploy** and copy the Web app URL.
