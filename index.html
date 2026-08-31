@@ -998,14 +998,114 @@
       overflow: hidden;
     }
 
-    .shatter-cookie-container {
+    /* Advanced Physics Shatter Stage & Canvas */
+    .shatter-stage {
       position: relative;
-      width: 260px;
-      height: 260px;
       display: flex;
       align-items: center;
       justify-content: center;
-      perspective: 1000px;
+      min-height: 380px;
+      background: var(--bg);
+      border-radius: 24px;
+      border: 1.5px solid var(--line-soft);
+      overflow: hidden;
+      perspective: 900px;
+    }
+
+    .crumb-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 8;
+    }
+
+    .shatter-cookie-container {
+      position: relative;
+      width: clamp(240px, 28vw, 300px);
+      height: clamp(240px, 28vw, 300px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-style: preserve-3d;
+      transition: transform 0.15s ease-out;
+      cursor: pointer;
+    }
+
+    .shatter-cookie-img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 36px rgba(38, 20, 8, 0.28));
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease, filter 0.3s ease;
+      will-change: transform, opacity;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Dynamic SVG Crack Fissures */
+    .crack-svg-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .crack-line {
+      fill: none;
+      stroke: #261408;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      opacity: 0;
+      filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.4));
+      transition: opacity 0.3s var(--ease), stroke-dashoffset 0.4s var(--ease);
+    }
+
+    .crack-line.is-active {
+      opacity: 0.9;
+    }
+
+    /* Crunch Meter */
+    .crunch-meter-box {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .crunch-meter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .crunch-meter-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(38, 20, 8, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .crunch-meter-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+      border-radius: 99px;
+      transition: width 0.35s var(--ease);
     }
 
     .shatter-cookie-img {
@@ -2965,28 +3065,44 @@
 
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ BREAK COOKIE — BIG LOGO & YOU KNOW YOU WANT IT REVEAL ══ -->
+    <!-- ══ BREAK COOKIE — ADVANCED PHYSICS CRUMBLE & BRAND REVEAL ══ -->
     <section class="sec has-deco" id="shatter" aria-labelledby="shatter-h">
       <div class="shell">
         <div class="sec__head rv">
-          <span class="kicker">Sensory Experience</span>
-          <h2 class="dsp h2" id="shatter-h">Break the cookie.<br><span class="serif">Discover what&rsquo;s inside.</span></h2>
+          <span class="kicker">Sensory Haptic Experience</span>
+          <h2 class="dsp h2" id="shatter-h">Break the cookie.<br><span class="serif">Tactile physics &amp; brand reveal.</span></h2>
+          <p class="sub" style="margin:10px auto 0;text-align:center;max-width:54ch">
+            Interact with the authentic artisanal CRUMBLY coin cookie. Tap the stress points to break through the butter crust.
+          </p>
         </div>
 
         <div class="shatter-card rv">
-          <div class="shatter-stage">
-            <div class="shatter-cookie-container">
-              <img id="shatter-img" class="shatter-cookie-img" src="assets/img/ck1.webp"
-                alt="Interactive Shatter Cookie">
+          <div class="shatter-stage" id="shatter-stage">
+            <!-- Dynamic Real-Time Crumb Physics Canvas -->
+            <canvas id="crumb-physics-canvas" class="crumb-canvas"></canvas>
 
-              <!-- 5 Touch Pins (Pulsing targets with numbers hidden) -->
-              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Point 1"></button>
-              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Point 2"></button>
-              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Point 3"></button>
-              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Point 4"></button>
+            <div class="shatter-cookie-container" id="shatter-cookie-container">
+              <!-- Authentic Artisanal 3D Coin Cookie -->
+              <img id="shatter-img" class="shatter-cookie-img" src="assets/img/cookie-artisan-master.webp"
+                alt="Authentic CRUMBLY Artisanal Coin Cookie" draggable="false">
+
+              <!-- Dynamic SVG Crack Fissures Overlay -->
+              <svg class="crack-svg-overlay" id="crack-svg-overlay" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <path class="crack-line crack-1" d="M 50,50 Q 30,35 15,15" />
+                <path class="crack-line crack-2" d="M 50,50 Q 65,30 85,15" />
+                <path class="crack-line crack-3" d="M 50,50 Q 30,68 15,85" />
+                <path class="crack-line crack-4" d="M 50,50 Q 72,70 85,85" />
+                <path class="crack-line crack-5" d="M 50,20 L 50,80 M 20,50 L 80,50" />
+              </svg>
+
+              <!-- 5 Tactile Touch Stress Points (Disappear completely when tapped) -->
+              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Top-Left Corner"></button>
+              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Top-Right Corner"></button>
+              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Bottom-Left Corner"></button>
+              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Bottom-Right Corner"></button>
               <button class="break-pin pin--5" type="button" data-pin="5" aria-label="Break Center Core"></button>
 
-              <!-- BIG Grand Finale Reveal: Big crumbly + YOU KNOW YOU WANT IT -->
+              <!-- Seamless Borderless Pure Brand Reveal -->
               <div class="finale-reveal" id="finale-reveal">
                 <div class="finale-big-card">
                   <span class="finale-wordmark-huge">crumbly</span>
@@ -2997,12 +3113,26 @@
           </div>
 
           <div class="shatter-info">
-            <span class="kicker" id="break-status-pill">Step 1 of 5 · Tap any touchpoint to break</span>
-            <h3 class="dsp h3" id="break-title">Tap points to crumble</h3>
-            <p class="sub" id="break-desc" style="font-size:14.5px;">Click each corner and center point on the cookie to shatter it piece by piece and reveal the brand emblem inside.</p>
+            <span class="kicker" id="break-status-pill">Step 1 of 5 · Tap any touchpoint to snap</span>
+            <h3 class="dsp h3" id="break-title">Tap points to snap butter crust</h3>
+            <p class="sub" id="break-desc" style="font-size:14px;line-height:1.55;">
+              Experience the 100% pure dairy butter snap. Tap the stress points to trigger real-time particle fractures and reveal the brand emblem.
+            </p>
 
-            <button class="btn btn--ghost btn--sm reset-break-btn" id="reset-break-btn" type="button"><span>🔄 Reset
-                Cookie</span></button>
+            <!-- Tactile Crunch Pressure Meter -->
+            <div class="crunch-meter-box">
+              <div class="crunch-meter-header">
+                <span>Cookie Crust Integrity</span>
+                <span id="crunch-meter-val">100% Intact</span>
+              </div>
+              <div class="crunch-meter-track">
+                <div class="crunch-meter-fill" id="crunch-meter-fill"></div>
+              </div>
+            </div>
+
+            <button class="btn btn--ghost btn--sm reset-break-btn" id="reset-break-btn" type="button">
+              <span>🔄 Reset Fresh Cookie</span>
+            </button>
           </div>
         </div>
       </div>
@@ -3491,42 +3621,185 @@
     })();
 
     /* ══════════════════════════════════════════════════════════
-       INTERACTIVE COOKIE SHATTER & CLEAN BORDERLESS BRAND REVEAL
+       ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
        ══════════════════════════════════════════════════════════ */
     (() => {
-      const cookieContainer = document.querySelector('.shatter-cookie-container');
+      const stage = document.getElementById('shatter-stage');
+      const cookieContainer = document.getElementById('shatter-cookie-container');
       const cookieImg = document.getElementById('shatter-img');
+      const canvas = document.getElementById('crumb-physics-canvas');
       const pins = document.querySelectorAll('[data-pin]');
       const finale = document.getElementById('finale-reveal');
       const pill = document.getElementById('break-status-pill');
       const title = document.getElementById('break-title');
       const desc = document.getElementById('break-desc');
       const resetBtn = document.getElementById('reset-break-btn');
+      const meterFill = document.getElementById('crunch-meter-fill');
+      const meterVal = document.getElementById('crunch-meter-val');
 
-      if (!cookieImg || !pins.length) return;
+      if (!cookieImg || !canvas) return;
 
+      const ctx = canvas.getContext('2d');
+      let particles = [];
       let brokenCount = 0;
+      let animId = null;
 
-      // Realistic cookie crack frame sequence
-      const cookieFrames = {
-        1: 'assets/img/ck2.webp',
-        2: 'assets/img/ck3.webp',
-        3: 'assets/img/ck4.webp',
-        4: 'assets/img/ck4.webp',
-        5: 'assets/img/ck4.webp'
-      };
+      function resizeCanvas() {
+        if (!stage) return;
+        const rect = stage.getBoundingClientRect();
+        canvas.width = rect.width * (window.devicePixelRatio || 1);
+        canvas.height = rect.height * (window.devicePixelRatio || 1);
+        ctx.scale(window.devicePixelRatio || 1, window.devicePixelRatio || 1);
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+
+      // Particle physics particle class
+      class CrumbParticle {
+        constructor(x, y, isBig = false) {
+          this.x = x;
+          this.y = y;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = isBig ? (Math.random() * 8 + 4) : (Math.random() * 12 + 3);
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed - (Math.random() * 4 + 2);
+          this.gravity = 0.35;
+          this.size = isBig ? (Math.random() * 10 + 6) : (Math.random() * 5 + 2);
+          this.rot = Math.random() * Math.PI;
+          this.rotSpeed = (Math.random() - 0.5) * 0.25;
+          this.alpha = 1;
+          this.decay = Math.random() * 0.015 + 0.012;
+          // Cookie color tones: chocolate chips (#3B1D0E), golden butter (#C48847), crumb amber (#E2A458)
+          const colors = ['#3B1D0E', '#261408', '#C48847', '#D49B5A', '#E8B878', '#5E3B24'];
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.isCircle = Math.random() > 0.4;
+        }
+
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vy += this.gravity;
+          this.vx *= 0.98;
+          this.rot += this.rotSpeed;
+          this.alpha -= this.decay;
+        }
+
+        draw(c) {
+          if (this.alpha <= 0) return;
+          c.save();
+          c.globalAlpha = Math.max(0, this.alpha);
+          c.translate(this.x, this.y);
+          c.rotate(this.rot);
+          c.fillStyle = this.color;
+          if (this.isCircle) {
+            c.beginPath();
+            c.arc(0, 0, this.size / 2, 0, Math.PI * 2);
+            c.fill();
+          } else {
+            c.fillRect(-this.size / 2, -this.size / 2, this.size, this.size * 0.8);
+          }
+          c.restore();
+        }
+      }
+
+      function spawnParticles(originX, originY, count = 30, bigBurst = false) {
+        for (let i = 0; i < count; i++) {
+          particles.push(new CrumbParticle(originX, originY, bigBurst));
+        }
+        if (!animId) renderParticles();
+      }
+
+      function renderParticles() {
+        const rect = stage.getBoundingClientRect();
+        ctx.clearRect(0, 0, rect.width, rect.height);
+
+        for (let i = particles.length - 1; i >= 0; i--) {
+          particles[i].update();
+          particles[i].draw(ctx);
+          if (particles[i].alpha <= 0) particles.splice(i, 1);
+        }
+
+        if (particles.length > 0) {
+          animId = requestAnimationFrame(renderParticles);
+        } else {
+          animId = null;
+        }
+      }
+
+      // Web Audio API Synthesized Cookie Snap
+      function playCookieCrunchSound() {
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (!AudioCtx) return;
+          const actx = new AudioCtx();
+          if (actx.state === 'suspended') actx.resume();
+
+          // Noise burst buffer for crisp biscuit snap
+          const bufferSize = actx.sampleRate * 0.08;
+          const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+          }
+
+          const noise = actx.createBufferSource();
+          noise.buffer = buffer;
+
+          const filter = actx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.value = 1800 + Math.random() * 600;
+          filter.Q.value = 3.0;
+
+          const gain = actx.createGain();
+          gain.gain.setValueAtTime(0.3, actx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 0.07);
+
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(actx.destination);
+          noise.start();
+        } catch (_) {}
+      }
+
+      // 3D Gyro / Mouse Interactive Tilt
+      if (stage && cookieContainer) {
+        stage.addEventListener('mousemove', (e) => {
+          if (brokenCount >= 5) return;
+          const rect = stage.getBoundingClientRect();
+          const x = (e.clientX - rect.left) / rect.width - 0.5;
+          const y = (e.clientY - rect.top) / rect.height - 0.5;
+          cookieContainer.style.transform = `rotateY(${x * 24}deg) rotateX(${-y * 24}deg) scale(1.02)`;
+        });
+
+        stage.addEventListener('mouseleave', () => {
+          if (brokenCount >= 5) return;
+          cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+        });
+      }
 
       const stepsInfo = {
-        1: { pill: 'Step 2 of 5 · Top-Left Fractured!', title: '0% Palm Oil — Pure Butter Craft', desc: 'First bite crumbled! We left cheap palm oil out. Made only with pure creamery butter.' },
-        2: { pill: 'Step 3 of 5 · Top-Right Fractured!', title: 'One-Bite Coin Geometry', desc: 'Second section broken! Compact coin shape designed for zero keyboard crumbs.' },
-        3: { pill: 'Step 4 of 5 · Bottom-Left Crumbled!', title: 'One-Bite Perfection', desc: 'Third section crumbled! No biting in half — pop the entire cookie in.' },
-        4: { pill: 'Step 5 of 5 · Tap Center to Reveal!', title: 'Micro Portion Control', desc: 'Final touchpoint! Tap the center to crumble the cookie and reveal the brand emblem!' },
-        5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Reveal!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.' }
+        1: { pill: 'Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '80% Intact', pct: '80%' },
+        2: { pill: 'Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '60% Intact', pct: '60%' },
+        3: { pill: 'Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Deep fracture across the cookie core! Intense chocolate flavor in every crumb.', integrity: '40% Intact', pct: '40%' },
+        4: { pill: 'Step 5 of 5 · Tap Center Core!', title: 'Final Structural Break', desc: 'Final touchpoint! Tap the center to shatter the cookie and reveal the brand emblem!', integrity: '20% Intact', pct: '20%' },
+        5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.', integrity: '0% · Shattered', pct: '0%' }
       };
 
       pins.forEach(pin => {
-        pin.addEventListener('click', () => {
+        pin.addEventListener('click', (e) => {
           if (pin.classList.contains('is-used')) return;
+
+          // Sound effect
+          playCookieCrunchSound();
+
+          // Get pin origin on canvas
+          const sRect = stage.getBoundingClientRect();
+          const pRect = pin.getBoundingClientRect();
+          const originX = pRect.left - sRect.left + pRect.width / 2;
+          const originY = pRect.top - sRect.top + pRect.height / 2;
+
+          // Spawn realistic crumb burst
+          spawnParticles(originX, originY, 25, false);
 
           // Make clicked pin instantly invisible
           pin.classList.add('is-used');
@@ -3536,10 +3809,11 @@
 
           brokenCount++;
 
-          // Transition cookie image smoothly
-          if (cookieFrames[brokenCount]) {
-            cookieImg.src = cookieFrames[brokenCount];
-          }
+          // Activate SVG crack line
+          const crackLine = document.querySelector(`.crack-${brokenCount}`);
+          if (crackLine) crackLine.classList.add('is-active');
+
+          // Micro scale pop
           cookieImg.className = `shatter-cookie-img is-broken-${brokenCount}`;
 
           if (stepsInfo[brokenCount]) {
@@ -3547,10 +3821,15 @@
             pill.textContent = info.pill;
             title.textContent = info.title;
             desc.textContent = info.desc;
+            if (meterVal) meterVal.textContent = info.integrity;
+            if (meterFill) meterFill.style.width = info.pct;
           }
 
-          /* Finale emergence reveal when all 5 broken */
+          /* Final Grand Snap */
           if (brokenCount >= 5) {
+            // Massive particle burst from center
+            spawnParticles(sRect.width / 2, sRect.height / 2, 70, true);
+
             if (cookieContainer) cookieContainer.classList.add('is-revealed');
             pins.forEach(p => {
               p.classList.add('is-used');
@@ -3562,17 +3841,21 @@
 
             setTimeout(() => {
               finale.classList.add('is-active');
-            }, 250);
+            }, 300);
           }
         });
       });
 
       resetBtn.addEventListener('click', () => {
         brokenCount = 0;
-        cookieImg.src = 'assets/img/ck1.webp';
         cookieImg.className = 'shatter-cookie-img';
-        if (cookieContainer) cookieContainer.classList.remove('is-revealed');
+        if (cookieContainer) {
+          cookieContainer.classList.remove('is-revealed');
+          cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+        }
         finale.classList.remove('is-active');
+
+        document.querySelectorAll('.crack-line').forEach(l => l.classList.remove('is-active'));
 
         pins.forEach(p => {
           p.classList.remove('is-used');
@@ -3582,9 +3865,11 @@
           p.style.pointerEvents = '';
         });
 
-        pill.textContent = 'Step 1 of 5 · Tap any touchpoint to break';
-        title.textContent = 'Tap points to crumble';
-        desc.textContent = 'Click each corner and center point on the cookie to shatter it piece by piece and reveal the brand emblem inside.';
+        pill.textContent = 'Step 1 of 5 · Tap any touchpoint to snap';
+        title.textContent = 'Tap points to snap butter crust';
+        desc.textContent = 'Experience the 100% pure dairy butter snap. Tap the stress points to trigger real-time particle fractures and reveal the brand emblem.';
+        if (meterVal) meterVal.textContent = '100% Intact';
+        if (meterFill) meterFill.style.width = '100%';
       });
     })();
 
