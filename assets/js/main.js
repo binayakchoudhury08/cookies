@@ -253,7 +253,7 @@ document.body.classList.remove('nojs');
         }
       }
 
-      // Web Audio API Synthesized Cookie Snap
+      // High-Fidelity Web Audio Multi-Layer Biscuit Crunch Synthesizer
       function playCookieCrunchSound() {
         try {
           const AudioCtx = window.AudioContext || window.webkitAudioContext;
@@ -261,29 +261,41 @@ document.body.classList.remove('nojs');
           const actx = new AudioCtx();
           if (actx.state === 'suspended') actx.resume();
 
-          const bufferSize = actx.sampleRate * 0.08;
-          const buffer = actx.createBuffer(1, bufferSize, actx.sampleRate);
-          const data = buffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+          const t = actx.currentTime;
+
+          // Layer 1: Crisp high-frequency biscuit snap noise
+          const snapLen = actx.sampleRate * 0.07;
+          const snapBuf = actx.createBuffer(1, snapLen, actx.sampleRate);
+          const snapData = snapBuf.getChannelData(0);
+          for (let i = 0; i < snapLen; i++) {
+            snapData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (snapLen * 0.25));
           }
+          const snapSource = actx.createBufferSource();
+          snapSource.buffer = snapBuf;
+          const snapFilter = actx.createBiquadFilter();
+          snapFilter.type = 'bandpass';
+          snapFilter.frequency.value = 2400 + Math.random() * 500;
+          snapFilter.Q.value = 2.5;
+          const snapGain = actx.createGain();
+          snapGain.gain.setValueAtTime(0.35, t);
+          snapGain.gain.exponentialRampToValueAtTime(0.001, t + 0.065);
+          snapSource.connect(snapFilter);
+          snapFilter.connect(snapGain);
+          snapGain.connect(actx.destination);
+          snapSource.start(t);
 
-          const noise = actx.createBufferSource();
-          noise.buffer = buffer;
-
-          const filter = actx.createBiquadFilter();
-          filter.type = 'bandpass';
-          filter.frequency.value = 1800 + Math.random() * 600;
-          filter.Q.value = 3.0;
-
-          const gain = actx.createGain();
-          gain.gain.setValueAtTime(0.3, actx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, actx.currentTime + 0.07);
-
-          noise.connect(filter);
-          filter.connect(gain);
-          gain.connect(actx.destination);
-          noise.start();
+          // Layer 2: Deep low butter thud
+          const thud = actx.createOscillator();
+          thud.type = 'triangle';
+          thud.frequency.setValueAtTime(140, t);
+          thud.frequency.exponentialRampToValueAtTime(45, t + 0.06);
+          const thudGain = actx.createGain();
+          thudGain.gain.setValueAtTime(0.25, t);
+          thudGain.gain.exponentialRampToValueAtTime(0.001, t + 0.055);
+          thud.connect(thudGain);
+          thudGain.connect(actx.destination);
+          thud.start(t);
+          thud.stop(t + 0.06);
         } catch (_) {}
       }
 
@@ -318,7 +330,16 @@ document.body.classList.remove('nojs');
         if (targetPiece && targetPiece.classList.contains('is-detached')) return;
 
         if (tapPrompt) tapPrompt.classList.add('is-hidden');
+        if (cookieAssembly) cookieAssembly.classList.add('has-fractured');
 
+        // Trigger impact jolt animation
+        if (cookieContainer) {
+          cookieContainer.classList.remove('is-impacting');
+          void cookieContainer.offsetWidth; // Force reflow
+          cookieContainer.classList.add('is-impacting');
+        }
+
+        // Play crisp audio
         playCookieCrunchSound();
 
         const sRect = stage.getBoundingClientRect();
@@ -334,7 +355,8 @@ document.body.classList.remove('nojs');
           burstY = pRect.top - sRect.top + pRect.height / 2;
         }
 
-        spawnParticles(burstX, burstY, 35, false);
+        // Emit realistic crumb burst
+        spawnParticles(burstX, burstY, 40, false);
 
         if (targetPin) {
           targetPin.classList.add('is-used');
@@ -399,8 +421,9 @@ document.body.classList.remove('nojs');
       if (resetBtn) {
         resetBtn.addEventListener('click', () => {
           brokenCount = 0;
+          if (cookieAssembly) cookieAssembly.classList.remove('has-fractured');
           if (cookieContainer) {
-            cookieContainer.classList.remove('is-revealed');
+            cookieContainer.classList.remove('is-revealed', 'is-impacting');
             cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
           }
           if (finale) finale.classList.remove('is-active');
