@@ -349,36 +349,38 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
     const points = [];
 
-    // Top-Left Corner (14% subtle organic cut)
+    // Top-Left Corner (small visible organic bite cut)
     if (cut1) {
-      points.push('0% 14%', '4% 9%', '9% 4%', '14% 0%');
+      points.push('0% 32%', '18% 25%', '25% 18%', '32% 0%');
     } else {
       points.push('0% 0%');
     }
 
-    // Top-Right Corner (14% subtle organic cut)
+    // Top-Right Corner (small visible organic bite cut)
     if (cut2) {
-      points.push('86% 0%', '91% 4%', '96% 9%', '100% 14%');
+      points.push('68% 0%', '75% 18%', '82% 25%', '100% 32%');
     } else {
       points.push('100% 0%');
     }
 
-    // Bottom-Right Corner (14% subtle organic cut)
+    // Bottom-Right Corner (small visible organic bite cut)
     if (cut4) {
-      points.push('100% 86%', '96% 91%', '91% 96%', '86% 100%');
+      points.push('100% 68%', '82% 75%', '75% 82%', '68% 100%');
     } else {
       points.push('100% 100%');
     }
 
-    // Bottom-Left Corner (14% subtle organic cut)
+    // Bottom-Left Corner (small visible organic bite cut)
     if (cut3) {
-      points.push('14% 100%', '9% 96%', '4% 91%', '0% 86%');
+      points.push('32% 100%', '25% 82%', '18% 75%', '0% 68%');
     } else {
       points.push('0% 100%');
     }
 
     if (cookieImg) {
-      cookieImg.style.clipPath = `polygon(${points.join(', ')})`;
+      const poly = `polygon(${points.join(', ')})`;
+      cookieImg.style.clipPath = poly;
+      cookieImg.style.webkitClipPath = poly;
     }
   }
 
