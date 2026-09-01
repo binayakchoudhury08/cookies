@@ -1391,30 +1391,34 @@
       height: 100%;
       object-fit: contain;
       filter: drop-shadow(0 15px 30px rgba(38, 20, 8, 0.25));
-      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
-      will-change: transform, opacity;
+      transition: clip-path 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
+      will-change: transform, opacity, clip-path;
     }
 
-    /* Glitch-Free Organic Fracture States */
+    /* Authentic Polygon Clip-Path Fracture States (from Aug 30 Day-Before-Yesterday) */
     .shatter-cookie-img.is-broken-1 {
-      transform: rotate(-3deg) scale(0.98);
-      filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25)) brightness(1.02);
+      clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%, 0 40%);
+      transform: rotate(-2deg) scale(0.98);
+      filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25));
     }
     .shatter-cookie-img.is-broken-2 {
-      transform: rotate(4deg) scale(0.96);
-      filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.28)) brightness(1.04);
+      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 100%, 0 100%, 0 40%);
+      transform: rotate(2deg) scale(0.96);
+      filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.28));
     }
     .shatter-cookie-img.is-broken-3 {
-      transform: rotate(-6deg) scale(0.93);
-      filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.3)) brightness(1.06);
+      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 40% 100%, 0 60%, 0 40%);
+      transform: rotate(-3deg) scale(0.93);
+      filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.3));
     }
     .shatter-cookie-img.is-broken-4 {
-      transform: rotate(8deg) scale(0.88);
-      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.35)) brightness(1.08);
+      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 60% 80%, 40% 60%, 0 40%);
+      transform: rotate(4deg) scale(0.9);
+      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.35));
     }
     .shatter-cookie-img.is-broken-5 {
       opacity: 0;
-      transform: scale(1.2) rotate(15deg);
+      transform: scale(0.4) rotate(45deg);
       pointer-events: none;
       filter: blur(4px);
     }
