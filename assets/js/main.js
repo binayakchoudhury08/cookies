@@ -6,7 +6,7 @@ if (REDUCED) document.body.classList.add('reduce');
    CRUMBLY CONFIGURATION & SHOPIFY PRE-ORDER SETTINGS
    ════════════════════════════════════════════════════════════ */
 const CRUMBLY_CONFIG = {
-  SHOPIFY_DOMAIN: "wbqudn-4r.myshopify.com",
+  SHOPIFY_DOMAIN: "crumblyblr.myshopify.com",
   WHATSAPP_NUMBER: "917069666910",
   HELPLINE_NUMBER: "917069666910",
   HELPLINE_NUMBER_2: "917008246057",
@@ -496,13 +496,29 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     const variantId = packData.variantId;
 
     // Build 1-click Shopify direct checkout URL
-    const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'wbqudn-4r.myshopify.com';
+    const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
     const url = `https://${domain}/cart/${variantId}:${quantity}?checkout`;
 
     checkoutBtn.href = url;
     checkoutBtn.textContent = `Pre-Order Now • ₹${totalPrice} ➔`;
     if (summaryText) summaryText.textContent = `${packData.name} (${quantity} unit${quantity > 1 ? 's' : ''})`;
   }
+
+  checkoutBtn.addEventListener('click', () => {
+    try {
+      const packData = CRUMBLY_CONFIG.PACKS[selectedPackId] || CRUMBLY_CONFIG.PACKS[1];
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'InitiateCheckout', {
+          content_name: packData.name,
+          content_category: 'Cookies',
+          content_ids: [packData.variantId],
+          num_items: quantity,
+          value: packData.price * quantity,
+          currency: 'INR'
+        });
+      }
+    } catch (_) { }
+  });
 
   packBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -594,6 +610,16 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
         });
       } catch (_) { }
     }
+
+    // Track Meta Pixel Lead event
+    try {
+      if (typeof window.fbq === 'function') {
+        window.fbq('track', 'Lead', {
+          content_name: 'Waitlist Early Access Lead',
+          content_category: selectedFlavours.join(', ')
+        });
+      }
+    } catch (_) { }
 
     vipBtn.style.display = 'none';
     vipSuccess.style.display = 'block';

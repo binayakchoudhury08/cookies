@@ -72,7 +72,7 @@ Open `index.html` and find `const CRUMBLY_CONFIG` (around line 2425):
 ```javascript
 const CRUMBLY_CONFIG = {
   // 🛍️ REPLACE WITH YOUR SHOPIFY STORE URL
-  SHOPIFY_DOMAIN: "crumbly.myshopify.com",
+  SHOPIFY_DOMAIN: "crumblyblr.myshopify.com",
 
   // 📦 PASTE YOUR 3 VARIANT IDs HERE:
   PACKS: {

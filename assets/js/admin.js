@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tbody.innerHTML = leads.map(lead => {
       const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
-      const inviteWa = `https://wa.me/${cleanPhone}?text=Hi%20${encodeURIComponent(lead.name)}%2C%20your%20CRUMBLY%20Waitlist%20Early%20Access%20Drop%20is%20LIVE%21%20Order%20secret%20batches%20here%3A%20https%3A%2F%2Fwbqudn-4r.myshopify.com`;
+      const inviteWa = `https://wa.me/${cleanPhone}?text=Hi%20${encodeURIComponent(lead.name)}%2C%20your%20CRUMBLY%20Waitlist%20Early%20Access%20Drop%20is%20LIVE%21%20Order%20secret%20batches%20here%3A%20https%3A%2F%2Fcrumblyblr.myshopify.com`;
 
       return `
         <tr>
