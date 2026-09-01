@@ -148,14 +148,14 @@ const CRUMBLY_CONFIG = {
 
 /* ══════════════════════════════════════════════════════════
 ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
+(Single cookie image — breaks only when ALL 5 dots clicked)
 ══════════════════════════════════════════════════════════ */
 (() => {
   const stage = document.getElementById('shatter-stage');
   const cookieContainer = document.getElementById('shatter-cookie-container');
-  const cookieAssembly = document.getElementById('cookie-assembly');
+  const cookieImg = document.getElementById('shatter-img');
   const canvas = document.getElementById('crumb-physics-canvas');
   const pins = document.querySelectorAll('[data-pin]');
-  const pieces = document.querySelectorAll('.cookie-piece');
   const finale = document.getElementById('finale-reveal');
   const pill = document.getElementById('break-status-pill');
   const title = document.getElementById('break-title');
@@ -172,8 +172,12 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
   const ctx = canvas.getContext('2d');
   let particles = [];
-  let brokenCount = 0;
+  let clickedPins = new Set();
+  let isShattered = false;
   let animId = null;
+
+  // Cookie image sequence for the break progression
+  const cookieImages = ['assets/img/ck1.webp', 'assets/img/ck2.webp', 'assets/img/ck3.webp', 'assets/img/ck4.webp'];
 
   function resizeCanvas() {
     if (!stage) return;
@@ -306,7 +310,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   // 3D Gyro / Mouse Interactive Tilt
   if (stage && cookieContainer) {
     stage.addEventListener('mousemove', (e) => {
-      if (brokenCount >= 5) return;
+      if (isShattered) return;
       const rect = stage.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;
@@ -314,97 +318,113 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     });
 
     stage.addEventListener('mouseleave', () => {
-      if (brokenCount >= 5) return;
+      if (isShattered) return;
       cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
     });
   }
 
   const stepsInfo = {
-    1: { pill: 'Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '80% Intact', pct: '80%' },
-    2: { pill: 'Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '60% Intact', pct: '60%' },
-    3: { pill: 'Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Deep fracture across the cookie core! Intense chocolate flavor in every crumb.', integrity: '40% Intact', pct: '40%' },
-    4: { pill: 'Step 5 of 5 · Tap Center Core!', title: 'Final Structural Break', desc: 'Final touchpoint! Tap the center to shatter the cookie and reveal the brand emblem!', integrity: '20% Intact', pct: '20%' },
-    5: { pill: 'CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY.', integrity: '0% · Shattered', pct: '0%' }
+    1: { pill: '💥 Step 2 of 5 · 1 stress point cracked!', title: '100% Pure Butter Crust', desc: 'First stress point hit! Keep tapping all dots to build up the fracture pressure.', integrity: '80% Intact', pct: '80%' },
+    2: { pill: '💥 Step 3 of 5 · 2 stress points cracked!', title: 'Handy Coin Geometry', desc: 'Second point cracked! The butter crust is weakening — tap all remaining dots.', integrity: '60% Intact', pct: '60%' },
+    3: { pill: '💥 Step 4 of 5 · 3 stress points cracked!', title: 'Rich Cocoa Snap', desc: 'Deep cracks forming! Almost there — 2 more stress points to fully shatter.', integrity: '40% Intact', pct: '40%' },
+    4: { pill: '💥 Step 5 of 5 · 1 more to shatter!', title: 'Final Structural Break', desc: 'One more tap! Hit the last stress point to shatter the cookie and reveal the brand!', integrity: '20% Intact', pct: '20%' },
+    5: { pill: '✨ CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY — YOU KNOW YOU WANT IT.', integrity: '0% · Shattered', pct: '0%' }
   };
 
-  function breakPieceById(id, clickX, clickY) {
-    try {
-      const targetPiece = document.getElementById(`cookie-piece-${id}`);
-      const targetPin = document.querySelector(`.break-pin[data-pin="${id}"]`);
+  function handlePinClick(pinId, clickX, clickY) {
+    if (isShattered) return;
+    if (clickedPins.has(pinId)) return;
 
-      if (targetPiece && targetPiece.classList.contains('is-detached')) return;
+    // Mark this pin as clicked
+    clickedPins.add(pinId);
+    const count = clickedPins.size;
 
-      if (tapPrompt) tapPrompt.classList.add('is-hidden');
-      if (cookieAssembly) cookieAssembly.classList.add('has-fractured');
+    // Hide this pin
+    const targetPin = document.querySelector(`.break-pin[data-pin="${pinId}"]`);
+    if (targetPin) {
+      targetPin.classList.add('is-used');
+      targetPin.style.opacity = '0';
+      targetPin.style.visibility = 'hidden';
+      targetPin.style.pointerEvents = 'none';
+    }
 
-      // Impact shake
-      if (cookieContainer) {
-        cookieContainer.classList.remove('is-impacting');
-        void cookieContainer.offsetWidth;
-        cookieContainer.classList.add('is-impacting');
-      }
+    // Hide tap prompt
+    if (tapPrompt) tapPrompt.classList.add('is-hidden');
 
-      // Sound
-      playCookieCrunchSound();
+    // Impact shake
+    if (cookieContainer) {
+      cookieContainer.classList.remove('is-impacting');
+      void cookieContainer.offsetWidth;
+      cookieContainer.classList.add('is-impacting');
+    }
 
-      // Particle burst
-      const sRect = stage.getBoundingClientRect();
-      let burstX = sRect.width / 2;
-      let burstY = sRect.height / 2;
+    // Play crunch sound
+    playCookieCrunchSound();
 
-      if (clickX !== undefined && clickY !== undefined) {
-        burstX = clickX - sRect.left;
-        burstY = clickY - sRect.top;
-      } else if (targetPin) {
-        const pRect = targetPin.getBoundingClientRect();
-        burstX = pRect.left - sRect.left + pRect.width / 2;
-        burstY = pRect.top - sRect.top + pRect.height / 2;
-      }
+    // Spawn small particle burst at click location
+    const sRect = stage.getBoundingClientRect();
+    let burstX = sRect.width / 2;
+    let burstY = sRect.height / 2;
+    if (clickX !== undefined && clickY !== undefined) {
+      burstX = clickX - sRect.left;
+      burstY = clickY - sRect.top;
+    } else if (targetPin) {
+      const pRect = targetPin.getBoundingClientRect();
+      burstX = pRect.left - sRect.left + pRect.width / 2;
+      burstY = pRect.top - sRect.top + pRect.height / 2;
+    }
+    spawnParticles(burstX, burstY, 25, false);
 
-      spawnParticles(burstX, burstY, 40, false);
+    // Update step info and meter
+    if (stepsInfo[count]) {
+      const info = stepsInfo[count];
+      if (pill) pill.textContent = info.pill;
+      if (title) title.textContent = info.title;
+      if (desc) desc.textContent = info.desc;
+      if (meterVal) meterVal.textContent = info.integrity;
+      if (meterFill) meterFill.style.width = info.pct;
+    }
 
-      if (targetPin) {
-        targetPin.classList.add('is-used');
-        targetPin.style.opacity = '0';
-        targetPin.style.visibility = 'hidden';
-        targetPin.style.pointerEvents = 'none';
-      }
+    // Cookie image stays as ck1.webp until ALL 5 dots clicked
+    // When all 5 are clicked → shatter the cookie!
+    if (count >= 5) {
+      isShattered = true;
 
-      if (targetPiece) {
-        targetPiece.classList.add('is-detached');
-      }
+      // Massive particle burst from center
+      spawnParticles(sRect.width / 2, sRect.height / 2, 90, true);
 
-      brokenCount++;
-
-      if (stepsInfo[brokenCount]) {
-        const info = stepsInfo[brokenCount];
-        if (pill) pill.textContent = info.pill;
-        if (title) title.textContent = info.title;
-        if (desc) desc.textContent = info.desc;
-        if (meterVal) meterVal.textContent = info.integrity;
-        if (meterFill) meterFill.style.width = info.pct;
-      }
-
-      if (brokenCount >= 5 || id === '5') {
-        spawnParticles(sRect.width / 2, sRect.height / 2, 90, true);
-
-        document.querySelectorAll('.cookie-piece').forEach(p => p.classList.add('is-detached'));
-
-        if (cookieContainer) cookieContainer.classList.add('is-revealed');
-        pins.forEach(p => {
-          p.classList.add('is-used');
-          p.style.opacity = '0';
-          p.style.visibility = 'hidden';
-          p.style.pointerEvents = 'none';
-          p.style.display = 'none';
-        });
-
+      // Swap through break images rapidly then fade out
+      if (cookieImg) {
+        cookieImg.classList.add('is-broken-1');
         setTimeout(() => {
-          if (finale) finale.classList.add('is-active');
-        }, 350);
+          if (cookieImg) { cookieImg.src = cookieImages[1]; cookieImg.classList.remove('is-broken-1'); cookieImg.classList.add('is-broken-2'); }
+        }, 80);
+        setTimeout(() => {
+          if (cookieImg) { cookieImg.src = cookieImages[2]; cookieImg.classList.remove('is-broken-2'); cookieImg.classList.add('is-broken-3'); }
+        }, 160);
+        setTimeout(() => {
+          if (cookieImg) { cookieImg.src = cookieImages[3]; cookieImg.classList.remove('is-broken-3'); cookieImg.classList.add('is-broken-4'); }
+        }, 240);
+        setTimeout(() => {
+          if (cookieImg) { cookieImg.classList.remove('is-broken-4'); cookieImg.classList.add('is-broken-5'); }
+        }, 380);
       }
-    } catch (err) {
-      console.error('Error in breakPieceById:', err);
+
+      // Hide all remaining pins
+      pins.forEach(p => {
+        p.classList.add('is-used');
+        p.style.opacity = '0';
+        p.style.visibility = 'hidden';
+        p.style.pointerEvents = 'none';
+        p.style.display = 'none';
+      });
+
+      if (cookieContainer) cookieContainer.classList.add('is-revealed');
+
+      // Show finale reveal
+      setTimeout(() => {
+        if (finale) finale.classList.add('is-active');
+      }, 450);
     }
   }
 
@@ -414,33 +434,26 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       e.preventDefault();
       e.stopPropagation();
       const id = pin.getAttribute('data-pin');
-      breakPieceById(id, e.clientX, e.clientY);
+      handlePinClick(id, e.clientX, e.clientY);
     });
   });
 
-  // Attach click listeners to all cookie pieces
-  pieces.forEach(piece => {
-    piece.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const id = piece.getAttribute('data-piece');
-      breakPieceById(id, e.clientX, e.clientY);
-    });
-  });
-
+  // Reset button
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
-      brokenCount = 0;
-      if (cookieAssembly) cookieAssembly.classList.remove('has-fractured');
+      clickedPins.clear();
+      isShattered = false;
+
+      if (cookieImg) {
+        cookieImg.src = cookieImages[0];
+        cookieImg.className = 'shatter-cookie-img';
+      }
+
       if (cookieContainer) {
         cookieContainer.classList.remove('is-revealed', 'is-impacting');
         cookieContainer.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
       }
       if (finale) finale.classList.remove('is-active');
-
-      document.querySelectorAll('.cookie-piece').forEach(p => {
-        p.classList.remove('is-detached');
-      });
 
       pins.forEach(p => {
         p.classList.remove('is-used');
@@ -555,16 +568,16 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     if (chkOats && chkOats.checked) selectedFlavours.push('Wholesome Oats');
 
     if (!selectedFlavours.length) {
-      vipErr.textContent = 'Please select at least one flavour for VIP access.';
+      vipErr.textContent = 'Please select at least one flavour for the waitlist.';
       return;
     }
 
     vipErr.textContent = '';
     vipBtn.disabled = true;
-    vipBtn.textContent = 'Reserving VIP Pass…';
+    vipBtn.textContent = 'Joining Waitlist…';
 
     const payload = {
-      type: 'VIP Access Waitlist',
+      type: 'Waitlist',
       flavours: selectedFlavours.join(', '),
       name: nm,
       email: em,
@@ -782,7 +795,7 @@ if ('IntersectionObserver' in window) {
     if (!e.isIntersecting) return;
     links.forEach(a => a.setAttribute('aria-current', String(a.hash === '#' + e.target.id)));
   }), { threshold: .4 });
-  ['home', 'flavours', 'why', 'shatter', 'shop', 'vip-access'].forEach(id => {
+  ['home', 'flavours', 'why', 'shatter', 'shop', 'waitlist'].forEach(id => {
     const el = document.getElementById(id); if (el) spy.observe(el);
   });
 } else {
@@ -808,27 +821,3 @@ if ('IntersectionObserver' in window) {
   });
 })();
 
-/* ══ Hidden Team Admin Portal Access Shortcut (Ctrl+Shift+A or 3-tap on Nazar dot) ══ */
-(() => {
-  window.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
-      e.preventDefault();
-      window.location.href = 'admin.html';
-    }
-  });
-
-  const nazarDot = document.querySelector('.nazar-dot');
-  if (nazarDot) {
-    let tapCount = 0;
-    let tapTimer = null;
-    nazarDot.style.cursor = 'pointer';
-    nazarDot.addEventListener('click', () => {
-      tapCount++;
-      clearTimeout(tapTimer);
-      if (tapCount >= 3) {
-        window.location.href = 'admin.html';
-      }
-      tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
-    });
-  }
-})();

@@ -3,7 +3,7 @@
  * CRUMBLY™ — Executive Business & Operations Admin Dashboard Logic
  * ═════════════════════════════════════════════════════════════════════
  * Orchestrates Security PIN Gate, View Routing, Real-Time Canvas Charts,
- * Orders, Finance P&L, Expenses, Inventory, Logistics, and VIP CRM.
+ * Orders, Finance P&L, Expenses, Inventory, Logistics, and Waitlist CRM.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -707,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   /* ══════════════════════════════════════════════════════════
-     9. VIP ACCESS CRM & LEADS
+     9. WAITLIST CRM & LEADS
      ══════════════════════════════════════════════════════════ */
   function renderCRMView() {
     const tbody = document.getElementById('crm-leads-table-body');
@@ -716,7 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     tbody.innerHTML = leads.map(lead => {
       const cleanPhone = (lead.phone || '').replace(/[^0-9]/g, '');
-      const inviteWa = `https://wa.me/${cleanPhone}?text=Hi%20${encodeURIComponent(lead.name)}%2C%20your%20CRUMBLY%20VIP%20Early%20Access%20Drop%20is%20LIVE%21%20Order%20secret%20batches%20here%3A%20https%3A%2F%2Fwbqudn-4r.myshopify.com`;
+      const inviteWa = `https://wa.me/${cleanPhone}?text=Hi%20${encodeURIComponent(lead.name)}%2C%20your%20CRUMBLY%20Waitlist%20Early%20Access%20Drop%20is%20LIVE%21%20Order%20secret%20batches%20here%3A%20https%3A%2F%2Fwbqudn-4r.myshopify.com`;
 
       return `
         <tr>

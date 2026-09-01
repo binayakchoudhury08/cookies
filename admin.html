@@ -4,34 +4,32 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>CRUMBLY™ — Executive Business &amp; Operations Admin Portal</title>
+  <title>CRUMBLY™ — Business Operations Command Center</title>
   
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   
-  <!-- Google Fonts: Fredoka & Outfit & Plus Jakarta Sans -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
-  <!-- Admin Stylesheet -->
   <link rel="stylesheet" href="assets/css/admin.css">
   
-  <!-- Persistence DB & Logic Scripts (Deferred) -->
   <script src="assets/js/admin-db.js" defer></script>
   <script src="assets/js/admin.js" defer></script>
 </head>
 <body class="admin-body">
 
   <!-- ════════════════════════════════════════════════════════════
-       1. SECURITY PIN LOCK SCREEN OVERLAY
+       1. SECURITY PIN LOCK SCREEN
        ════════════════════════════════════════════════════════════ -->
   <div class="admin-lock-screen" id="admin-lock-screen">
     <div class="lock-card">
       <div class="lock-brand-logo">crumbly</div>
-      <div class="lock-subtitle">Executive Team Operations Portal</div>
+      <div class="lock-subtitle">Business Operations Command Center</div>
       
       <p style="font-size:12.5px;color:var(--admin-ink-muted);margin-bottom:20px;">
-        Enter your 4-digit team security passcode to unlock finance, logistics &amp; inventory.
+        Enter your 4-digit security passcode to access finance, expenses, logistics &amp; operations.
       </p>
 
       <div class="lock-pin-display">
@@ -67,13 +65,13 @@
       </div>
       
       <div style="font-size:10px;color:var(--admin-ink-faint);margin-top:16px;">
-        Default Master PIN: <strong>7069</strong> (Change anytime in Settings)
+        Default PIN: <strong>7069</strong> (Change in Settings)
       </div>
     </div>
   </div>
 
   <!-- ════════════════════════════════════════════════════════════
-       2. DASHBOARD MAIN APP WRAPPER
+       2. MAIN DASHBOARD
        ════════════════════════════════════════════════════════════ -->
   <div class="admin-wrapper">
     
@@ -82,19 +80,14 @@
       <div class="sidebar-header">
         <div style="display:flex;align-items:center;gap:8px;">
           <span class="sidebar-brand-name">crumbly</span>
-          <span class="sidebar-brand-badge">Admin</span>
+          <span class="sidebar-brand-badge">Ops</span>
         </div>
       </div>
 
       <nav class="sidebar-nav">
         <a class="nav-item is-active" data-tab="dashboard">
           <span class="nav-icon">📊</span>
-          <span class="nav-label">Overview</span>
-        </a>
-        <a class="nav-item" data-tab="orders">
-          <span class="nav-icon">📦</span>
-          <span class="nav-label">Orders &amp; DTC</span>
-          <span class="nav-badge" id="badge-orders">0</span>
+          <span class="nav-label">Executive Overview</span>
         </a>
         <a class="nav-item" data-tab="finance">
           <span class="nav-icon">💰</span>
@@ -102,11 +95,16 @@
         </a>
         <a class="nav-item" data-tab="expenses">
           <span class="nav-icon">💸</span>
-          <span class="nav-label">Expenses Log</span>
+          <span class="nav-label">Expense Tracker</span>
+        </a>
+        <a class="nav-item" data-tab="orders">
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Operations Pipeline</span>
+          <span class="nav-badge" id="badge-orders">0</span>
         </a>
         <a class="nav-item" data-tab="logistics">
           <span class="nav-icon">🚚</span>
-          <span class="nav-label">Logistics &amp; AWB</span>
+          <span class="nav-label">Logistics Command</span>
         </a>
         <a class="nav-item" data-tab="inventory">
           <span class="nav-icon">🏭</span>
@@ -115,7 +113,7 @@
         </a>
         <a class="nav-item" data-tab="crm">
           <span class="nav-icon">👥</span>
-          <span class="nav-label">VIP Leads CRM</span>
+          <span class="nav-label">Waitlist CRM</span>
         </a>
         <a class="nav-item" data-tab="settings">
           <span class="nav-icon">⚙️</span>
@@ -135,10 +133,10 @@
       </div>
     </aside>
 
-    <!-- Main Content Container -->
+    <!-- Main Content -->
     <main class="admin-main">
       
-      <!-- Top Sticky Header -->
+      <!-- Top Header -->
       <header class="admin-header">
         <div class="header-left">
           <button class="menu-toggle-btn" id="menu-toggle-btn">☰</button>
@@ -152,23 +150,23 @@
           <button class="quick-action-btn" id="btn-open-add-order">
             <span>+</span> Manual Order
           </button>
-          <a href="index.html" class="quick-action-btn btn-secondary" title="View live public store" target="_blank">
+          <a href="index.html" class="quick-action-btn btn-secondary" title="View live store" target="_blank">
             Live Store ➔
           </a>
         </div>
       </header>
 
-      <!-- Dynamic Views Container -->
+      <!-- Dynamic Tab Views -->
       <div class="admin-content-view">
         
-        <!-- ══ TAB 1: EXECUTIVE DASHBOARD OVERVIEW ══ -->
+        <!-- ══ TAB 1: EXECUTIVE OVERVIEW ══ -->
         <section class="tab-pane is-active" id="tab-dashboard">
           
-          <!-- Key Metric Cards -->
+          <!-- KPI Cards -->
           <div class="kpi-grid">
             <div class="kpi-card">
               <div class="kpi-header">
-                <span class="kpi-title">Gross Sales</span>
+                <span class="kpi-title">Gross Revenue</span>
                 <span class="kpi-icon">💰</span>
               </div>
               <div class="kpi-value" id="kpi-val-revenue">₹0</div>
@@ -191,7 +189,7 @@
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <span class="kpi-title">Gross Profit</span>
+                <span class="kpi-title">Net Profit</span>
                 <span class="kpi-icon">📈</span>
               </div>
               <div class="kpi-value" id="kpi-val-profit" style="color:var(--admin-green)">₹0</div>
@@ -202,24 +200,23 @@
 
             <div class="kpi-card">
               <div class="kpi-header">
-                <span class="kpi-title">Low Stock Alert</span>
+                <span class="kpi-title">Low Stock Alerts</span>
                 <span class="kpi-icon">⚠️</span>
               </div>
               <div class="kpi-value" id="kpi-val-lowstock" style="color:var(--admin-red)">0</div>
               <div class="kpi-footer">
-                <span style="color:var(--admin-ink-muted)">Raw ingredients to reorder</span>
+                <span style="color:var(--admin-ink-muted)">Raw materials to reorder</span>
               </div>
             </div>
           </div>
 
           <!-- Charts Row -->
           <div class="analytics-grid-2">
-            <!-- 7-Day Revenue vs Expenses Trend -->
             <div class="card-panel">
               <div class="panel-header">
                 <div>
-                  <h3 class="panel-title">Revenue &amp; Cash Flow Trajectory</h3>
-                  <div style="font-size:11.5px;color:var(--admin-ink-muted);margin-top:2px;">7-Day revenue (Gold) vs operating cash outflow (Red)</div>
+                  <h3 class="panel-title">Revenue &amp; Cash Flow</h3>
+                  <div style="font-size:11.5px;color:var(--admin-ink-muted);margin-top:2px;">7-Day revenue (Gold) vs operating expenses (Red)</div>
                 </div>
                 <div style="display:flex;align-items:center;gap:12px;font-size:11px;">
                   <span style="display:flex;align-items:center;gap:4px;color:var(--admin-accent);">● Revenue</span>
@@ -231,7 +228,6 @@
               </div>
             </div>
 
-            <!-- Flavour Share Donut -->
             <div class="card-panel">
               <div class="panel-header">
                 <h3 class="panel-title">Flavour Demand Share</h3>
@@ -248,7 +244,7 @@
             </div>
           </div>
 
-          <!-- Recent Orders Stream -->
+          <!-- Recent Orders -->
           <div class="card-panel">
             <div class="panel-header">
               <h3 class="panel-title">Recent Customer Orders</h3>
@@ -274,46 +270,7 @@
 
         </section>
 
-        <!-- ══ TAB 2: ORDERS & FULFILLMENT MANAGEMENT ══ -->
-        <section class="tab-pane" id="tab-orders">
-          <div class="card-panel">
-            <div class="panel-header">
-              <div>
-                <h3 class="panel-title">DTC Order Fulfillment Pipeline</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Manage order baking, packing, shipping and real-time customer updates</div>
-              </div>
-              
-              <div class="panel-actions">
-                <button class="quick-action-btn btn-secondary is-active" data-order-filter="all">All</button>
-                <button class="quick-action-btn btn-secondary" data-order-filter="in-oven">🔥 In Oven</button>
-                <button class="quick-action-btn btn-secondary" data-order-filter="ready">📦 Ready to Ship</button>
-                <button class="quick-action-btn btn-secondary" data-order-filter="transit">🚚 In Transit</button>
-                <button class="quick-action-btn btn-secondary" data-order-filter="delivered">✅ Delivered</button>
-              </div>
-            </div>
-
-            <div class="table-responsive">
-              <table class="admin-table">
-                <thead>
-                  <tr>
-                    <th>Order &amp; Date</th>
-                    <th>Customer</th>
-                    <th>Delivery Address</th>
-                    <th>Items</th>
-                    <th>Total &amp; Payment</th>
-                    <th>Fulfillment State</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="orders-table-body">
-                  <!-- Rendered dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- ══ TAB 3: FINANCE & REAL-TIME P&L ══ -->
+        <!-- ══ TAB 2: FINANCE & P&L ══ -->
         <section class="tab-pane" id="tab-finance">
           <div class="kpi-grid">
             <div class="kpi-card">
@@ -343,7 +300,7 @@
 
           <div class="card-panel">
             <div class="panel-header">
-              <h3 class="panel-title">Real-Time Profit &amp; Loss (P&amp;L) Breakdown</h3>
+              <h3 class="panel-title">Real-Time P&amp;L Breakdown</h3>
               <button class="quick-action-btn btn-secondary" onclick="window.CRUMBLY_DB.exportToCSV('expenses')">Export Financials CSV</button>
             </div>
             
@@ -389,7 +346,7 @@
                     <td id="fin-marketing-exp">-₹2,100</td>
                   </tr>
                   <tr>
-                    <td><strong>Commercial Kitchen Oven Electricity &amp; Rent</strong></td>
+                    <td><strong>Kitchen Oven Electricity &amp; Rent</strong></td>
                     <td><span class="status-pill status-in-oven">Overhead</span></td>
                     <td style="color:var(--admin-red)">- OPEX</td>
                     <td id="fin-rent-exp">-₹1,500</td>
@@ -400,13 +357,13 @@
           </div>
         </section>
 
-        <!-- ══ TAB 4: EXPENSES LOG ══ -->
+        <!-- ══ TAB 3: EXPENSE TRACKER ══ -->
         <section class="tab-pane" id="tab-expenses">
           <div class="card-panel">
             <div class="panel-header">
               <div>
-                <h3 class="panel-title">Business Operating Expenses Log</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Track ingredients, printing, logistics, and kitchen overheads</div>
+                <h3 class="panel-title">Business Operating Expenses</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Track ingredients, packaging, logistics, marketing, kitchen overheads &amp; staff costs</div>
               </div>
               <button class="quick-action-btn" onclick="document.getElementById('modal-add-expense').classList.add('is-open')">
                 + Log New Expense
@@ -435,16 +392,55 @@
           </div>
         </section>
 
-        <!-- ══ TAB 5: LOGISTICS & AWB TRACKER ══ -->
+        <!-- ══ TAB 4: OPERATIONS PIPELINE ══ -->
+        <section class="tab-pane" id="tab-orders">
+          <div class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">Order Fulfillment Pipeline</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Manage order lifecycle: Received → Baking → QC → Packed → Dispatched → Delivered</div>
+              </div>
+              
+              <div class="panel-actions">
+                <button class="quick-action-btn btn-secondary is-active" data-order-filter="all">All</button>
+                <button class="quick-action-btn btn-secondary" data-order-filter="in-oven">🔥 Baking</button>
+                <button class="quick-action-btn btn-secondary" data-order-filter="ready">📦 Packed</button>
+                <button class="quick-action-btn btn-secondary" data-order-filter="transit">🚚 In Transit</button>
+                <button class="quick-action-btn btn-secondary" data-order-filter="delivered">✅ Delivered</button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order &amp; Date</th>
+                    <th>Customer</th>
+                    <th>Delivery Address</th>
+                    <th>Items</th>
+                    <th>Total &amp; Payment</th>
+                    <th>Fulfillment State</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="orders-table-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══ TAB 5: LOGISTICS COMMAND ══ -->
         <section class="tab-pane" id="tab-logistics">
           <div class="card-panel">
             <div class="panel-header">
               <div>
-                <h3 class="panel-title">Carrier Dispatch &amp; Airway Bill (AWB) Tracking</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Live tracking with BlueDart Air, Delhivery &amp; courier manifests</div>
+                <h3 class="panel-title">Carrier Dispatch &amp; AWB Tracking</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Live tracking with BlueDart Air, Delhivery &amp; courier manifests. RTO monitoring &amp; delivery confirmation.</div>
               </div>
               <button class="quick-action-btn btn-secondary" onclick="alert('Courier Handover Manifest Generated! Ready for BlueDart & Delhivery pickup.')">
-                📄 Print Daily Manifest
+                📄 Print Manifest
               </button>
             </div>
 
@@ -471,14 +467,13 @@
           </div>
         </section>
 
-        <!-- ══ TAB 6: KITCHEN INVENTORY & OPERATIONS ══ -->
+        <!-- ══ TAB 6: KITCHEN INVENTORY ══ -->
         <section class="tab-pane" id="tab-inventory">
-          <!-- Inventory Table -->
           <div class="card-panel" style="margin-bottom:24px;">
             <div class="panel-header">
               <div>
                 <h3 class="panel-title">Raw Material &amp; Packaging Stock</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Real-time stock level monitoring with low-inventory threshold triggers</div>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Real-time stock levels with low-inventory threshold alerts &amp; reorder triggers</div>
               </div>
               <button class="quick-action-btn btn-secondary" onclick="window.CRUMBLY_DB.exportToCSV('inventory')">
                 Export Stock CSV
@@ -506,12 +501,12 @@
             </div>
           </div>
 
-          <!-- Baking Batches Log -->
+          <!-- Baking Batches -->
           <div class="card-panel">
             <div class="panel-header">
               <div>
-                <h3 class="panel-title">Daily Morning Baking Batch Logs</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Quality control, oven yield pass rates and expiry monitoring</div>
+                <h3 class="panel-title">Daily Baking Batch Logs</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Quality control, oven yield rates, expiry monitoring &amp; baker accountability</div>
               </div>
               <button class="quick-action-btn" onclick="
                 const flavour = prompt('Flavour:', 'Double Chocolate');
@@ -544,13 +539,13 @@
           </div>
         </section>
 
-        <!-- ══ TAB 7: VIP LEADS CRM ══ -->
+        <!-- ══ TAB 7: WAITLIST CRM ══ -->
         <section class="tab-pane" id="tab-crm">
           <div class="card-panel">
             <div class="panel-header">
               <div>
-                <h3 class="panel-title">VIP Early Access Drop Waitlist CRM</h3>
-                <div style="font-size:12px;color:var(--admin-ink-muted)">Direct leads from website VIP form for Madagascar Vanilla, Red Velvet &amp; Oats</div>
+                <h3 class="panel-title">Waitlist Early Access CRM</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Leads from website waitlist form for Madagascar Vanilla, Red Velvet &amp; Oats</div>
               </div>
               <button class="quick-action-btn btn-secondary" onclick="window.CRUMBLY_DB.exportToCSV('leads')">
                 Export Leads CSV
@@ -580,11 +575,11 @@
           </div>
         </section>
 
-        <!-- ══ TAB 8: SETTINGS & BACKUP ENGINE ══ -->
+        <!-- ══ TAB 8: SETTINGS & BACKUP ══ -->
         <section class="tab-pane" id="tab-settings">
           <div class="card-panel" style="margin-bottom:24px;max-width:600px;">
             <div class="panel-header">
-              <h3 class="panel-title">Team Security &amp; Access Controls</h3>
+              <h3 class="panel-title">Security &amp; Access Controls</h3>
             </div>
             <form id="form-settings">
               <div class="form-grid">
@@ -594,7 +589,7 @@
                 </div>
                 <div class="form-group-full">
                   <label class="form-label">Low Stock Warning Email</label>
-                  <input type="email" id="set-alert-email" class="form-input" placeholder="admin@crumbly.in">
+                  <input type="email" id="set-alert-email" class="form-input" placeholder="ops@crumbly.in">
                 </div>
                 <div class="form-group-full">
                   <button type="submit" class="quick-action-btn">Save Security Settings</button>
@@ -605,23 +600,23 @@
 
           <div class="card-panel" style="max-width:600px;">
             <div class="panel-header">
-              <h3 class="panel-title">Database Backup, Export &amp; Restore</h3>
+              <h3 class="panel-title">Database Backup &amp; Restore</h3>
             </div>
             <p style="font-size:12.5px;color:var(--admin-ink-muted);margin-bottom:16px;">
-              Backup all your live business orders, expenses, inventory, and customer records into a standalone JSON file.
+              Backup all business data — orders, expenses, inventory, and customer records into a standalone JSON file.
             </p>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="quick-action-btn" id="btn-export-json">💾 Download Full Database Backup (.json)</button>
-              <button class="quick-action-btn btn-secondary" id="btn-import-json">📥 Restore From Backup (.json)</button>
+              <button class="quick-action-btn" id="btn-export-json">💾 Download Full Backup (.json)</button>
+              <button class="quick-action-btn btn-secondary" id="btn-import-json">📥 Restore From Backup</button>
               <input type="file" id="file-import-input" accept=".json" style="display:none;">
             </div>
 
             <div style="margin-top:24px;border-top:1px solid var(--admin-line);padding-top:16px;">
               <strong style="display:block;font-size:12px;margin-bottom:8px;">Export Individual Spreadsheets:</strong>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <button class="quick-action-btn btn-secondary" id="btn-export-orders-csv">Export Orders.csv</button>
-                <button class="quick-action-btn btn-secondary" id="btn-export-expenses-csv">Export Expenses.csv</button>
-                <button class="quick-action-btn btn-secondary" id="btn-export-inventory-csv">Export Inventory.csv</button>
+                <button class="quick-action-btn btn-secondary" id="btn-export-orders-csv">Orders.csv</button>
+                <button class="quick-action-btn btn-secondary" id="btn-export-expenses-csv">Expenses.csv</button>
+                <button class="quick-action-btn btn-secondary" id="btn-export-inventory-csv">Inventory.csv</button>
               </div>
             </div>
           </div>
@@ -632,14 +627,14 @@
   </div>
 
   <!-- ════════════════════════════════════════════════════════════
-       3. MODALS (Add Order, Add Expense, Printable Packing Slip)
+       3. MODALS
        ════════════════════════════════════════════════════════════ -->
 
   <!-- Modal: Add Manual Order -->
   <div class="admin-modal-backdrop" id="modal-add-order">
     <div class="admin-modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Take New Manual Order</h3>
+        <h3 class="modal-title">Create Manual Order</h3>
         <button class="modal-close-btn">&times;</button>
       </div>
       <form id="form-add-order">
@@ -657,7 +652,7 @@
             <input type="email" id="ord-in-email" class="form-input" placeholder="ankit@example.com">
           </div>
           <div class="form-group-full">
-            <label class="form-label">Delivery Street Address &amp; Pincode</label>
+            <label class="form-label">Delivery Address &amp; Pincode</label>
             <input type="text" id="ord-in-address" class="form-input" placeholder="Flat 301, Tower B, Hiranandani Estate, Thane 400607" required>
           </div>
           <div>
@@ -742,7 +737,7 @@
           </div>
           <div class="form-group-full" style="margin-top:10px;">
             <button type="submit" class="quick-action-btn" style="width:100%;padding:12px;font-size:13px;">
-              Record Expense &amp; Deduct P&amp;L ➔
+              Record Expense &amp; Update P&amp;L ➔
             </button>
           </div>
         </div>
@@ -750,7 +745,7 @@
     </div>
   </div>
 
-  <!-- Hidden Container for Printable Packing Slip -->
+  <!-- Hidden Print Slip Container -->
   <div id="print-slip-modal" style="display:none;">
     <div id="slip-print-content"></div>
   </div>

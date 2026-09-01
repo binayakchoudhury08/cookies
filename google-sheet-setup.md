@@ -1,6 +1,6 @@
-# CRUMBLY™ — Google Apps Script Setup (VIP Access & Waitlist)
+# CRUMBLY™ — Google Apps Script Setup (Waitlist Drops)
 
-This Google Apps Script captures VIP early-access signups (including **Name**, **Email**, **Phone**, **Delivery Address**, and **Flavours**) directly into your private Google Sheet in real time.
+This Google Apps Script captures waitlist early-access signups (including **Name**, **Email**, **Phone**, **Delivery Address**, and **Flavours**) directly into your private Google Sheet in real time.
 
 ---
 
@@ -23,7 +23,7 @@ In your Google Sheet: **Extensions → Apps Script**. Paste this code:
 ```javascript
 /**
  * ═════════════════════════════════════════════════════════════════════
- * CRUMBLY™ — VIP ACCESS & DROP WAITLIST GOOGLE APPS SCRIPT
+ * CRUMBLY™ — DROP WAITLIST GOOGLE APPS SCRIPT
  * ═════════════════════════════════════════════════════════════════════
  */
 
@@ -41,7 +41,7 @@ function doPost(e) {
     const phone    = String(p.phone || '').trim();
     const address  = String(p.address || '').trim();
     const flavours = String(p.flavours || '').trim();
-    const type     = String(p.type || 'VIP Access Waitlist').trim();
+    const type     = String(p.type || 'Waitlist').trim();
     const referrer = String(p.referrer || '').trim();
     const ua       = String(p.ua || '').trim();
     

@@ -57,7 +57,7 @@
       <a href="#why" data-nl>Why Mini?</a>
       <a href="#shatter" data-nl>Break Cookie</a>
       <a href="#shop" data-nl>Shop Drops</a>
-      <a href="#vip-access" data-nl>VIP Access</a>
+      <a href="#waitlist" data-nl>Waitlist</a>
     </nav>
 
     <div class="nav__end">
@@ -79,11 +79,7 @@
             aria-hidden="true"></canvas>
           <div class="hero__scrim" aria-hidden="true"></div>
 
-          <div class="sprite-zone" aria-hidden="true">
-            <img draggable="false" class="sprite sprite--a" src="assets/img/cookie-face.webp" alt="" data-layer="26">
-            <img draggable="false" class="sprite sprite--b" src="assets/img/chunks.webp" alt="" data-layer="-18">
-            <img draggable="false" class="sprite sprite--c" src="assets/img/cookie-edge.webp" alt="" data-layer="34">
-          </div>
+
 
           <div class="hero__copy" data-hero-copy>
             <div class="shell">
@@ -203,13 +199,13 @@
               </div>
 
               <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🍦 VIP ACCESS ONLY</span>
+                <span class="flav-card-badge flav-badge-vip">🍦 WAITLIST ONLY</span>
                 <h3 class="flav-card-title">Madagascar Vanilla</h3>
                 <p class="flav-card-desc">
                   Bourbon vanilla caviar &amp; golden butter. Dropping this Friday.
                 </p>
                 <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
+                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
                 </div>
               </div>
             </article>
@@ -221,13 +217,13 @@
               </div>
 
               <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🍓 VIP ACCESS ONLY</span>
+                <span class="flav-card-badge flav-badge-vip">🍓 WAITLIST ONLY</span>
                 <h3 class="flav-card-title">Red Velvet</h3>
                 <p class="flav-card-desc">
                   Cocoa buttermilk dough topped with white chocolate drops.
                 </p>
                 <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
+                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
                 </div>
               </div>
             </article>
@@ -239,13 +235,13 @@
               </div>
 
               <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🌾 VIP ACCESS ONLY</span>
+                <span class="flav-card-badge flav-badge-vip">🌾 WAITLIST ONLY</span>
                 <h3 class="flav-card-title">Oats Cookie</h3>
                 <p class="flav-card-desc">
                   Toasted rolled oats &amp; creamery butter for clean crunch.
                 </p>
                 <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#vip-access" style="width:100%;">Claim VIP Access ➔</a>
+                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
                 </div>
               </div>
             </article>
@@ -432,55 +428,32 @@
             <!-- Floating Tap Guide Icon Prompt -->
             <div class="cookie-tap-prompt" id="cookie-tap-prompt">
               <span class="cookie-tap-icon">👆</span>
-              <span class="cookie-tap-text">Tap to Break!</span>
+              <span class="cookie-tap-text">Tap all 5 dots!</span>
             </div>
 
             <div class="shatter-cookie-container" id="shatter-cookie-container">
-              <!-- Multi-Piece Authentic Cookie Fracture Assembly -->
-              <div class="cookie-assembly" id="cookie-assembly">
-                <!-- Seamless Intact Base (Zero Seams when whole) -->
-                <img class="cookie-base-intact" src="assets/img/cookie-artisan-master.webp" alt="Authentic CRUMBLY Cookie" draggable="false">
+              <!-- Single Cookie Image (old style — swaps on full break) -->
+              <img id="shatter-img" class="shatter-cookie-img" src="assets/img/ck1.webp"
+                alt="Interactive CRUMBLY Cookie" draggable="false">
 
-                <!-- Piece 1: Top-Left Quadrant -->
-                <div class="cookie-piece piece--1" id="cookie-piece-1" data-piece="1">
-                  <img src="assets/img/cookie-artisan-master.webp" alt="Top-Left Cookie Piece" draggable="false">
-                </div>
-                <!-- Piece 2: Top-Right Quadrant -->
-                <div class="cookie-piece piece--2" id="cookie-piece-2" data-piece="2">
-                  <img src="assets/img/cookie-artisan-master.webp" alt="Top-Right Cookie Piece" draggable="false">
-                </div>
-                <!-- Piece 3: Bottom-Left Quadrant -->
-                <div class="cookie-piece piece--3" id="cookie-piece-3" data-piece="3">
-                  <img src="assets/img/cookie-artisan-master.webp" alt="Bottom-Left Cookie Piece" draggable="false">
-                </div>
-                <!-- Piece 4: Bottom-Right Quadrant -->
-                <div class="cookie-piece piece--4" id="cookie-piece-4" data-piece="4">
-                  <img src="assets/img/cookie-artisan-master.webp" alt="Bottom-Right Cookie Piece" draggable="false">
-                </div>
-                <!-- Piece 5: Center Core Piece -->
-                <div class="cookie-piece piece--center" id="cookie-piece-5" data-piece="5">
-                  <img src="assets/img/cookie-artisan-master.webp" alt="Center Cookie Core" draggable="false">
-                </div>
-              </div>
-
-              <!-- 5 Tactile Touch Stress Points with Snap Icons (Disappear completely when tapped) -->
-              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Top-Left Piece">
+              <!-- 5 Tactile Touch Stress Points -->
+              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Point 1">
                 <span class="pin-icon">💥</span>
               </button>
-              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Top-Right Piece">
+              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Point 2">
                 <span class="pin-icon">💥</span>
               </button>
-              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Bottom-Left Piece">
+              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Point 3">
                 <span class="pin-icon">💥</span>
               </button>
-              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Bottom-Right Piece">
+              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Point 4">
                 <span class="pin-icon">💥</span>
               </button>
               <button class="break-pin pin--5" type="button" data-pin="5" aria-label="Break Center Core">
                 <span class="pin-icon">⚡</span>
               </button>
 
-              <!-- Seamless Borderless Pure Brand Reveal -->
+              <!-- Grand Finale Brand Reveal -->
               <div class="finale-reveal" id="finale-reveal">
                 <div class="finale-big-card">
                   <span class="finale-wordmark-huge">crumbly</span>
@@ -648,7 +621,7 @@
           <span class="kicker">Weekly Drop Schedule</span>
           <h3 class="dsp h3">Upcoming Flavour Drops</h3>
           <p class="sub" style="margin:8px auto 0;text-align:center;font-size:14px;">
-            New flavours releasing back-to-back. Join the VIP waitlist for secret 24-hour early access.
+            New flavours releasing back-to-back. Join the waitlist for secret 24-hour early access.
           </p>
         </div>
 
@@ -664,8 +637,8 @@
               <p style="font-size:12px;color:var(--muted);line-height:1.45;">
                 Bourbon vanilla caviar &amp; golden churned butter.
               </p>
-              <div class="shop-drop-price">From ₹449 · VIP Only</div>
-              <a href="#vip-access" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
+              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
+              <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
             </div>
           </div>
 
@@ -680,8 +653,8 @@
               <p style="font-size:12px;color:var(--muted);line-height:1.45;">
                 Cocoa buttermilk dough &amp; white chocolate drops.
               </p>
-              <div class="shop-drop-price">From ₹449 · VIP Only</div>
-              <a href="#vip-access" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
+              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
+              <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
             </div>
           </div>
 
@@ -696,30 +669,30 @@
               <p style="font-size:12px;color:var(--muted);line-height:1.45;">
                 Toasted whole grain oats and pure dairy butter.
               </p>
-              <div class="shop-drop-price">From ₹449 · VIP Only</div>
-              <a href="#vip-access" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
+              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
+              <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ SECTION B: COMPACT VIP ACCESS WAITLIST SECTION (VANILLA, RED VELVET, OATS) ══ -->
-    <section class="vip-sec has-deco" id="vip-access" aria-labelledby="vip-h">
+    <!-- ══ SECTION B: WAITLIST SECTION (VANILLA, RED VELVET, OATS) ══ -->
+    <section class="vip-sec has-deco" id="waitlist" aria-labelledby="vip-h">
       <div class="shell">
         <div class="vip-card rv">
-          <!-- Left: VIP narrative & benefits -->
+          <!-- Left: Waitlist narrative & benefits -->
           <div class="vip-left-info">
             <span class="vip-badge-pill">🍦 Test Kitchen · R&amp;D Early Access</span>
             <h2 class="dsp vip-left-title" id="vip-h">
-              VIP Early Access.<br><span class="serif" style="color:#D5BEA7;">Vanilla, Velvet &amp; Oats.</span>
+              Waitlist Early Access.<br><span class="serif" style="color:#D5BEA7;">Vanilla, Velvet &amp; Oats.</span>
             </h2>
             <p style="font-size:13.5px;color:#D5BEA7;line-height:1.55;">
-              Our master bakers are perfecting upcoming batches. VIP members get first priority access.
+              Our master bakers are perfecting upcoming batches. Waitlist members get first priority access.
             </p>
 
             <div class="vip-perks-box">
-              <strong>🎁 VIP Access Privileges:</strong>
+              <strong>🎁 Waitlist Privileges:</strong>
               <div>• Secret <b>24-Hour Early Drop Link</b></div>
               <div>• Complimentary <b>Mini Taster Pouch</b></div>
               <div>• Guaranteed oven batch priority</div>
@@ -728,7 +701,7 @@
 
           <!-- Right: Compact VIP Waitlist Form -->
           <div class="vip-form-box">
-            <h3 style="font-family:var(--display);font-size:16px;font-weight:800;color:#FFFDF8;">Join The VIP Drop List</h3>
+            <h3 style="font-family:var(--display);font-size:16px;font-weight:800;color:#FFFDF8;">Join The Waitlist</h3>
 
             <div class="vip-flav-select">
               <label class="vip-checkbox-label">
@@ -768,12 +741,12 @@
             <p id="vip-err" style="color:#E85B46;font-size:12px;min-height:14px;margin:0;"></p>
 
             <button class="btn" type="button" id="vip-submit-btn" style="background:#F4E8DC;color:#261408;width:100%;padding:13px 20px;font-size:12px">
-              Claim VIP Access ➔
+              Join Waitlist ➔
             </button>
 
             <!-- Success note -->
             <div id="vip-success-box" style="display:none;background:rgba(16,185,129,0.2);border:1px solid #10B981;border-radius:12px;padding:12px;font-size:12.5px;color:#A7F3D0;text-align:center;">
-              🎉 <strong>You're on the VIP list!</strong> We will WhatsApp &amp; email you the secret link the moment upcoming drops go live!
+              🎉 <strong>You're on the Waitlist!</strong> We will WhatsApp &amp; email you the secret link the moment upcoming drops go live!
             </div>
           </div>
         </div>
@@ -851,7 +824,7 @@
               <h4>Direct Customer Contacts</h4>
               <ul>
                 <li><a href="https://wa.me/917069666910" target="_blank" rel="noopener">WhatsApp Support: +91 7069666910</a></li>
-                <li><a href="#vip-access">VIP Access Drop Waitlist</a></li>
+                <li><a href="#waitlist">Drop Waitlist</a></li>
                 <li><a href="#shop">Shop Double Chocolate</a></li>
               </ul>
 

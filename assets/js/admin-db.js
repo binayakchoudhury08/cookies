@@ -3,7 +3,7 @@
  * CRUMBLY™ — Internal Business Database & State Engine (CRUMBLY_DB)
  * ═════════════════════════════════════════════════════════════════════
  * Handles offline-first persistent storage for Orders, Inventory,
- * Finance, Logistics, Expenses, Baking Batches, and VIP CRM Leads.
+ * Finance, Logistics, Expenses, Baking Batches, and Waitlist CRM Leads.
  */
 
 const CRUMBLY_DB = (() => {
