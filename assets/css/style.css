@@ -1338,41 +1338,36 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 15px 30px rgba(38, 20, 8, 0.25));
-      transition: clip-path 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
-      will-change: transform, opacity, clip-path;
+      filter: drop-shadow(0 16px 32px rgba(38, 20, 8, 0.26));
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
+      will-change: transform, opacity;
       user-select: none;
       pointer-events: none;
     }
 
-    /* Refined Delicate Polygon Clip-Path Fracture States */
+    /* Seamless Photorealistic Fracture Progression (Touches 1 to 5) */
     .shatter-cookie-img.is-broken-1 {
-      clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 15%);
-      transform: rotate(-1.5deg) scale(0.99);
-      filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25));
+      transform: rotate(-2.5deg) scale(0.985);
+      filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25)) brightness(1.01);
     }
     .shatter-cookie-img.is-broken-2 {
-      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 100%, 0% 100%, 0% 15%);
-      transform: rotate(1.5deg) scale(0.98);
-      filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.28));
+      transform: rotate(3deg) scale(0.97);
+      filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.27)) brightness(1.02);
     }
     .shatter-cookie-img.is-broken-3 {
-      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 100%, 15% 100%, 0% 85%, 0% 15%);
-      transform: rotate(-2deg) scale(0.97);
-      filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.3));
+      transform: rotate(-3.5deg) scale(0.95);
+      filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.29)) brightness(1.03);
     }
     .shatter-cookie-img.is-broken-4 {
-      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
-      transform: rotate(2deg) scale(0.96);
-      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.32));
+      transform: rotate(3.5deg) scale(0.93);
+      filter: drop-shadow(0 9px 20px rgba(38, 20, 8, 0.31)) brightness(1.04);
     }
     .shatter-cookie-img.is-broken-5 {
-      clip-path: polygon(18% 0%, 82% 0%, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0% 82%, 0% 18%);
       opacity: 0;
-      transform: scale(0.92) rotate(3deg);
+      transform: scale(1.08) rotate(8deg);
       pointer-events: none;
-      filter: drop-shadow(0 4px 12px rgba(38, 20, 8, 0.2)) blur(1px);
-      transition: clip-path 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, filter 0.45s ease;
+      filter: drop-shadow(0 4px 12px rgba(38, 20, 8, 0.15)) blur(3px);
+      transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease, filter 0.4s ease;
     }
 
     /* Seamless Borderless Brand Reveal */
@@ -1446,19 +1441,25 @@
     .break-pin {
       position: absolute;
       z-index: 25;
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: #FFFFFF;
+      background: rgba(255, 255, 255, 0.96);
       border: 2px solid var(--ink);
       color: transparent;
       font-size: 0;
       display: grid;
       place-items: center;
       cursor: pointer;
-      box-shadow: 0 4px 14px rgba(38, 20, 8, 0.25);
-      transition: transform 0.25s var(--ease), opacity 0.25s var(--ease), visibility 0.25s var(--ease);
+      box-shadow: 0 4px 16px rgba(38, 20, 8, 0.26), 0 0 0 3px rgba(255, 255, 255, 0.4);
+      transition: transform 0.25s var(--ease), opacity 0.25s var(--ease), visibility 0.25s var(--ease), box-shadow 0.25s var(--ease);
       touch-action: manipulation;
+      animation: pinPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes pinPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 4px 16px rgba(38, 20, 8, 0.26), 0 0 0 3px rgba(255, 255, 255, 0.4); }
+      50% { transform: scale(1.07); box-shadow: 0 6px 20px rgba(38, 20, 8, 0.32), 0 0 0 5px rgba(212, 155, 90, 0.35); }
     }
 
     .break-pin::after {
@@ -1471,12 +1472,13 @@
     }
 
     .break-pin:hover {
-      transform: scale(1.25);
+      transform: scale(1.22);
       background: var(--bg);
+      animation: none;
     }
 
     .break-pin:hover::after {
-      transform: scale(1.25);
+      transform: scale(1.2);
       background: var(--accent);
     }
 
