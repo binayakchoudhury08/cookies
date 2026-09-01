@@ -1312,9 +1312,9 @@
     /* Fast Micro Impact Jolt on Snap */
     @keyframes cookieImpactShake {
       0% { transform: scale(1) translate(0, 0); }
-      25% { transform: scale(0.97) translate(-3px, 2px) rotate(-1deg); }
-      50% { transform: scale(1.02) translate(3px, -2px) rotate(1deg); }
-      75% { transform: scale(0.99) translate(-1px, 1px); }
+      25% { transform: scale(0.985) translate(-2px, 1px) rotate(-0.8deg); }
+      50% { transform: scale(1.01) translate(2px, -1px) rotate(0.8deg); }
+      75% { transform: scale(0.995) translate(-1px, 0.5px); }
       100% { transform: scale(1) translate(0, 0); }
     }
 
@@ -1338,89 +1338,41 @@
       width: 100%;
       height: 100%;
       object-fit: contain;
-      filter: drop-shadow(0 18px 36px rgba(38, 20, 8, 0.28));
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease, filter 0.3s ease;
-      will-change: transform, opacity;
+      filter: drop-shadow(0 15px 30px rgba(38, 20, 8, 0.25));
+      transition: clip-path 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
+      will-change: transform, opacity, clip-path;
       user-select: none;
       pointer-events: none;
     }
 
-
-
-    /* Crunch Meter */
-    .crunch-meter-box {
-      background: var(--bg);
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 12px 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-top: 4px;
-    }
-
-    .crunch-meter-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-
-    .crunch-meter-track {
-      width: 100%;
-      height: 8px;
-      background: rgba(38, 20, 8, 0.08);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .crunch-meter-fill {
-      height: 100%;
-      width: 100%;
-      background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
-      border-radius: 99px;
-      transition: width 0.35s var(--ease);
-    }
-
-    .shatter-cookie-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      filter: drop-shadow(0 15px 30px rgba(38, 20, 8, 0.25));
-      transition: clip-path 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, filter 0.35s ease;
-      will-change: transform, opacity, clip-path;
-    }
-
-    /* Authentic Polygon Clip-Path Fracture States (from Aug 30 Day-Before-Yesterday) */
+    /* Refined Delicate Polygon Clip-Path Fracture States */
     .shatter-cookie-img.is-broken-1 {
-      clip-path: polygon(40% 0, 100% 0, 100% 100%, 0 100%, 0 40%);
-      transform: rotate(-2deg) scale(0.98);
+      clip-path: polygon(15% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 15%);
+      transform: rotate(-1.5deg) scale(0.99);
       filter: drop-shadow(0 14px 28px rgba(38, 20, 8, 0.25));
     }
     .shatter-cookie-img.is-broken-2 {
-      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 100%, 0 100%, 0 40%);
-      transform: rotate(2deg) scale(0.96);
+      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 100%, 0% 100%, 0% 15%);
+      transform: rotate(1.5deg) scale(0.98);
       filter: drop-shadow(0 12px 25px rgba(38, 20, 8, 0.28));
     }
     .shatter-cookie-img.is-broken-3 {
-      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 40% 100%, 0 60%, 0 40%);
-      transform: rotate(-3deg) scale(0.93);
+      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 100%, 15% 100%, 0% 85%, 0% 15%);
+      transform: rotate(-2deg) scale(0.97);
       filter: drop-shadow(0 10px 22px rgba(38, 20, 8, 0.3));
     }
     .shatter-cookie-img.is-broken-4 {
-      clip-path: polygon(40% 0, 60% 0, 100% 40%, 100% 60%, 60% 80%, 40% 60%, 0 40%);
-      transform: rotate(4deg) scale(0.9);
-      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.35));
+      clip-path: polygon(15% 0%, 85% 0%, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0% 85%, 0% 15%);
+      transform: rotate(2deg) scale(0.96);
+      filter: drop-shadow(0 8px 18px rgba(38, 20, 8, 0.32));
     }
     .shatter-cookie-img.is-broken-5 {
+      clip-path: polygon(18% 0%, 82% 0%, 100% 18%, 100% 82%, 82% 100%, 18% 100%, 0% 82%, 0% 18%);
       opacity: 0;
-      transform: scale(0.4) rotate(45deg);
+      transform: scale(0.92) rotate(3deg);
       pointer-events: none;
-      filter: blur(4px);
+      filter: drop-shadow(0 4px 12px rgba(38, 20, 8, 0.2)) blur(1px);
+      transition: clip-path 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, filter 0.45s ease;
     }
 
     /* Seamless Borderless Brand Reveal */
@@ -1555,6 +1507,45 @@
       flex-direction: column;
       gap: 14px;
       text-align: left;
+    }
+
+    /* Crunch Meter */
+    .crunch-meter-box {
+      background: var(--bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .crunch-meter-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .crunch-meter-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(38, 20, 8, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .crunch-meter-fill {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #10B981, #F59E0B, #EF4444);
+      border-radius: 99px;
+      transition: width 0.35s var(--ease);
     }
 
     .reset-break-btn {

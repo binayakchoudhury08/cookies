@@ -195,15 +195,15 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       this.x = x;
       this.y = y;
       const angle = Math.random() * Math.PI * 2;
-      const speed = isBig ? (Math.random() * 9 + 5) : (Math.random() * 12 + 3);
+      const speed = isBig ? (Math.random() * 4.5 + 2.5) : (Math.random() * 5 + 2);
       this.vx = Math.cos(angle) * speed;
-      this.vy = Math.sin(angle) * speed - (Math.random() * 4 + 2);
-      this.gravity = 0.38;
-      this.size = isBig ? (Math.random() * 11 + 6) : (Math.random() * 5 + 2);
+      this.vy = Math.sin(angle) * speed - (Math.random() * 2.5 + 1);
+      this.gravity = 0.32;
+      this.size = isBig ? (Math.random() * 3.5 + 2.5) : (Math.random() * 3 + 1.2);
       this.rot = Math.random() * Math.PI;
-      this.rotSpeed = (Math.random() - 0.5) * 0.3;
+      this.rotSpeed = (Math.random() - 0.5) * 0.25;
       this.alpha = 1;
-      this.decay = Math.random() * 0.018 + 0.012;
+      this.decay = Math.random() * 0.02 + 0.015;
       const colors = ['#3B1D0E', '#261408', '#C48847', '#D49B5A', '#E8B878', '#5E3B24'];
       this.color = colors[Math.floor(Math.random() * colors.length)];
       this.isCircle = Math.random() > 0.4;
@@ -236,7 +236,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     }
   }
 
-  function spawnParticles(originX, originY, count = 35, bigBurst = false) {
+  function spawnParticles(originX, originY, count = 20, bigBurst = false) {
     for (let i = 0; i < count; i++) {
       particles.push(new CrumbParticle(originX, originY, bigBurst));
     }
@@ -333,11 +333,11 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   };
 
   const stepsInfo = {
-    1: { pill: '💥 Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '80% Intact', pct: '80%' },
-    2: { pill: '💥 Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '60% Intact', pct: '60%' },
-    3: { pill: '💥 Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Deep fracture across the cookie core! Intense chocolate flavor in every crumb.', integrity: '40% Intact', pct: '40%' },
-    4: { pill: '💥 Step 5 of 5 · Tap Last Point to Shatter!', title: 'Final Structural Break', desc: 'Final touchpoint! Tap the center to completely shatter the cookie and reveal what is inside!', integrity: '20% Intact', pct: '20%' },
-    5: { pill: '✨ CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY — YOU KNOW YOU WANT IT.', integrity: '0% · Shattered', pct: '0%' }
+    1: { pill: '💥 Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '85% Intact', pct: '85%' },
+    2: { pill: '💥 Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '70% Intact', pct: '70%' },
+    3: { pill: '💥 Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Crisp corner snapped! Intense chocolate aroma released from the dairy core.', integrity: '55% Intact', pct: '55%' },
+    4: { pill: '💥 Step 5 of 5 · Tap Center Core to Shatter!', title: 'Delicate Perimeter Break', desc: 'All 4 corners broken! Tap the center to fracture the core and reveal what is inside!', integrity: '40% Intact', pct: '40%' },
+    5: { pill: '✨ CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is gently shattered! Emerging from inside: CRUMBLY — YOU KNOW YOU WANT IT.', integrity: '0% · Shattered', pct: '0%' }
   };
 
   function handlePinClick(pinId, clickX, clickY) {
@@ -383,7 +383,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       burstX = pRect.left - sRect.left + pRect.width / 2;
       burstY = pRect.top - sRect.top + pRect.height / 2;
     }
-    spawnParticles(burstX, burstY, 30, false);
+    spawnParticles(burstX, burstY, 18, false);
 
     // Update cookie frame and fracture state on each click
     if (cookieImg) {
@@ -407,8 +407,8 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     if (count >= 5) {
       isShattered = true;
 
-      // Massive particle burst from center
-      spawnParticles(sRect.width / 2, sRect.height / 2, 90, true);
+      // Fine artisanal crumb burst from center
+      spawnParticles(sRect.width / 2, sRect.height / 2, 40, true);
 
       // Hide all pins completely
       pins.forEach(p => {
