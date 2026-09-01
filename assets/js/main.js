@@ -333,12 +333,54 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   };
 
   const stepsInfo = {
-    1: { pill: '💥 Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '85% Intact', pct: '85%' },
-    2: { pill: '💥 Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '70% Intact', pct: '70%' },
-    3: { pill: '💥 Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Crisp corner snapped! Intense chocolate aroma released from the dairy core.', integrity: '55% Intact', pct: '55%' },
-    4: { pill: '💥 Step 5 of 5 · Tap Center Core to Shatter!', title: 'Delicate Perimeter Break', desc: 'All 4 corners broken! Tap the center to fracture the core and reveal what is inside!', integrity: '40% Intact', pct: '40%' },
+    1: { pill: '💥 Step 2 of 5 · Corner Cut Little!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '85% Intact', pct: '85%' },
+    2: { pill: '💥 Step 3 of 5 · Second Corner Broken!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '70% Intact', pct: '70%' },
+    3: { pill: '💥 Step 4 of 5 · Third Corner Chipped!', title: 'Rich Cocoa Snap', desc: 'Crisp corner snapped! Intense chocolate aroma released from the dairy core.', integrity: '55% Intact', pct: '55%' },
+    4: { pill: '💥 Step 5 of 5 · All 4 Corners Cut Little!', title: 'Tap Center Core to Shatter', desc: 'All 4 corners gently cut! Now tap the center core to shatter and reveal what is inside!', integrity: '40% Intact', pct: '40%' },
     5: { pill: '✨ CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is gently shattered! Emerging from inside: CRUMBLY — YOU KNOW YOU WANT IT.', integrity: '0% · Shattered', pct: '0%' }
   };
+
+  // Dynamic precise small corner cuts based on clicked pins
+  function updateCookieCuts() {
+    const cut1 = clickedPins.has('1'); // Top-Left
+    const cut2 = clickedPins.has('2'); // Top-Right
+    const cut3 = clickedPins.has('3'); // Bottom-Left
+    const cut4 = clickedPins.has('4'); // Bottom-Right
+
+    const points = [];
+
+    // Top-Left Corner (14% subtle organic cut)
+    if (cut1) {
+      points.push('0% 14%', '4% 9%', '9% 4%', '14% 0%');
+    } else {
+      points.push('0% 0%');
+    }
+
+    // Top-Right Corner (14% subtle organic cut)
+    if (cut2) {
+      points.push('86% 0%', '91% 4%', '96% 9%', '100% 14%');
+    } else {
+      points.push('100% 0%');
+    }
+
+    // Bottom-Right Corner (14% subtle organic cut)
+    if (cut4) {
+      points.push('100% 86%', '96% 91%', '91% 96%', '86% 100%');
+    } else {
+      points.push('100% 100%');
+    }
+
+    // Bottom-Left Corner (14% subtle organic cut)
+    if (cut3) {
+      points.push('14% 100%', '9% 96%', '4% 91%', '0% 86%');
+    } else {
+      points.push('0% 100%');
+    }
+
+    if (cookieImg) {
+      cookieImg.style.clipPath = `polygon(${points.join(', ')})`;
+    }
+  }
 
   function handlePinClick(pinId, clickX, clickY) {
     if (isShattered) return;
@@ -385,12 +427,16 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     }
     spawnParticles(burstX, burstY, 18, false);
 
-    // Update cookie frame and fracture state on each click
+    // Update cookie frame and precise small corner cut on each click
     if (cookieImg) {
       if (cookieFrames[count]) {
         cookieImg.src = cookieFrames[count];
       }
-      cookieImg.className = `shatter-cookie-img is-broken-${count}`;
+      updateCookieCuts();
+      const tiltMap = { 1: -2, 2: 2.5, 3: -3, 4: 3, 5: 0 };
+      const rot = tiltMap[count] || 0;
+      const scale = Math.max(0.94, 1 - count * 0.012);
+      cookieImg.style.transform = `rotate(${rot}deg) scale(${scale})`;
     }
 
     // Update step info status and crunch pressure meter
@@ -408,7 +454,13 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       isShattered = true;
 
       // Fine artisanal crumb burst from center
-      spawnParticles(sRect.width / 2, sRect.height / 2, 40, true);
+      spawnParticles(sRect.width / 2, sRect.height / 2, 45, true);
+
+      if (cookieImg) {
+        cookieImg.style.opacity = '0';
+        cookieImg.style.transform = 'scale(0.92) rotate(4deg)';
+        cookieImg.style.filter = 'drop-shadow(0 4px 12px rgba(38, 20, 8, 0.15)) blur(2px)';
+      }
 
       // Hide all pins completely
       pins.forEach(p => {
@@ -447,6 +499,10 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       if (cookieImg) {
         cookieImg.src = 'assets/img/ck1.webp';
         cookieImg.className = 'shatter-cookie-img';
+        cookieImg.style.clipPath = 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)';
+        cookieImg.style.opacity = '';
+        cookieImg.style.transform = 'rotateY(0deg) rotateX(0deg) scale(1)';
+        cookieImg.style.filter = '';
       }
 
       if (cookieContainer) {
