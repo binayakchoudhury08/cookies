@@ -323,11 +323,20 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     });
   }
 
+  // Cookie frame progression matching 10am version
+  const cookieFrames = {
+    1: 'assets/img/ck2.webp',
+    2: 'assets/img/ck3.webp',
+    3: 'assets/img/ck4.webp',
+    4: 'assets/img/ck4.webp',
+    5: 'assets/img/ck4.webp'
+  };
+
   const stepsInfo = {
-    1: { pill: '💥 Step 2 of 5 · 1 stress point cracked!', title: '100% Pure Butter Crust', desc: 'First stress point hit! Keep tapping all dots to build up the fracture pressure.', integrity: '80% Intact', pct: '80%' },
-    2: { pill: '💥 Step 3 of 5 · 2 stress points cracked!', title: 'Handy Coin Geometry', desc: 'Second point cracked! The butter crust is weakening — tap all remaining dots.', integrity: '60% Intact', pct: '60%' },
-    3: { pill: '💥 Step 4 of 5 · 3 stress points cracked!', title: 'Rich Cocoa Snap', desc: 'Deep cracks forming! Almost there — 2 more stress points to fully shatter.', integrity: '40% Intact', pct: '40%' },
-    4: { pill: '💥 Step 5 of 5 · 1 more to shatter!', title: 'Final Structural Break', desc: 'One more tap! Hit the last stress point to shatter the cookie and reveal the brand!', integrity: '20% Intact', pct: '20%' },
+    1: { pill: '💥 Step 2 of 5 · Top-Left Fractured!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '80% Intact', pct: '80%' },
+    2: { pill: '💥 Step 3 of 5 · Top-Right Fractured!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '60% Intact', pct: '60%' },
+    3: { pill: '💥 Step 4 of 5 · Bottom-Left Crumbled!', title: 'Rich Cocoa Snap', desc: 'Deep fracture across the cookie core! Intense chocolate flavor in every crumb.', integrity: '40% Intact', pct: '40%' },
+    4: { pill: '💥 Step 5 of 5 · Tap Last Point to Shatter!', title: 'Final Structural Break', desc: 'Final touchpoint! Tap the center to completely shatter the cookie and reveal what is inside!', integrity: '20% Intact', pct: '20%' },
     5: { pill: '✨ CRUMBLY REVEALED!', title: 'Grand Brand Emblem Revealed!', desc: 'The cookie is completely shattered! Emerging from inside: CRUMBLY — YOU KNOW YOU WANT IT.', integrity: '0% · Shattered', pct: '0%' }
   };
 
@@ -339,29 +348,30 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     clickedPins.add(pinId);
     const count = clickedPins.size;
 
-    // Hide this pin
+    // Hide this pin instantly
     const targetPin = document.querySelector(`.break-pin[data-pin="${pinId}"]`);
     if (targetPin) {
       targetPin.classList.add('is-used');
       targetPin.style.opacity = '0';
       targetPin.style.visibility = 'hidden';
       targetPin.style.pointerEvents = 'none';
+      targetPin.style.transform = 'scale(0)';
     }
 
-    // Hide tap prompt
+    // Hide tap guide prompt
     if (tapPrompt) tapPrompt.classList.add('is-hidden');
 
-    // Impact shake
+    // Impact jolt shake
     if (cookieContainer) {
       cookieContainer.classList.remove('is-impacting');
       void cookieContainer.offsetWidth;
       cookieContainer.classList.add('is-impacting');
     }
 
-    // Play crunch sound
+    // Play synthesized biscuit crunch sound
     playCookieCrunchSound();
 
-    // Spawn small particle burst at click location
+    // Spawn realistic particle burst at click position
     const sRect = stage.getBoundingClientRect();
     let burstX = sRect.width / 2;
     let burstY = sRect.height / 2;
@@ -373,9 +383,17 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       burstX = pRect.left - sRect.left + pRect.width / 2;
       burstY = pRect.top - sRect.top + pRect.height / 2;
     }
-    spawnParticles(burstX, burstY, 25, false);
+    spawnParticles(burstX, burstY, 30, false);
 
-    // Update step info and meter
+    // Update cookie frame and fracture state on each click
+    if (cookieImg) {
+      if (cookieFrames[count]) {
+        cookieImg.src = cookieFrames[count];
+      }
+      cookieImg.className = `shatter-cookie-img is-broken-${count}`;
+    }
+
+    // Update step info status and crunch pressure meter
     if (stepsInfo[count]) {
       const info = stepsInfo[count];
       if (pill) pill.textContent = info.pill;
@@ -385,32 +403,14 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       if (meterFill) meterFill.style.width = info.pct;
     }
 
-    // Cookie image stays as ck1.webp until ALL 5 dots clicked
-    // When all 5 are clicked → shatter the cookie!
+    // When ALL 5 dots have been clicked -> Full Shatter & Reveal Hidden Brand Emblem
     if (count >= 5) {
       isShattered = true;
 
       // Massive particle burst from center
       spawnParticles(sRect.width / 2, sRect.height / 2, 90, true);
 
-      // Swap through break images rapidly then fade out
-      if (cookieImg) {
-        cookieImg.classList.add('is-broken-1');
-        setTimeout(() => {
-          if (cookieImg) { cookieImg.src = cookieImages[1]; cookieImg.classList.remove('is-broken-1'); cookieImg.classList.add('is-broken-2'); }
-        }, 80);
-        setTimeout(() => {
-          if (cookieImg) { cookieImg.src = cookieImages[2]; cookieImg.classList.remove('is-broken-2'); cookieImg.classList.add('is-broken-3'); }
-        }, 160);
-        setTimeout(() => {
-          if (cookieImg) { cookieImg.src = cookieImages[3]; cookieImg.classList.remove('is-broken-3'); cookieImg.classList.add('is-broken-4'); }
-        }, 240);
-        setTimeout(() => {
-          if (cookieImg) { cookieImg.classList.remove('is-broken-4'); cookieImg.classList.add('is-broken-5'); }
-        }, 380);
-      }
-
-      // Hide all remaining pins
+      // Hide all pins completely
       pins.forEach(p => {
         p.classList.add('is-used');
         p.style.opacity = '0';
@@ -421,10 +421,10 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
       if (cookieContainer) cookieContainer.classList.add('is-revealed');
 
-      // Show finale reveal
+      // Reveal hidden brand emblem inside
       setTimeout(() => {
         if (finale) finale.classList.add('is-active');
-      }, 450);
+      }, 300);
     }
   }
 
@@ -438,14 +438,14 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     });
   });
 
-  // Reset button
+  // Reset button to restore fresh unbroken cookie
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       clickedPins.clear();
       isShattered = false;
 
       if (cookieImg) {
-        cookieImg.src = cookieImages[0];
+        cookieImg.src = 'assets/img/ck1.webp';
         cookieImg.className = 'shatter-cookie-img';
       }
 
@@ -461,6 +461,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
         p.style.opacity = '';
         p.style.visibility = '';
         p.style.pointerEvents = '';
+        p.style.transform = '';
       });
 
       if (tapPrompt) tapPrompt.classList.remove('is-hidden');

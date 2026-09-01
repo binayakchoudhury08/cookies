@@ -516,32 +516,6 @@
         linear-gradient(0deg, rgba(24, 13, 4, .95) 0%, rgba(24, 13, 4, .25) 36%, transparent 64%);
     }
 
-    .sprite {
-      position: absolute;
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0.95;
-    }
-
-    .sprite-zone {
-      position: absolute;
-      z-index: 3;
-      pointer-events: none;
-      right: 0;
-      top: 0;
-      width: 46%;
-      height: 75%;
-      overflow: hidden;
-    }
-
-    .sprite--a { width: 96px; right: 12%; top: 16%; }
-    .sprite--b { width: 58px; right: 34%; top: 44%; }
-    .sprite--c { width: 48px; right: 6%; top: 58%; }
-
-    @media (max-width: 1000px) {
-      .sprite-zone { display: none; }
-    }
-
     .hero__copy {
       position: absolute;
       z-index: 4;
