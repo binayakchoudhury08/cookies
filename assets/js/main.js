@@ -582,7 +582,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       if (selectedPackId === 1) {
         savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
       } else if (selectedPackId === 2) {
-        savingsText.innerHTML = `⚡ Most Popular! You save <b>₹${totalSavings}</b> · 40 Fresh Mini Coins inside`;
+        savingsText.innerHTML = `⚡ Most Popular! You save <b>₹${totalSavings}</b> · Double the Freshness`;
       } else {
         savingsText.innerHTML = `👑 Best Value! You save <b>₹${totalSavings}</b> · Includes Free Air Shipping ✈️`;
       }
