@@ -1887,7 +1887,7 @@
       top: 14px;
       left: 14px;
       z-index: 5;
-      background: rgba(38, 20, 8, 0.85);
+      background: rgba(38, 20, 8, 0.88);
       color: #F4E8DC;
       border: 1px solid rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(8px);
@@ -1899,11 +1899,37 @@
       border-radius: 99px;
     }
 
+    .shop-media-tag-bottom {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      right: 14px;
+      z-index: 5;
+      background: rgba(255, 255, 255, 0.94);
+      color: var(--ink);
+      border: 1px solid rgba(38, 20, 8, 0.12);
+      backdrop-filter: blur(10px);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-align: center;
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px -4px rgba(38, 20, 8, 0.15);
+    }
+
     .shop-product-details {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       text-align: left;
+    }
+
+    .shop-status-and-stock {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .shop-live-status {
@@ -1912,14 +1938,13 @@
       gap: 8px;
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: #065F46;
       background: #ECFDF5;
       border: 1px solid #A7F3D0;
       padding: 5px 12px;
       border-radius: 99px;
-      align-self: flex-start;
     }
 
     .shop-live-status-dot {
@@ -1929,6 +1954,29 @@
       background: #10B981;
       box-shadow: 0 0 8px #10B981;
       animation: pulseLive 1.8s infinite;
+    }
+
+    .shop-stock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #92400E;
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      padding: 5px 11px;
+      border-radius: 99px;
+    }
+
+    .shop-fire-icon {
+      font-size: 12px;
+      animation: flameFlicker 1.5s infinite alternate;
+    }
+
+    @keyframes flameFlicker {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.2) rotate(3deg); }
     }
 
     @keyframes pulseLive {
@@ -1945,21 +1993,39 @@
     }
 
     .shop-product-desc {
-      font-size: 14.5px;
+      font-size: 14px;
       color: var(--muted);
-      line-height: 1.6;
+      line-height: 1.55;
     }
 
     /* E-Commerce Pack Selector */
+    .shop-config-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .shop-variant-label {
       font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink);
       display: flex;
       justify-content: space-between;
       align-items: center;
+    }
+
+    .shop-selection-pill {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--line);
+      padding: 3px 9px;
+      border-radius: 99px;
+      letter-spacing: normal;
+      text-transform: none;
     }
 
     .shop-pack-picker {
@@ -1977,41 +2043,88 @@
     .shop-pack-btn {
       position: relative;
       background: var(--bg);
-      border: 1.5px solid var(--line);
+      border: 2px solid var(--line);
       border-radius: 16px;
-      padding: 14px 12px;
+      padding: 13px 12px;
       cursor: pointer;
       text-align: left;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      transition: all 0.22s var(--ease);
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .shop-pack-btn:hover {
-      border-color: var(--ink);
+      border-color: rgba(38, 20, 8, 0.45);
       background: #FFFFFF;
       transform: translateY(-2px);
+      box-shadow: 0 8px 20px -5px rgba(38, 20, 8, 0.08);
     }
 
     .shop-pack-btn.is-active {
       border-color: var(--ink);
+      background: #FFFDF8;
+      box-shadow: 0 10px 26px -6px rgba(38, 20, 8, 0.16), 0 0 0 1px var(--ink);
+      transform: translateY(-2px);
+    }
+
+    .shop-pack-top-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shop-pack-radio {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 1.5px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       background: #FFFFFF;
-      box-shadow: 0 8px 24px -6px rgba(38, 20, 8, 0.2), inset 0 0 0 1.5px var(--ink);
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .shop-radio-inner {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: transparent;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform: scale(0);
+    }
+
+    .shop-pack-btn.is-active .shop-pack-radio {
+      border-color: var(--ink);
+      background: var(--ink);
+    }
+
+    .shop-pack-btn.is-active .shop-radio-inner {
+      background: #FFFFFF;
+      transform: scale(1);
     }
 
     .shop-pack-badge-tag {
       position: absolute;
-      top: -8px;
+      top: -9px;
       right: 8px;
       background: var(--ink);
       color: #FFFDF9;
-      font-size: 8px;
+      font-size: 8.5px;
       font-weight: 800;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
-      padding: 2px 7px;
+      padding: 3px 8px;
       border-radius: 99px;
+      box-shadow: 0 3px 8px rgba(38, 20, 8, 0.25);
+      z-index: 2;
+    }
+
+    .shop-pack-badge-tag.is-gold {
+      background: linear-gradient(135deg, #B45309 0%, #D97706 100%);
+      color: #FFFFFF;
     }
 
     .shop-pack-title {
@@ -2019,35 +2132,95 @@
       font-size: 13.5px;
       font-weight: 800;
       color: var(--ink);
+      line-height: 1.2;
     }
 
     .shop-pack-coins {
       font-size: 11px;
       color: var(--muted);
+      margin-left: 24px;
+    }
+
+    .shop-pack-price-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 2px;
+      padding-top: 6px;
+      border-top: 1px dashed rgba(38, 20, 8, 0.1);
     }
 
     .shop-pack-price {
       font-family: var(--brand-font);
-      font-size: 17px;
+      font-size: 16px;
       font-weight: 700;
       color: var(--ink);
-      margin-top: 4px;
     }
 
     .shop-pack-price strike {
-      font-size: 11.5px;
+      font-size: 11px;
       color: var(--muted-light);
       font-weight: 400;
-      margin-right: 4px;
+      margin-right: 3px;
+    }
+
+    .shop-pack-unit {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #059669;
+    }
+
+    /* Dynamic Savings Callout Banner */
+    .shop-savings-banner {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #FEF3C7 0%, #ECFDF5 100%);
+      border: 1.5px solid #FCD34D;
+      border-radius: 12px;
+      padding: 9px 14px;
+      font-size: 12px;
+      color: #78350F;
+      font-weight: 500;
+      transition: transform 0.2s ease;
+    }
+
+    .shop-savings-banner.pop {
+      animation: savingsPop 0.35s ease;
+    }
+
+    @keyframes savingsPop {
+      0% { transform: scale(0.98); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .shop-savings-icon {
+      font-size: 15px;
+      flex-shrink: 0;
     }
 
     /* Qty & Direct Buy Action */
     .shop-actions-row {
       display: flex;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
-      margin-top: 6px;
+      margin-top: 4px;
       flex-wrap: wrap;
+    }
+
+    .shop-qty-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shop-qty-lbl {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     .shop-qty-box {
@@ -2056,44 +2229,121 @@
       background: var(--bg);
       border: 1.5px solid var(--line);
       border-radius: 99px;
-      padding: 4px;
+      padding: 3px 4px;
     }
 
     .shop-qty-btn {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       border: 0;
       background: #FFFFFF;
       color: var(--ink);
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       cursor: pointer;
       display: grid;
       place-items: center;
-      box-shadow: 0 2px 6px rgba(38, 20, 8, 0.1);
-      transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+      box-shadow: 0 2px 6px rgba(38, 20, 8, 0.08);
+      transition: background 0.2s var(--ease), transform 0.15s ease, opacity 0.2s ease;
     }
 
-    .shop-qty-btn:hover {
+    .shop-qty-btn:hover:not(:disabled) {
       background: var(--ink);
       color: #FFFFFF;
+      transform: scale(1.05);
+    }
+
+    .shop-qty-btn:active:not(:disabled) {
+      transform: scale(0.95);
+    }
+
+    .shop-qty-btn:disabled, .shop-qty-btn.is-disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      box-shadow: none;
     }
 
     .shop-qty-val {
-      min-width: 36px;
+      min-width: 32px;
       text-align: center;
       font-family: var(--brand-font);
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 15px;
+      font-weight: 800;
       color: var(--ink);
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .shop-qty-val.bump {
+      transform: scale(1.3);
     }
 
     .shop-buy-now-btn {
       flex: 1;
       min-width: 220px;
-      padding: 16px 28px;
-      font-size: 13.5px;
+      position: relative;
+      overflow: hidden;
+      padding: 15px 26px;
+      font-size: 14px;
+      font-weight: 800;
+      background: var(--ink);
+      color: #FFFDF9;
+      border-radius: 99px;
+      text-align: center;
+      box-shadow: 0 10px 25px -4px rgba(38, 20, 8, 0.35);
+      transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .shop-buy-now-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -6px rgba(38, 20, 8, 0.45);
+      color: #FFFFFF;
+    }
+
+    .shop-buy-now-btn:active {
+      transform: translateY(1px);
+    }
+
+    .shop-btn-shine {
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+      transform: skewX(-20deg);
+      animation: shopBtnShimmer 3.5s infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shopBtnShimmer {
+      0%, 65% { left: -120%; }
+      100% { left: 160%; }
+    }
+
+    .shop-btn-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Security Badges */
+    .shop-security-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: -4px;
+    }
+
+    .shop-sec-divider {
+      color: var(--line);
     }
 
     .shop-trust-notes {
@@ -2111,6 +2361,10 @@
       display: flex;
       align-items: center;
       gap: 6px;
+    }
+
+    .shop-trust-icon {
+      font-size: 14px;
     }
 
     /* Upcoming Drops Extensible Grid (3 Drops in 1 Row) */

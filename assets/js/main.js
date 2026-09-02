@@ -545,13 +545,20 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   const qtyPlus = document.getElementById('qty-plus-btn');
   const qtyDisplay = document.getElementById('qty-display');
   const checkoutBtn = document.getElementById('direct-checkout-cta');
+  const checkoutText = document.getElementById('direct-checkout-text');
   const summaryText = document.getElementById('pack-selection-summary');
+  const savingsBanner = document.getElementById('shop-savings-banner');
+  const savingsText = document.getElementById('shop-savings-text');
 
   if (!checkoutBtn) return;
 
   function updateCheckoutLink() {
     const packData = CRUMBLY_CONFIG.PACKS[selectedPackId] || CRUMBLY_CONFIG.PACKS[1];
-    const totalPrice = packData.price * quantity;
+    const unitPrice = packData.price;
+    const unitMrp = packData.mrp || (unitPrice + 110);
+    const totalPrice = unitPrice * quantity;
+    const totalMrp = unitMrp * quantity;
+    const totalSavings = totalMrp - totalPrice;
     const variantId = packData.variantId;
 
     // Build 1-click Shopify direct checkout URL
@@ -559,8 +566,42 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     const url = `https://${domain}/cart/${variantId}:${quantity}?checkout`;
 
     checkoutBtn.href = url;
-    checkoutBtn.textContent = `Pre-Order Now • ₹${totalPrice} ➔`;
-    if (summaryText) summaryText.textContent = `${packData.name} (${quantity} unit${quantity > 1 ? 's' : ''})`;
+    const ctaLabel = `Pre-Order Now • ₹${totalPrice} ➔`;
+    if (checkoutText) {
+      checkoutText.textContent = ctaLabel;
+    } else {
+      checkoutBtn.textContent = ctaLabel;
+    }
+
+    if (summaryText) {
+      summaryText.textContent = `${packData.name} (${quantity} unit${quantity > 1 ? 's' : ''})`;
+    }
+
+    // Dynamic savings banner update
+    if (savingsText) {
+      if (selectedPackId === 1) {
+        savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
+      } else if (selectedPackId === 2) {
+        savingsText.innerHTML = `⚡ Most Popular! You save <b>₹${totalSavings}</b> · 40 Fresh Mini Coins inside`;
+      } else {
+        savingsText.innerHTML = `👑 Best Value! You save <b>₹${totalSavings}</b> · Includes Free Air Shipping ✈️`;
+      }
+      if (savingsBanner) {
+        savingsBanner.classList.remove('pop');
+        void savingsBanner.offsetWidth; // Trigger reflow
+        savingsBanner.classList.add('pop');
+      }
+    }
+
+    // Update quantity button disabled state
+    if (qtyMinus) {
+      qtyMinus.disabled = (quantity <= 1);
+      qtyMinus.classList.toggle('is-disabled', quantity <= 1);
+    }
+    if (qtyPlus) {
+      qtyPlus.disabled = (quantity >= 10);
+      qtyPlus.classList.toggle('is-disabled', quantity >= 10);
+    }
   }
 
   checkoutBtn.addEventListener('click', () => {
@@ -588,11 +629,20 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     });
   });
 
+  function bumpQty() {
+    if (qtyDisplay) {
+      qtyDisplay.classList.remove('bump');
+      void qtyDisplay.offsetWidth;
+      qtyDisplay.classList.add('bump');
+    }
+  }
+
   if (qtyMinus && qtyPlus && qtyDisplay) {
     qtyMinus.addEventListener('click', () => {
       if (quantity > 1) {
         quantity--;
         qtyDisplay.textContent = quantity;
+        bumpQty();
         updateCheckoutLink();
       }
     });
@@ -601,6 +651,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       if (quantity < 10) {
         quantity++;
         qtyDisplay.textContent = quantity;
+        bumpQty();
         updateCheckoutLink();
       }
     });

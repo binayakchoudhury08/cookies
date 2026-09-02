@@ -549,84 +549,126 @@
           <!-- Left: Product Media Gallery -->
           <div class="shop-product-media">
             <span class="shop-product-badge">Oven Fresh · Batch #001</span>
+            <div class="shop-media-tag-bottom">🧈 100% Churned Butter · 0% Palm Oil</div>
             <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate Mini Cookies" id="main-product-img">
           </div>
 
           <!-- Right: E-Commerce Product Configuration -->
           <div class="shop-product-details">
-            <div class="shop-live-status">
-              <span class="shop-live-status-dot"></span>
-              <span>Available For Immediate Pre-Order</span>
+            <div class="shop-status-and-stock">
+              <div class="shop-live-status">
+                <span class="shop-live-status-dot"></span>
+                <span>Immediate Pre-Order Active</span>
+              </div>
+              <div class="shop-stock-pill" id="shop-batch-scarcity">
+                <span class="shop-fire-icon">🔥</span>
+                <span>Batch #001: <b>84% Claimed</b></span>
+              </div>
             </div>
 
             <h3 class="shop-product-title">Double Chocolate Mini Coins</h3>
             <p class="shop-product-desc">
-              Rich dark cocoa and pure creamery butter coin cookies. Baked without a single drop of palm oil for an intense, silky cocoa snap.
+              Rich artisanal dark cocoa & 100% pure churned creamery butter. Baked fresh without a single drop of palm oil for an intense cocoa snap.
             </p>
 
-            <!-- Pack Size Selection (Pills) -->
-            <div>
+            <!-- Pack Size Selection (Interactive Radio Cards) -->
+            <div class="shop-config-block">
               <div class="shop-variant-label">
                 <span>Select Pack Size:</span>
-                <span id="pack-selection-summary" style="color:var(--muted)">Single Box (200g)</span>
+                <span id="pack-selection-summary" class="shop-selection-pill">Single Box (200g)</span>
               </div>
 
-              <div class="shop-pack-picker" style="margin-top:8px;">
+              <div class="shop-pack-picker" style="margin-top:10px;">
                 <!-- Pack 1: Single Box -->
-                <button class="shop-pack-btn is-active" type="button" data-pack-id="1" data-variant-id="47857840423061" data-price="449" data-name="Single Box (200g)">
-                  <span class="shop-pack-title">Single Box</span>
-                  <span class="shop-pack-coins">200g</span>
-                  <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
+                <button class="shop-pack-btn is-active" type="button" data-pack-id="1" data-variant-id="47857840423061" data-price="449" data-mrp="559" data-name="Single Box (200g)">
+                  <div class="shop-pack-top-row">
+                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
+                    <span class="shop-pack-title">Single Box</span>
+                  </div>
+                  <span class="shop-pack-coins">200g · 20 Mini Coins</span>
+                  <div class="shop-pack-price-row">
+                    <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
+                    <span class="shop-pack-unit">₹22/coin</span>
+                  </div>
                 </button>
 
                 <!-- Pack 2: Duo Pack -->
-                <button class="shop-pack-btn" type="button" data-pack-id="2" data-variant-id="47857840455829" data-price="759" data-name="Duo Pack (400g)">
-                  <span class="shop-pack-badge-tag">Save 21%</span>
-                  <span class="shop-pack-title">Duo Pack</span>
-                  <span class="shop-pack-coins">400g</span>
-                  <span class="shop-pack-price"><strike>₹959</strike> ₹759</span>
+                <button class="shop-pack-btn is-popular" type="button" data-pack-id="2" data-variant-id="47857840455829" data-price="759" data-mrp="959" data-name="Duo Pack (400g)">
+                  <span class="shop-pack-badge-tag">⚡ Save ₹200</span>
+                  <div class="shop-pack-top-row">
+                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
+                    <span class="shop-pack-title">Duo Pack</span>
+                  </div>
+                  <span class="shop-pack-coins">400g · 40 Mini Coins</span>
+                  <div class="shop-pack-price-row">
+                    <span class="shop-pack-price"><strike>₹959</strike> ₹759</span>
+                    <span class="shop-pack-unit">₹19/coin</span>
+                  </div>
                 </button>
 
                 <!-- Pack 3: Party Trio -->
-                <button class="shop-pack-btn" type="button" data-pack-id="3" data-variant-id="47857840488597" data-price="1099" data-name="Party Trio (600g)">
-                  <span class="shop-pack-badge-tag">Free Air Shipping</span>
-                  <span class="shop-pack-title">Party Trio</span>
-                  <span class="shop-pack-coins">600g</span>
-                  <span class="shop-pack-price"><strike>₹1499</strike> ₹1099</span>
+                <button class="shop-pack-btn is-best-value" type="button" data-pack-id="3" data-variant-id="47857840488597" data-price="1099" data-mrp="1499" data-name="Party Trio (600g)">
+                  <span class="shop-pack-badge-tag is-gold">👑 Free Air Ship</span>
+                  <div class="shop-pack-top-row">
+                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
+                    <span class="shop-pack-title">Party Trio</span>
+                  </div>
+                  <span class="shop-pack-coins">600g · 60 Mini Coins</span>
+                  <div class="shop-pack-price-row">
+                    <span class="shop-pack-price"><strike>₹1499</strike> ₹1099</span>
+                    <span class="shop-pack-unit">₹18/coin</span>
+                  </div>
                 </button>
               </div>
             </div>
 
+            <!-- Dynamic Savings & Reward Callout -->
+            <div class="shop-savings-banner" id="shop-savings-banner">
+              <span class="shop-savings-icon">🎁</span>
+              <span id="shop-savings-text">You save <b>₹110</b> today · Fresh Oven-Baked Dispatch Guarantee!</span>
+            </div>
+
             <!-- Quantity Selector & Direct 1-Click Buy Button -->
             <div class="shop-actions-row">
-              <div class="shop-qty-box">
-                <button class="shop-qty-btn" id="qty-minus-btn" type="button" aria-label="Decrease quantity">−</button>
-                <span class="shop-qty-val" id="qty-display">1</span>
-                <button class="shop-qty-btn" id="qty-plus-btn" type="button" aria-label="Increase quantity">+</button>
+              <div class="shop-qty-wrap">
+                <span class="shop-qty-lbl">Qty:</span>
+                <div class="shop-qty-box">
+                  <button class="shop-qty-btn" id="qty-minus-btn" type="button" aria-label="Decrease quantity" disabled>−</button>
+                  <span class="shop-qty-val" id="qty-display">1</span>
+                  <button class="shop-qty-btn" id="qty-plus-btn" type="button" aria-label="Increase quantity">+</button>
+                </div>
               </div>
 
-              <!-- Direct Checkout URL Button -->
+              <!-- Direct Checkout URL Button with Animated Shimmer -->
               <a href="https://crumblyblr.myshopify.com/cart/47857840423061:1?checkout" class="btn shop-buy-now-btn" id="direct-checkout-cta">
-                Pre-Order Now • ₹449 ➔
+                <span class="shop-btn-shine"></span>
+                <span class="shop-btn-text" id="direct-checkout-text">Pre-Order Now • ₹449 ➔</span>
               </a>
+            </div>
+
+            <!-- Payment Security & Instant Checkout Badges -->
+            <div class="shop-security-badges">
+              <span>🔒 1-Click Shopify Checkout</span>
+              <span class="shop-sec-divider">·</span>
+              <span>⚡ UPI / GPay / PhonePe / Cards</span>
             </div>
 
             <!-- Trust & Shipping Micro-Notes -->
             <div class="shop-trust-notes">
               <div class="shop-trust-note-item">
-                <span>⚡</span>
+                <span class="shop-trust-icon">⚡</span>
                 <span><b>Express Air Dispatch</b> (24–48h Metros)</span>
               </div>
               <div class="shop-trust-note-item">
-                <span>🧈</span>
+                <span class="shop-trust-icon">🧈</span>
                 <span><b>100% Pure Butter</b> · 0% Palm Oil</span>
               </div>
               <div class="shop-trust-note-item">
-                <span>🔒</span>
+                <span class="shop-trust-icon">🔒</span>
                 <span><b>Direct Shopify Checkout</b> (Cards, UPI)</span>
               </div>
               <div class="shop-trust-note-item">
-                <span>🛡️</span>
+                <span class="shop-trust-icon">🛡️</span>
                 <span><b>Nitrogen Sealed</b> Freshness Lock</span>
               </div>
             </div>
