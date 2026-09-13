@@ -62,18 +62,23 @@
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="nav" data-nav>
-    <a class="brand" href="#home" aria-label="CRUMBLY home">
-      <img class="brand__logo-img" src="assets/img/brand-logo-crop.webp" alt="CRUMBLY — You know you want it."
-        width="140" height="34">
-      <span class="brand__text">CRUMBLY</span>
-    </a>
+    <div style="display:flex;align-items:center;">
+      <a class="brand" href="#home" aria-label="CRUMBLY home">
+        <img class="brand__logo-img" src="assets/img/brand-logo-crop.webp" alt="CRUMBLY — You know you want it."
+          width="140" height="34">
+        <span class="brand__text">CRUMBLY</span>
+      </a>
+      <div class="nav__social" style="display:flex; gap:16px; margin-left: 20px; align-items:center;">
+        <a href="https://www.instagram.com/crumbly.blr" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;">Instagram</a>
+        <a href="https://wa.me/917069666910" target="_blank" style="font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;">WhatsApp</a>
+      </div>
+    </div>
 
     <nav class="nav__links" aria-label="Main navigation">
       <a href="#home" data-nl aria-current="true">Home</a>
       <a href="#flavours" data-nl>Flavours</a>
       <a href="#why" data-nl>Why Mini?</a>
-      <a href="#shatter" data-nl>Break Cookie</a>
-      <a href="#shop" data-nl>Shop Drops</a>
+            <a href="#shop" data-nl>Shop Drops</a>
       <a href="#waitlist" data-nl>Waitlist</a>
     </nav>
 
@@ -106,7 +111,7 @@
               </div>
               
               <p class="sub" style="color:#F4E8DC;margin-top:10px">
-                Mini coin-shaped cookies crafted with 100% pure butter and zero palm oil. Double Chocolate, Vanilla, Red Velvet &amp; Oats.
+                Mini coin-shaped cookies crafted with 100% pure butter and zero palm oil. Double Chocolate, Choco Chips, Vanilla &amp; Red Velvet. Perfectly chewy, tasty and guwy.
               </p>
 
               <div class="hero__cta">
@@ -209,7 +214,26 @@
               </div>
             </article>
 
-            <!-- Flavour 2: Madagascar Vanilla (Video Only · VIP Access) -->
+            
+            <!-- Flavour 2: Choco Chips -->
+            <article class="flav-card-slide" data-flav-card="choc-chips">
+              <div class="flav-media-box">
+                <video class="flav-card-video" src="Choco Chips.mp4" playsinline autoplay loop muted preload="auto"></video>
+              </div>
+
+              <div class="flav-card-content">
+                <span class="flav-card-badge flav-badge-live">⚡ Available to Order</span>
+                <h3 class="flav-card-title">Choco Chips</h3>
+                <p class="flav-card-desc">
+                  Classic chewy, tasty and guwy cookies bursting with rich chocolate chips.
+                </p>
+                <div class="flav-card-cta">
+                  <a class="btn btn--sm" href="#shop" style="width:100%;">Order Choco Chips ➔</a>
+                </div>
+              </div>
+            </article>
+
+            <!-- Flavour 3: Madagascar Vanilla (Video Only · VIP Access) -->
             <article class="flav-card-slide" data-flav-card="van">
               <div class="flav-media-box">
                 <video class="flav-card-video" src="Vanilla.mp4" playsinline autoplay loop muted preload="auto"></video>
@@ -245,23 +269,7 @@
               </div>
             </article>
 
-            <!-- Flavour 4: Oats Cookie (Video Only · VIP Access) -->
-            <article class="flav-card-slide" data-flav-card="oats">
-              <div class="flav-media-box">
-                <video class="flav-card-video" src="oats.mp4" playsinline autoplay loop muted preload="auto"></video>
-              </div>
-
-              <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🌾 WAITLIST ONLY</span>
-                <h3 class="flav-card-title">Oats Cookie</h3>
-                <p class="flav-card-desc">
-                  Toasted rolled oats &amp; creamery butter for clean crunch.
-                </p>
-                <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
-                </div>
-              </div>
-            </article>
+            
           </div>
         </div>
 
@@ -298,10 +306,6 @@
                 <!-- Slide 3: Red Velvet -->
                 <div class="carousel-slide">
                   <img src="assets/img/slide-red-velvet.webp" alt="CRUMBLY Red Velvet" class="carousel-img">
-                </div>
-                <!-- Slide 4: Oats Cookie -->
-                <div class="carousel-slide">
-                  <img src="assets/img/slide-oats.webp" alt="CRUMBLY Oats Cookie" class="carousel-img">
                 </div>
                 <!-- Slide 5: Trio Flavours Overview -->
                 <div class="carousel-slide">
@@ -424,112 +428,7 @@
       </div>
     </section>
 
-    <div class="crumbrule" aria-hidden="true"></div>
-
-    <!-- ══ BREAK COOKIE — ADVANCED PHYSICS CRUMBLE & BRAND REVEAL ══ -->
-    <section class="sec has-deco" id="shatter" aria-labelledby="shatter-h">
-      <div class="shell">
-        <div class="sec__head rv">
-          <span class="kicker">Sensory Haptic Experience</span>
-          <h2 class="dsp h2" id="shatter-h">Break the cookie.<br><span class="serif">Tactile physics &amp; brand reveal.</span></h2>
-          <p class="sub" style="margin:10px auto 0;text-align:center;max-width:54ch">
-            Interact with the authentic artisanal CRUMBLY coin cookie. Tap the stress points to break through the butter crust.
-          </p>
-        </div>
-
-        <div class="shatter-card rv">
-          <div class="shatter-stage" id="shatter-stage">
-            <!-- Dynamic Real-Time Crumb Physics Canvas -->
-            <canvas id="crumb-physics-canvas" class="crumb-canvas"></canvas>
-
-            <!-- Floating Tap Guide Icon Prompt -->
-            <div class="cookie-tap-prompt" id="cookie-tap-prompt">
-              <span class="cookie-tap-icon">👆</span>
-              <span class="cookie-tap-text">Tap all 5 dots!</span>
-            </div>
-
-            <div class="shatter-cookie-container" id="shatter-cookie-container">
-              <!-- Single Cookie Image (old style — swaps on full break) -->
-              <img id="shatter-img" class="shatter-cookie-img" src="assets/img/ck1.webp"
-                alt="Interactive CRUMBLY Cookie" draggable="false">
-
-              <!-- 5 Tactile Touch Stress Points -->
-              <button class="break-pin pin--1" type="button" data-pin="1" aria-label="Break Point 1">
-                <span class="pin-icon">💥</span>
-              </button>
-              <button class="break-pin pin--2" type="button" data-pin="2" aria-label="Break Point 2">
-                <span class="pin-icon">💥</span>
-              </button>
-              <button class="break-pin pin--3" type="button" data-pin="3" aria-label="Break Point 3">
-                <span class="pin-icon">💥</span>
-              </button>
-              <button class="break-pin pin--4" type="button" data-pin="4" aria-label="Break Point 4">
-                <span class="pin-icon">💥</span>
-              </button>
-              <button class="break-pin pin--5" type="button" data-pin="5" aria-label="Break Center Core">
-                <span class="pin-icon">⚡</span>
-              </button>
-
-              <!-- Grand Finale Brand Reveal -->
-              <div class="finale-reveal" id="finale-reveal">
-                <div class="finale-big-card">
-                  <span class="finale-wordmark-huge">crumbly</span>
-                  <span class="finale-tagline-big">YOU KNOW YOU WANT IT.</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="shatter-info">
-            <span class="kicker" id="break-status-pill">💥 Step 1 of 5 · Tap stress points to break</span>
-            <h3 class="dsp h3" id="break-title">Tap points to break cookie</h3>
-            <p class="sub" id="break-desc" style="font-size:13.5px;line-height:1.5;">
-              Experience the 100% pure dairy butter snap. Follow the touch icons to trigger real-time particle fractures.
-            </p>
-
-            <!-- 3-Step Visual Icon Guide -->
-            <div class="break-icon-guide">
-              <div class="break-guide-item">
-                <span class="break-guide-icon">👆</span>
-                <div class="break-guide-text">
-                  <strong>1. Tap Points</strong>
-                  <span>Touch corners to fracture</span>
-                </div>
-              </div>
-              <div class="break-guide-item">
-                <span class="break-guide-icon">💥</span>
-                <div class="break-guide-text">
-                  <strong>2. Crumb Burst</strong>
-                  <span>Feel the real butter snap</span>
-                </div>
-              </div>
-              <div class="break-guide-item">
-                <span class="break-guide-icon">✨</span>
-                <div class="break-guide-text">
-                  <strong>3. Reveal Emblem</strong>
-                  <span>Snap center to unveil</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Tactile Crunch Pressure Meter -->
-            <div class="crunch-meter-box">
-              <div class="crunch-meter-header">
-                <span>🍪 Cookie Integrity</span>
-                <span id="crunch-meter-val">100% Intact</span>
-              </div>
-              <div class="crunch-meter-track">
-                <div class="crunch-meter-fill" id="crunch-meter-fill"></div>
-              </div>
-            </div>
-
-            <button class="btn btn--ghost btn--sm reset-break-btn" id="reset-break-btn" type="button">
-              <span>🔄 Reset Fresh Cookie</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+    
 
     <div class="crumbrule" aria-hidden="true"></div>
 
@@ -574,46 +473,32 @@
             <!-- Pack Size Selection (Interactive Radio Cards) -->
             <div class="shop-config-block">
               <div class="shop-variant-label">
-                <span>Select Pack Size:</span>
-                <span id="pack-selection-summary" class="shop-selection-pill">Single Box (200g)</span>
+                <span>Select Flavour:</span>
+                <span id="pack-selection-summary" class="shop-selection-pill">Double Chocolate (180g)</span>
               </div>
 
               <div class="shop-pack-picker" style="margin-top:10px;">
-                <!-- Pack 1: Single Box -->
-                <button class="shop-pack-btn is-active" type="button" data-pack-id="1" data-variant-id="47857840423061" data-price="449" data-mrp="559" data-name="Single Box (200g)">
+                <!-- Flavour 1: Double Chocolate -->
+                <button class="shop-pack-btn is-active" type="button" data-pack-id="1" data-variant-id="47857840423061" data-price="449" data-mrp="559" data-name="Double Chocolate (180g)">
                   <div class="shop-pack-top-row">
                     <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
-                    <span class="shop-pack-title">Single Box</span>
+                    <span class="shop-pack-title">Double Chocolate</span>
                   </div>
-                  <span class="shop-pack-coins">200g Box</span>
+                  <span class="shop-pack-coins">180g Box</span>
                   <div class="shop-pack-price-row">
                     <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
                   </div>
                 </button>
 
-                <!-- Pack 2: Duo Pack -->
-                <button class="shop-pack-btn is-popular" type="button" data-pack-id="2" data-variant-id="47857840455829" data-price="759" data-mrp="959" data-name="Duo Pack (400g)">
-                  <span class="shop-pack-badge-tag">⚡ Save ₹200</span>
+                <!-- Flavour 2: Choco Chips -->
+                <button class="shop-pack-btn" type="button" data-pack-id="2" data-variant-id="0000000000000" data-price="449" data-mrp="559" data-name="Choco Chips (180g)">
                   <div class="shop-pack-top-row">
                     <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
-                    <span class="shop-pack-title">Duo Pack</span>
+                    <span class="shop-pack-title">Choco Chips</span>
                   </div>
-                  <span class="shop-pack-coins">400g (2x 200g)</span>
+                  <span class="shop-pack-coins">180g Box</span>
                   <div class="shop-pack-price-row">
-                    <span class="shop-pack-price"><strike>₹959</strike> ₹759</span>
-                  </div>
-                </button>
-
-                <!-- Pack 3: Party Trio -->
-                <button class="shop-pack-btn is-best-value" type="button" data-pack-id="3" data-variant-id="47857840488597" data-price="1099" data-mrp="1499" data-name="Party Trio (600g)">
-                  <span class="shop-pack-badge-tag is-gold">👑 Free Air Ship</span>
-                  <div class="shop-pack-top-row">
-                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
-                    <span class="shop-pack-title">Party Trio</span>
-                  </div>
-                  <span class="shop-pack-coins">600g (3x 200g)</span>
-                  <div class="shop-pack-price-row">
-                    <span class="shop-pack-price"><strike>₹1499</strike> ₹1099</span>
+                    <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
                   </div>
                 </button>
               </div>
@@ -637,9 +522,9 @@
               </div>
 
               <!-- Direct Checkout URL Button with Animated Shimmer -->
-              <a href="https://crumblyblr.myshopify.com/cart/47857840423061:1?checkout" class="btn shop-buy-now-btn" id="direct-checkout-cta">
+              <a href="https://crumblyblr.myshopify.com/cart/47857840423061:1" class="btn shop-buy-now-btn" id="direct-checkout-cta">
                 <span class="shop-btn-shine"></span>
-                <span class="shop-btn-text" id="direct-checkout-text">Pre-Order Now • ₹449 ➔</span>
+                <span class="shop-btn-text" id="direct-checkout-text">Add to Cart • ₹449 ➔</span>
               </a>
             </div>
 
@@ -714,22 +599,7 @@
             </div>
           </div>
 
-          <!-- Drop 04: Wholesome Oats Cookie -->
-          <div class="shop-drop-card rv">
-            <div class="shop-drop-thumb">
-              <img src="assets/img/slide-oats.webp" alt="CRUMBLY Wholesome Oats Cookie">
-            </div>
-            <div class="shop-drop-info">
-              <span class="shop-drop-tag">🌾 Drop 04 · Wholesome Craft</span>
-              <h4 class="shop-drop-title">Oats Cookie</h4>
-              <p style="font-size:12px;color:var(--muted);line-height:1.45;">
-                Toasted whole grain oats and pure dairy butter.
-              </p>
-              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
-              <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
-            </div>
           </div>
-        </div>
       </div>
     </section>
 
@@ -768,10 +638,7 @@
                 <input type="checkbox" id="vip-check-redvelvet" checked>
                 <span>🍓 Red Velvet</span>
               </label>
-              <label class="vip-checkbox-label">
-                <input type="checkbox" id="vip-check-oats" checked>
-                <span>🌾 Wholesome Oats</span>
-              </label>
+              
             </div>
 
             <div>
@@ -808,26 +675,6 @@
         </div>
       </div>
     </section>
-
-    <!-- ══ FLOATING SOCIAL & SUPPORT CONCIERGE (INSTAGRAM & WHATSAPP) ══ -->
-    <div class="floating-concierge-cluster" aria-label="Social and Help Concierge">
-      <!-- Instagram Circular Button -->
-      <a href="https://www.instagram.com/crumbly.blr"
-        class="insta-concierge-btn" target="_blank" rel="noopener" aria-label="Follow CRUMBLY on Instagram @crumbly.blr" title="Instagram: @crumbly.blr">
-        <svg class="insta-concierge-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-        </svg>
-      </a>
-
-      <!-- WhatsApp Circular Button -->
-      <a href="https://wa.me/917069666910?text=Hi%20CRUMBLY%2C%20I%20want%20to%20order%20fresh%20mini%20cookies%21"
-        class="wa-concierge-btn" target="_blank" rel="noopener" aria-label="Chat with CRUMBLY on WhatsApp" title="WhatsApp: +91 7069666910">
-        <svg class="wa-concierge-icon" viewBox="0 0 24 24">
-          <path
-            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-        </svg>
-      </a>
-    </div>
 
     <!-- ══ HIGH-END BRAND GRAND FINALE FOOTER ════════════════ -->
     <div class="foot-wrap has-deco">
@@ -881,8 +728,7 @@
                 <li><a href="#home">Home Experience</a></li>
                 <li><a href="#flavours">4 Artisanal Flavours</a></li>
                 <li><a href="#why">Why Mini? (5 Posters)</a></li>
-                <li><a href="#shatter">Break the Cookie</a></li>
-                <li><a href="#shop">Shop Fresh Drops</a></li>
+                                <li><a href="#shop">Shop Fresh Drops</a></li>
               </ul>
             </div>
 
