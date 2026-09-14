@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Add Supplier — CRUMBLY Ops</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <script src="assets/js/admin-db.js" defer></script>
+  <script src="assets/js/add-supplier.js" defer></script>
+</head>
+<body class="admin-body">
+
+  <div class="admin-wrapper" style="display:flex; justify-content:center; padding: 40px 20px;">
+    <main class="card-panel" style="width: 100%; max-width: 600px; margin: 0;">
+      
+      <div class="panel-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <a href="admin.html#settings" class="quick-action-btn btn-secondary" style="text-decoration:none; display:inline-block; margin-bottom:12px;">← Back to Dashboard</a>
+        <h3 class="panel-title">Add New Supplier</h3>
+        <p style="font-size:12px;color:var(--admin-ink-muted);">Enter details for a new ingredients or packaging vendor.</p>
+      </div>
+
+      <form id="form-add-supplier" style="margin-top:24px;">
+        <div class="form-grid">
+          
+          <div class="form-group-full">
+            <label class="form-label">Supplier Name / Company</label>
+            <input type="text" id="sup-name" class="form-input" placeholder="e.g. Acme Print Co." required>
+          </div>
+
+          <div class="form-group-full">
+            <label class="form-label">What do they supply?</label>
+            <input type="text" id="sup-supplies" class="form-input" placeholder="e.g. Custom Rigid Boxes, Stickers" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contact Phone</label>
+            <input type="tel" id="sup-phone" class="form-input" placeholder="+91 88888 00000" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contact Email</label>
+            <input type="email" id="sup-email" class="form-input" placeholder="sales@vendor.com">
+          </div>
+          
+          <div class="form-group-full" style="margin-top:16px;">
+            <button type="submit" class="quick-action-btn" style="width:100%; justify-content:center; padding:12px;">Add Supplier</button>
+          </div>
+        </div>
+      </form>
+
+    </main>
+  </div>
+
+</body>
+</html>

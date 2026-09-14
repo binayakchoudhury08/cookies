@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CRUMBLY™ — Add Manual Order</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <script src="assets/js/admin-db.js" defer></script>
+  <script src="assets/js/add-order.js" defer></script>
+</head>
+
+<body class="admin-body">
+
+  <div class="admin-wrapper" style="flex-direction: column;">
+    
+    <!-- Top Header & Navigation -->
+    <header class="admin-top-header">
+      <div class="top-header-main" style="border-bottom: none;">
+        <div class="header-brand" style="display:flex;align-items:center;gap:8px;">
+          <span class="sidebar-brand-name">crumbly</span>
+          <span class="sidebar-brand-badge">Ops</span>
+        </div>
+
+        <div class="header-actions" style="display:flex;align-items:center;gap:12px;">
+          <a href="admin.html#orders" class="quick-action-btn btn-secondary" style="text-decoration:none;">
+            ← Back to Dashboard
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main" style="min-height: auto; padding: 40px 20px; align-items: center;">
+      <div class="card-panel" style="width: 100%; max-width: 640px;">
+        <div class="panel-header" style="border-bottom: 1px solid var(--admin-line); padding-bottom: 16px; margin-bottom: 20px;">
+          <h3 class="panel-title" style="font-size: 20px;">Create Manual Order</h3>
+          <div style="font-size:12px;color:var(--admin-ink-muted)">Enter details to create an order and generate an AWB.</div>
+        </div>
+
+        <form id="form-add-order">
+          <div class="form-grid">
+            <div>
+              <label class="form-label">Customer Name</label>
+              <input type="text" id="ord-in-name" class="form-input" placeholder="Ankit Sharma" required>
+            </div>
+            <div>
+              <label class="form-label">WhatsApp Number</label>
+              <input type="tel" id="ord-in-phone" class="form-input" placeholder="+91 98765 43210" required>
+            </div>
+            <div class="form-group-full">
+              <label class="form-label">Email Address</label>
+              <input type="email" id="ord-in-email" class="form-input" placeholder="ankit@example.com">
+            </div>
+            <div class="form-group-full">
+              <label class="form-label">Delivery Address &amp; Pincode</label>
+              <input type="text" id="ord-in-address" class="form-input"
+                placeholder="Flat 301, Tower B, Hiranandani Estate, Thane 400607" required>
+            </div>
+            <div>
+              <label class="form-label">City</label>
+              <input type="text" id="ord-in-city" class="form-input" placeholder="Mumbai" required>
+            </div>
+            <div>
+              <label class="form-label">Courier Partner</label>
+              <select id="ord-in-carrier" class="form-select">
+                <option value="BlueDart Air">BlueDart Air</option>
+                <option value="Delhivery Air">Delhivery Air</option>
+                <option value="DTDC Express">DTDC Express</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Pack Selection</label>
+              <select id="ord-in-pack" class="form-select">
+                <option value="Single Box (200g)">Single Box (200g) - ₹449</option>
+                <option value="Duo Pack (400g)">Duo Pack (400g) - ₹759</option>
+                <option value="Party Trio (600g)">Party Trio (600g) - ₹1,099</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Quantity</label>
+              <input type="number" id="ord-in-qty" class="form-input" value="1" min="1" max="50">
+            </div>
+            <div class="form-group-full" style="margin-top:20px;">
+              <button type="submit" class="quick-action-btn" style="width:100%;padding:14px;font-size:14px;">
+                Create Order &amp; Generate AWB ➔
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </main>
+
+  </div>
+
+</body>
+</html>

@@ -825,8 +825,201 @@
     </button>
   </div>
 
+  <!-- B2B & Revenue Tracker Modal -->
+  <link rel="stylesheet" href="assets/css/b2b-modal.css">
+  
+  <div id="b2b-tracker-modal" class="b2b-modal-backdrop">
+    
+    <!-- PIN Overlay -->
+    <div id="b2b-pin-overlay" style="position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.95); z-index: 999; display: flex; align-items: center; justify-content: center; flex-direction: column; color: white;">
+      <h2 style="margin-bottom: 24px; font-family: 'Outfit', sans-serif;">Enter PIN to Access</h2>
+      <input type="password" id="b2b-pin-input" style="padding: 12px; font-size: 24px; text-align: center; border-radius: 8px; border: none; outline: none; width: 200px; letter-spacing: 10px;" maxlength="4">
+      <button id="b2b-pin-btn" class="b2b-btn-submit" style="margin-top: 16px; width: 200px;">Unlock</button>
+      <p id="b2b-pin-error" style="color: #ff4444; margin-top: 12px; display: none;">Incorrect PIN</p>
+    </div>
+
+    <div class="b2b-modal-content">
+      <div class="b2b-header">
+        <h2 class="b2b-title">Business Revenue & B2B Tracker</h2>
+        <button class="b2b-close" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="b2b-tabs">
+        <button class="b2b-tab is-active" data-target="b2b-pane-dash">Dashboard</button>
+        <button class="b2b-tab" data-target="b2b-pane-b2c">B2C POS</button>
+        <button class="b2b-tab" data-target="b2b-pane-b2b">B2B POS</button>
+        <button class="b2b-tab" data-target="b2b-pane-sup">Suppliers</button>
+      </div>
+
+      <div class="b2b-content">
+        <!-- Dashboard Pane -->
+        <div id="b2b-pane-dash" class="b2b-tab-pane is-active">
+          <div class="b2b-filter-row">
+            <span class="b2b-filter-label">Filter Date:</span>
+            <input type="date" class="b2b-date-input">
+            <button class="b2b-btn-clear">Clear</button>
+          </div>
+          
+          <div class="b2b-kpi-grid">
+            <div class="b2b-kpi-card" style="grid-column: span 3; display: flex; flex-direction: column; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                  <span class="b2b-kpi-title">TOTAL REVENUE (₹10 LAKH GOAL)</span>
+                  <span class="b2b-kpi-val" id="b2b-val-total">₹0</span>
+                </div>
+                <span style="font-size: 14px; font-weight: 600; color: #888;" id="b2b-target-pct">0%</span>
+              </div>
+              <div class="b2b-progress-bar-bg">
+                <div class="b2b-progress-bar-fill" id="b2b-target-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+            <div class="b2b-kpi-card">
+              <span class="b2b-kpi-title">B2B REVENUE</span>
+              <span class="b2b-kpi-val" id="b2b-val-b2b">₹0</span>
+            </div>
+            <div class="b2b-kpi-card">
+              <span class="b2b-kpi-title">B2C REVENUE</span>
+              <span class="b2b-kpi-val" id="b2b-val-b2c">₹0</span>
+            </div>
+          </div>
+
+          <h3 class="b2b-section-title">Transaction Ledger</h3>
+          <div class="b2b-table-wrap">
+            <table class="b2b-table" id="b2b-ledger-table">
+              <thead>
+                <tr>
+                  <th>DATE</th>
+                  <th>TYPE</th>
+                  <th>FLAVOUR</th>
+                  <th>QTY</th>
+                  <th>TOTAL (₹)</th>
+                  <th>ADVANCE (₹)</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="b2b-ledger-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- B2C POS Pane -->
+        <div id="b2b-pane-b2c" class="b2b-tab-pane">
+          <h3 class="b2b-section-title">Record Direct B2C Sale</h3>
+          <form id="form-b2c" class="b2b-form">
+            <input type="hidden" id="b2c-id" value="">
+            <div class="b2b-form-group">
+              <label>Flavour/Item</label>
+              <select id="b2c-flavour" required>
+                <!-- Populated by JS from Flavours -->
+              </select>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="b2b-form-group">
+                <label>Quantity (Boxes)</label>
+                <input type="number" id="b2c-qty" required min="1" value="1">
+              </div>
+              <div class="b2b-form-group">
+                <label>Cost per Box (₹)</label>
+                <input type="number" id="b2c-unit-cost" required min="0">
+              </div>
+            </div>
+            <div class="b2b-form-group">
+              <label>Total Price (₹) <span style="font-size: 11px; color:#888;">(Auto-calculated)</span></label>
+              <input type="number" id="b2c-price" readonly style="background: #EFEFEF;">
+            </div>
+            <div class="b2b-form-group">
+              <label>Advance Received (₹)</label>
+              <input type="number" id="b2c-advance" value="0" min="0">
+            </div>
+            <button type="submit" class="b2b-btn-submit">Save B2C Order</button>
+          </form>
+        </div>
+
+        <!-- B2B POS Pane -->
+        <div id="b2b-pane-b2b" class="b2b-tab-pane">
+          <h3 class="b2b-section-title">Record Bulk/B2B Order</h3>
+          <form id="form-b2b" class="b2b-form">
+            <input type="hidden" id="b2b-id" value="">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+              <div class="b2b-form-group">
+                <label>Client Name</label>
+                <select id="b2b-client" required>
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+              <div class="b2b-form-group">
+                <label>Flavour/Item</label>
+                <select id="b2b-flavour" required>
+                  <!-- Populated by JS -->
+                </select>
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+              <div class="b2b-form-group">
+                <label>Unit</label>
+                <select id="b2b-unit" required>
+                  <option value="KG">KG</option>
+                  <option value="Boxes">Boxes</option>
+                </select>
+              </div>
+              <div class="b2b-form-group">
+                <label>Quantity</label>
+                <input type="number" id="b2b-kg" required min="0.1" step="0.1" value="1">
+              </div>
+              <div class="b2b-form-group">
+                <label>Agreed Cost / Unit (₹)</label>
+                <input type="number" id="b2b-unit-cost" required min="0">
+              </div>
+            </div>
+            <div class="b2b-form-group">
+              <label>Total Cost (₹) <span style="font-size: 11px; color:#888;">(Auto-calculated)</span></label>
+              <input type="number" id="b2b-cost" readonly style="background: #EFEFEF;">
+            </div>
+            <div class="b2b-form-group">
+              <label>Advance Received (₹)</label>
+              <input type="number" id="b2b-advance" value="0" min="0">
+            </div>
+            <button type="submit" class="b2b-btn-submit">Save B2B Order</button>
+          </form>
+        </div>
+
+        <!-- Settings Pane -->
+        <div id="b2b-pane-settings" class="b2b-tab-pane">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+            <div>
+              <h3 class="b2b-section-title">Manage B2B Clients</h3>
+              <form id="form-client" class="b2b-form" style="max-width: 100%;">
+                <div class="b2b-form-group">
+                  <label>Client Name</label>
+                  <input type="text" id="set-client-name" required placeholder="e.g. Cafe Mocha">
+                </div>
+                <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Client</button>
+              </form>
+              <ul id="client-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
+            </div>
+            <div>
+              <h3 class="b2b-section-title">Manage Flavours</h3>
+              <form id="form-flavour" class="b2b-form" style="max-width: 100%;">
+                <div class="b2b-form-group">
+                  <label>Flavour / Item Name</label>
+                  <input type="text" id="set-flavour-name" required placeholder="e.g. Double Chocolate">
+                </div>
+                <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Flavour</button>
+              </form>
+              <ul id="flavour-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <audio data-audio loop preload="none" src="assets/cookie-theme.mp3"></audio>
 
+  <script src="assets/js/admin-db.js"></script>
+  <script src="assets/js/b2b-modal.js" defer></script>
   <script src="assets/js/main.js" defer></script>
 </body>
 

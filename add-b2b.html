@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>New Bulk / B2B Order — CRUMBLY Ops</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <script src="assets/js/admin-db.js" defer></script>
+  <script src="assets/js/add-b2b.js" defer></script>
+</head>
+<body class="admin-body">
+
+  <div class="admin-wrapper" style="display:flex; justify-content:center; padding: 40px 20px;">
+    <main class="card-panel" style="width: 100%; max-width: 600px; margin: 0;">
+      
+      <div class="panel-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <a href="admin.html#b2b" class="quick-action-btn btn-secondary" style="text-decoration:none; display:inline-block; margin-bottom:12px;">← Back to Dashboard</a>
+        <h3 class="panel-title">New B2B / Bulk Order</h3>
+        <p style="font-size:12px;color:var(--admin-ink-muted);">Enter details for wholesale cafes, corporate gifting, or events.</p>
+      </div>
+
+      <form id="form-add-b2b" style="margin-top:24px;">
+        <div class="form-grid">
+          
+          <div class="form-group-full">
+            <label class="form-label">Client / Business Name</label>
+            <select id="b2b-client" class="form-input" required>
+              <option value="" disabled selected>Select a client...</option>
+              <!-- Options populated by JS -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Contact Person</label>
+            <input type="text" id="b2b-contact" class="form-input" placeholder="e.g. Rahul Verma" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" id="b2b-phone" class="form-input" placeholder="+91 99999 11111" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Flavours &amp; Quantities Requested</label>
+            <input type="text" id="b2b-flavours" class="form-input" placeholder="e.g. 100x Double Choc, 50x Vanilla" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Order Unit</label>
+            <select id="b2b-unit" class="form-input" required>
+              <option value="Boxes">Boxes</option>
+              <option value="Kg">Kg</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Total Amount (INR)</label>
+            <input type="number" id="b2b-amount" class="form-input" placeholder="45000" min="0" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Payment Terms</label>
+            <select id="b2b-terms" class="form-input" required>
+              <option value="Advance 100%">100% Advance</option>
+              <option value="Advance 50%">50% Advance</option>
+              <option value="Net 15">Net 15 Days</option>
+              <option value="Net 30">Net 30 Days</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Delivery Date</label>
+            <input type="date" id="b2b-delivery" class="form-input" required>
+          </div>
+          
+          <div class="form-group-full" style="margin-top:16px;">
+            <button type="submit" class="quick-action-btn" style="width:100%; justify-content:center; padding:12px;">Create B2B Order</button>
+          </div>
+        </div>
+      </form>
+
+    </main>
+  </div>
+
+</body>
+</html>

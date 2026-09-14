@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>CRUMBLY™ — Admin Login</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <script src="assets/js/admin-db.js" defer></script>
+  <script src="assets/js/login.js" defer></script>
+</head>
+
+<body class="admin-body">
+
+  <div class="admin-lock-screen" id="admin-lock-screen" style="z-index: 1;">
+    <div class="lock-card">
+      <div class="lock-brand-logo">crumbly</div>
+      <div class="lock-subtitle">Business Operations Command Center</div>
+
+      <p style="font-size:12.5px;color:var(--admin-ink-muted);margin-bottom:20px;">
+        Enter your 4-digit security passcode to access finance, expenses, logistics &amp; operations.
+      </p>
+
+      <div class="lock-pin-display">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="lock-error-msg" id="lock-error-msg"></div>
+
+      <div class="lock-keypad">
+        <button class="key-btn" data-key="1">1</button>
+        <button class="key-btn" data-key="2">2</button>
+        <button class="key-btn" data-key="3">3</button>
+        <button class="key-btn" data-key="4">4</button>
+        <button class="key-btn" data-key="5">5</button>
+        <button class="key-btn" data-key="6">6</button>
+        <button class="key-btn" data-key="7">7</button>
+        <button class="key-btn" data-key="8">8</button>
+        <button class="key-btn" data-key="9">9</button>
+        <button class="key-btn" data-key="clear" style="font-size:12px;text-transform:uppercase;">CLR</button>
+        <button class="key-btn" data-key="0">0</button>
+        <button class="key-btn" data-key="backspace">⌫</button>
+      </div>
+
+      <div class="lock-footer-row">
+        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;">
+          <input type="checkbox" id="remember-pin-chk" checked>
+          <span>Remember Session</span>
+        </label>
+        <a href="index.html" class="lock-footer-link">← Storefront</a>
+      </div>
+
+      <div style="font-size:10px;color:var(--admin-ink-faint);margin-top:16px;">
+        Default PIN: <strong>7069</strong> (Change in Settings)
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>

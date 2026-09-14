@@ -163,6 +163,20 @@ const CRUMBLY_DB = (() => {
       { id: "CRM-02", date: "2026-08-31 11:18", name: "Aanya Sen", email: "aanya.sen@outlook.com", phone: "+91 98300 12948", address: "14B Southern Avenue, Kolkata 700029", flavours: "Wholesome Oats, Madagascar Vanilla", status: "Invited on WhatsApp" },
       { id: "CRM-03", date: "2026-08-31 09:44", name: "Kunal Mehra", email: "kunal.m@yahoo.com", phone: "+91 98101 92837", address: "DLF Phase 5, Golf Course Road, Gurgaon 122002", flavours: "Red Velvet, Wholesome Oats", status: "Converted to Order" },
       { id: "CRM-04", date: "2026-08-30 17:30", name: "Shreya Nair", email: "shreya.nair@gmail.com", phone: "+91 97400 38291", address: "Indiranagar 100ft Road, Bengaluru 560038", flavours: "Madagascar Vanilla, Red Velvet, Wholesome Oats", status: "Invited on WhatsApp" }
+    ],
+    
+    suppliers: [
+      { id: "SUP-01", name: "Amul / Mother Dairy Commercial", supplies: "Dairy & Fats", phone: "+91 1800 258 3333", email: "sales@amul.com" },
+      { id: "SUP-02", name: "Apex Luxury Print", supplies: "Packaging", phone: "+91 98222 11000", email: "contact@apexprint.in" }
+    ],
+
+    b2bClients: [
+      { id: "B2B-CLI-01", name: "Blue Tokai Coffee" },
+      { id: "B2B-CLI-02", name: "Third Wave Coffee" }
+    ],
+
+    b2bOrders: [
+      { id: "B2B-ORD-01", clientName: "Blue Tokai Coffee", contactPerson: "Rahul Verma", phone: "+91 99999 11111", flavours: "100x Double Choc", unit: "Boxes", totalAmount: 45000, paymentTerms: "Advance 50%", deliveryDate: "2026-09-05", date: "2026-08-31 10:00" }
     ]
   };
 
@@ -174,7 +188,11 @@ const CRUMBLY_DB = (() => {
         saveDB(SEED_DATA);
         return JSON.parse(JSON.stringify(SEED_DATA));
       }
-      return JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if (!parsed || !parsed.settings) {
+        return JSON.parse(JSON.stringify(SEED_DATA));
+      }
+      return parsed;
     } catch (e) {
       console.error('Error loading DB from localStorage:', e);
       return JSON.parse(JSON.stringify(SEED_DATA));
@@ -221,7 +239,11 @@ const CRUMBLY_DB = (() => {
           loggedInAt: Date.now(),
           expiresAt: Date.now() + (durationHours * 3600 * 1000)
         };
-        localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+        try {
+          localStorage.setItem(AUTH_KEY, JSON.stringify(session));
+        } catch (e) {
+          console.warn("localStorage is disabled or not accessible:", e);
+        }
         return { success: true };
       }
       return { success: false, message: "Invalid Security Passcode / PIN" };
@@ -393,6 +415,60 @@ const CRUMBLY_DB = (() => {
       return null;
     },
 
+    // Suppliers
+    getSuppliers: () => loadDB().suppliers || [],
+    addSupplier: (supData) => {
+      const db = loadDB();
+      const newId = "SUP-" + String((db.suppliers || []).length + 1).padStart(2, '0');
+      const newSupplier = { id: newId, ...supData };
+      if (!db.suppliers) db.suppliers = [];
+      db.suppliers.push(newSupplier);
+      saveDB(db);
+      return newSupplier;
+    },
+    deleteSupplier: (id) => {
+      const db = loadDB();
+      if (db.suppliers) {
+        db.suppliers = db.suppliers.filter(s => s.id !== id);
+        saveDB(db);
+      }
+    },
+
+    // B2B Clients
+    getB2BClients: () => loadDB().b2bClients || [],
+    addB2BClient: (clientName) => {
+      const db = loadDB();
+      const newId = "B2B-CLI-" + String((db.b2bClients || []).length + 1).padStart(2, '0');
+      const newClient = { id: newId, name: clientName };
+      if (!db.b2bClients) db.b2bClients = [];
+      db.b2bClients.push(newClient);
+      saveDB(db);
+      return newClient;
+    },
+    deleteB2BClient: (id) => {
+      const db = loadDB();
+      if (db.b2bClients) {
+        db.b2bClients = db.b2bClients.filter(c => c.id !== id);
+        saveDB(db);
+      }
+    },
+
+    // B2B Orders
+    getB2BOrders: () => loadDB().b2bOrders || [],
+    addB2BOrder: (orderData) => {
+      const db = loadDB();
+      const newId = "B2B-ORD-" + String((db.b2bOrders || []).length + 1).padStart(2, '0');
+      const newOrder = {
+        id: newId,
+        date: new Date().toISOString().replace('T', ' ').slice(0, 16),
+        ...orderData
+      };
+      if (!db.b2bOrders) db.b2bOrders = [];
+      db.b2bOrders.unshift(newOrder);
+      saveDB(db);
+      return newOrder;
+    },
+
     // Financial Analytics Engine
     getFinancialSummary: () => {
       const db = loadDB();
@@ -478,6 +554,9 @@ const CRUMBLY_DB = (() => {
       try {
         const parsed = JSON.parse(jsonString);
         if (parsed.settings && parsed.inventory && parsed.orders) {
+          if (!parsed.suppliers) parsed.suppliers = [];
+          if (!parsed.b2bClients) parsed.b2bClients = [];
+          if (!parsed.b2bOrders) parsed.b2bOrders = [];
           saveDB(parsed);
           return { success: true };
         }

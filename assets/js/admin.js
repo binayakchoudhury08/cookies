@@ -171,6 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderCurrentTab(tabId) {
     if (tabId === 'dashboard') renderDashboardView();
     else if (tabId === 'orders') renderOrdersView();
+    else if (tabId === 'b2b') renderB2BOrdersView();
     else if (tabId === 'finance') renderFinanceView();
     else if (tabId === 'expenses') renderExpensesView();
     else if (tabId === 'logistics') renderLogisticsView();
@@ -526,6 +527,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function renderB2BOrdersView() {
+    const tbody = document.getElementById('b2b-orders-table-body');
+    if (!tbody) return;
+    const cur = DB.getSettings().currency || "₹";
+    const b2bOrders = DB.getB2BOrders();
+
+    tbody.innerHTML = b2bOrders.map(o => {
+      return `
+        <tr>
+          <td>
+            <strong style="font-family:var(--font-mono);color:var(--admin-accent)">${o.id}</strong>
+            <div style="font-size:11px;color:var(--admin-ink-faint)">${o.date}</div>
+          </td>
+          <td>
+            <strong>${o.clientName}</strong>
+            <div style="font-size:11px;color:var(--admin-ink-muted)">${o.contactPerson} (${o.phone})</div>
+          </td>
+          <td>${o.flavours}</td>
+          <td><strong style="font-size:14px;">${o.unit}</strong></td>
+          <td><strong>${cur}${o.totalAmount}</strong></td>
+          <td>
+            <div style="font-size:12px;">${o.paymentTerms}</div>
+            <div style="font-size:11px;color:var(--admin-accent);">Deliver by: ${o.deliveryDate}</div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
   /* ══════════════════════════════════════════════════════════
      5. FINANCE & REAL-TIME P&L STATEMENT
      ══════════════════════════════════════════════════════════ */
@@ -747,7 +777,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const emailInput = document.getElementById('set-alert-email');
     if (pinInput) pinInput.value = set.masterPin || "7069";
     if (emailInput) emailInput.value = set.lowStockAlertEmail || "";
+
+    // Render Suppliers
+    const suppliersBody = document.getElementById('settings-suppliers-body');
+    if (suppliersBody) {
+      const suppliers = DB.getSuppliers();
+      suppliersBody.innerHTML = suppliers.map(s => `
+        <tr>
+          <td><strong style="font-family:var(--font-mono);color:var(--admin-ink-muted)">${s.id}</strong></td>
+          <td><strong>${s.name}</strong></td>
+          <td><span class="status-pill status-in-oven">${s.supplies}</span></td>
+          <td>${s.phone}</td>
+          <td>${s.email || '—'}</td>
+          <td>
+            <button class="btn-icon-sm" title="Delete Supplier" onclick="window.deleteSupplierBtn('${s.id}')">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Render B2B Clients
+    const b2bClientsBody = document.getElementById('settings-b2b-clients-body');
+    if (b2bClientsBody) {
+      const clients = DB.getB2BClients();
+      b2bClientsBody.innerHTML = clients.map(c => `
+        <tr>
+          <td><strong style="font-family:var(--font-mono);color:var(--admin-ink-muted)">${c.id}</strong></td>
+          <td><strong>${c.name}</strong></td>
+          <td>
+            <button class="btn-icon-sm" title="Delete Client" onclick="window.deleteB2BClientBtn('${c.id}')">🗑️</button>
+          </td>
+        </tr>
+      `).join('');
+    }
   }
+
+  window.deleteSupplierBtn = (id) => {
+    if (confirm('Are you sure you want to delete this supplier?')) {
+      DB.deleteSupplier(id);
+      renderSettingsView();
+    }
+  };
+
+  window.deleteB2BClientBtn = (id) => {
+    if (confirm('Are you sure you want to delete this B2B client?')) {
+      DB.deleteB2BClient(id);
+      renderSettingsView();
+    }
+  };
+
+  window.addB2BClientBtn = () => {
+    const input = document.getElementById('new-b2b-client-name');
+    if (input && input.value.trim()) {
+      DB.addB2BClient(input.value.trim());
+      input.value = '';
+      renderSettingsView();
+    }
+  };
 
   // Backup handlers
   const btnExportJSON = document.getElementById('btn-export-json');

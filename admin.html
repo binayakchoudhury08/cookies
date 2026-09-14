@@ -102,6 +102,10 @@
           <span class="nav-label">Operations Pipeline</span>
           <span class="nav-badge" id="badge-orders">0</span>
         </a>
+        <a class="nav-item" data-tab="b2b">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-label">B2B Orders</span>
+        </a>
         <a class="nav-item" data-tab="logistics">
           <span class="nav-icon">🚚</span>
           <span class="nav-label">Logistics Command</span>
@@ -144,12 +148,12 @@
         </div>
 
         <div class="header-right">
-          <button class="quick-action-btn btn-secondary" id="btn-open-add-expense">
+          <a href="add-expense.html" class="quick-action-btn btn-secondary" style="text-decoration:none;">
             <span>+</span> Log Expense
-          </button>
-          <button class="quick-action-btn" id="btn-open-add-order">
+          </a>
+          <a href="add-order.html" class="quick-action-btn" style="text-decoration:none;">
             <span>+</span> Manual Order
-          </button>
+          </a>
           <a href="index.html" class="quick-action-btn btn-secondary" title="View live store" target="_blank">
             Live Store ➔
           </a>
@@ -431,6 +435,37 @@
           </div>
         </section>
 
+        <!-- ══ TAB 4.5: B2B ORDERS ══ -->
+        <section class="tab-pane" id="tab-b2b">
+          <div class="card-panel">
+            <div class="panel-header">
+              <div>
+                <h3 class="panel-title">B2B & Bulk Orders</h3>
+                <div style="font-size:12px;color:var(--admin-ink-muted)">Wholesale cafes, corporate gifting, or events.</div>
+              </div>
+              <a href="add-b2b.html" class="quick-action-btn">+ New B2B Order</a>
+            </div>
+
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Order &amp; Date</th>
+                    <th>Client / Contact</th>
+                    <th>Flavours</th>
+                    <th>Quantity / Unit</th>
+                    <th>Total (INR)</th>
+                    <th>Terms &amp; Delivery</th>
+                  </tr>
+                </thead>
+                <tbody id="b2b-orders-table-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
         <!-- ══ TAB 5: LOGISTICS COMMAND ══ -->
         <section class="tab-pane" id="tab-logistics">
           <div class="card-panel">
@@ -598,6 +633,54 @@
             </form>
           </div>
 
+          <div class="card-panel" style="margin-bottom:24px;">
+            <div class="panel-header">
+              <h3 class="panel-title">Suppliers Management</h3>
+              <a href="add-supplier.html" class="quick-action-btn btn-secondary">+ Add Supplier</a>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Supplier ID</th>
+                    <th>Name / Company</th>
+                    <th>Supplies</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="settings-suppliers-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card-panel" style="margin-bottom:24px;">
+            <div class="panel-header">
+              <h3 class="panel-title">B2B Clients Management</h3>
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="new-b2b-client-name" class="form-input" placeholder="New Client Name" style="width:200px;">
+                <button class="quick-action-btn btn-secondary" onclick="window.addB2BClientBtn()">+ Add</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Client ID</th>
+                    <th>Client Name</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="settings-b2b-clients-body">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div class="card-panel" style="max-width:600px;">
             <div class="panel-header">
               <h3 class="panel-title">Database Backup &amp; Restore</h3>
@@ -626,124 +709,7 @@
     </main>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════════
-       3. MODALS
-       ════════════════════════════════════════════════════════════ -->
 
-  <!-- Modal: Add Manual Order -->
-  <div class="admin-modal-backdrop" id="modal-add-order">
-    <div class="admin-modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Create Manual Order</h3>
-        <button class="modal-close-btn">&times;</button>
-      </div>
-      <form id="form-add-order">
-        <div class="form-grid">
-          <div>
-            <label class="form-label">Customer Name</label>
-            <input type="text" id="ord-in-name" class="form-input" placeholder="Ankit Sharma" required>
-          </div>
-          <div>
-            <label class="form-label">WhatsApp Number</label>
-            <input type="tel" id="ord-in-phone" class="form-input" placeholder="+91 98765 43210" required>
-          </div>
-          <div class="form-group-full">
-            <label class="form-label">Email Address</label>
-            <input type="email" id="ord-in-email" class="form-input" placeholder="ankit@example.com">
-          </div>
-          <div class="form-group-full">
-            <label class="form-label">Delivery Address &amp; Pincode</label>
-            <input type="text" id="ord-in-address" class="form-input" placeholder="Flat 301, Tower B, Hiranandani Estate, Thane 400607" required>
-          </div>
-          <div>
-            <label class="form-label">City</label>
-            <input type="text" id="ord-in-city" class="form-input" placeholder="Mumbai" required>
-          </div>
-          <div>
-            <label class="form-label">Courier Partner</label>
-            <select id="ord-in-carrier" class="form-select">
-              <option value="BlueDart Air">BlueDart Air</option>
-              <option value="Delhivery Air">Delhivery Air</option>
-              <option value="DTDC Express">DTDC Express</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Pack Selection</label>
-            <select id="ord-in-pack" class="form-select">
-              <option value="Single Box (200g)">Single Box (200g) - ₹449</option>
-              <option value="Duo Pack (400g)">Duo Pack (400g) - ₹759</option>
-              <option value="Party Trio (600g)">Party Trio (600g) - ₹1,099</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Quantity</label>
-            <input type="number" id="ord-in-qty" class="form-input" value="1" min="1" max="50">
-          </div>
-          <div class="form-group-full" style="margin-top:10px;">
-            <button type="submit" class="quick-action-btn" style="width:100%;padding:12px;font-size:13px;">
-              Create Order &amp; Generate AWB ➔
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal: Log Expense -->
-  <div class="admin-modal-backdrop" id="modal-add-expense">
-    <div class="admin-modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Log Business Expense</h3>
-        <button class="modal-close-btn">&times;</button>
-      </div>
-      <form id="form-add-expense">
-        <div class="form-grid">
-          <div class="form-group-full">
-            <label class="form-label">Expense Title / Description</label>
-            <input type="text" id="exp-in-title" class="form-input" placeholder="50kg Pure Dairy Butter purchase" required>
-          </div>
-          <div>
-            <label class="form-label">Category</label>
-            <select id="exp-in-cat" class="form-select">
-              <option value="Raw Materials">🧈 Raw Materials &amp; Dairy</option>
-              <option value="Packaging & Boxes">📦 Packaging &amp; Boxes</option>
-              <option value="Logistics & Shipping">🚚 Logistics &amp; Shipping</option>
-              <option value="Marketing & Ads">📣 Marketing &amp; Ads</option>
-              <option value="Kitchen & Utilities">⚡ Kitchen &amp; Utilities</option>
-              <option value="Staff & Wages">👥 Staff &amp; Wages</option>
-              <option value="Miscellaneous">🏷️ Miscellaneous</option>
-            </select>
-          </div>
-          <div>
-            <label class="form-label">Amount (INR ₹)</label>
-            <input type="number" id="exp-in-amount" class="form-input" placeholder="5000" required>
-          </div>
-          <div>
-            <label class="form-label">Vendor / Payee</label>
-            <input type="text" id="exp-in-vendor" class="form-input" placeholder="Amul Commercial Hub">
-          </div>
-          <div>
-            <label class="form-label">Payment Mode</label>
-            <select id="exp-in-method" class="form-select">
-              <option value="UPI">UPI / GPay / PhonePe</option>
-              <option value="Bank Transfer">NEFT / Bank Transfer</option>
-              <option value="Credit Card">Corporate Credit Card</option>
-              <option value="Cash">Cash</option>
-            </select>
-          </div>
-          <div class="form-group-full">
-            <label class="form-label">Invoice / Receipt Notes</label>
-            <textarea id="exp-in-notes" class="form-textarea" rows="2" placeholder="Invoice #AMUL-8812..."></textarea>
-          </div>
-          <div class="form-group-full" style="margin-top:10px;">
-            <button type="submit" class="quick-action-btn" style="width:100%;padding:12px;font-size:13px;">
-              Record Expense &amp; Update P&amp;L ➔
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <!-- Hidden Print Slip Container -->
   <div id="print-slip-modal" style="display:none;">

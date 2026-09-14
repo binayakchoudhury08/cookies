@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Log Expense — CRUMBLY Ops</title>
+
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Outfit:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/admin.css">
+
+  <script src="assets/js/admin-db.js" defer></script>
+  <script src="assets/js/add-expense.js" defer></script>
+</head>
+<body class="admin-body">
+
+  <div class="admin-wrapper" style="display:flex; justify-content:center; padding: 40px 20px;">
+    <main class="card-panel" style="width: 100%; max-width: 600px; margin: 0;">
+      
+      <div class="panel-header" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <a href="admin.html#expenses" class="quick-action-btn btn-secondary" style="text-decoration:none; display:inline-block; margin-bottom:12px;">← Back to Dashboard</a>
+        <h3 class="panel-title">Log Business Expense</h3>
+      </div>
+
+      <form id="form-add-expense" style="margin-top:24px;">
+        <div class="form-grid">
+          <div class="form-group-full">
+            <label class="form-label">Expense Title / Description</label>
+            <input type="text" id="exp-in-title" class="form-input" placeholder="50kg Pure Dairy Butter purchase" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select id="exp-in-cat" class="form-input">
+              <option value="Raw Materials">🧈 Raw Materials &amp; Dairy</option>
+              <option value="Packaging & Boxes">📦 Packaging &amp; Boxes</option>
+              <option value="Logistics & Shipping">🚚 Logistics &amp; Shipping</option>
+              <option value="Marketing & Ads">📣 Marketing &amp; Ads</option>
+              <option value="Kitchen & Utilities">⚡ Kitchen &amp; Utilities</option>
+              <option value="Staff & Wages">👥 Staff &amp; Wages</option>
+              <option value="Miscellaneous">🏷️ Miscellaneous</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Amount (INR ₹)</label>
+            <input type="number" id="exp-in-amount" class="form-input" placeholder="5000" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vendor / Payee</label>
+            <input type="text" id="exp-in-vendor" class="form-input" placeholder="Amul Commercial Hub">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payment Mode</label>
+            <select id="exp-in-method" class="form-input">
+              <option value="UPI">UPI / GPay / PhonePe</option>
+              <option value="Bank Transfer">NEFT / Bank Transfer</option>
+              <option value="Credit Card">Corporate Credit Card</option>
+              <option value="Cash">Cash</option>
+            </select>
+          </div>
+          <div class="form-group-full" style="margin-top:16px;">
+            <button type="submit" class="quick-action-btn" style="width:100%; justify-content:center; padding:12px;">Record Expense</button>
+          </div>
+        </div>
+      </form>
+
+    </main>
+  </div>
+
+</body>
+</html>
