@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CRUMBLY — You know you want it.</title>
   <meta name="description"
-    content="CRUMBLY — mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats, made without palm oil. 100% Pure Butter. You know you want it. Pre-order now available.">
+    content="CRUMBLY — mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats, made without palm oil. 100% Pure Butter. You know you want it. Launch now active.">
   <link rel="canonical" href="https://crumblyblr.shop/">
 
   <!-- Meta Pixel Code -->
@@ -52,7 +52,7 @@
   {"@context":"https://schema.org","@type":"Product","name":"CRUMBLY",
   "description":"Mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats, made without palm oil.",
   "brand":{"@type":"Brand","name":"CRUMBLY"},
-  "offers":{"@type":"Offer","availability":"https://schema.org/PreOrder"}}
+  "offers":{"@type":"Offer","availability":"https://schema.org/InStock"}}
   </script>
 
   <link rel="stylesheet" href="assets/css/style.css">
@@ -62,7 +62,7 @@
   <a class="skip" href="#main">Skip to content</a>
 
   <header class="nav" data-nav>
-    <div style="display:flex;align-items:center;">
+    <div style="display:flex;align-items:center;margin-right:auto;">
       <a class="brand" href="#home" aria-label="CRUMBLY home">
         <img class="brand__logo-img" src="assets/img/brand-logo-crop.webp" alt="CRUMBLY — You know you want it."
           width="140" height="34">
@@ -196,14 +196,14 @@
 
           <!-- Horizontal One-Row Track (Video Only · Compact Details) -->
           <div class="flavours-row-track" id="flavours-track">
-            <!-- Flavour 1: Double Chocolate (Video Only · Pre-Order Available) -->
+            <!-- Flavour 1: Double Chocolate (Video Only · Available Now) -->
             <article class="flav-card-slide" data-flav-card="choc">
               <div class="flav-media-box">
                 <video class="flav-card-video" src="Chocolate.mp4" playsinline autoplay loop muted preload="auto"></video>
               </div>
 
               <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-live">⚡ Available to Order</span>
+                <span class="flav-card-badge flav-badge-live">⚡ Launch Active</span>
                 <h3 class="flav-card-title">Double Chocolate</h3>
                 <p class="flav-card-desc">
                   Dark cocoa coin cookies with 100% pure dairy butter &amp; 0% palm oil.
@@ -222,7 +222,7 @@
               </div>
 
               <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-live">⚡ Available to Order</span>
+                <span class="flav-card-badge flav-badge-live">⚡ Launch Active</span>
                 <h3 class="flav-card-title">Choco Chips</h3>
                 <p class="flav-card-desc">
                   Classic chewy, tasty and guwy cookies bursting with rich chocolate chips.
@@ -446,10 +446,24 @@
         <!-- HERO PRODUCT CARD: DOUBLE CHOCOLATE (LIVE & READY TO ORDER) -->
         <article class="shop-hero-card rv" id="product-card-chocolate">
           <!-- Left: Product Media Gallery -->
-          <div class="shop-product-media">
-            <span class="shop-product-badge">Oven Fresh · Batch #001</span>
-            <div class="shop-media-tag-bottom">🧈 100% Churned Butter · 0% Palm Oil</div>
-            <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate Mini Cookies" id="main-product-img">
+          <div class="shop-product-media-wrapper">
+            <div class="shop-product-media">
+              <span class="shop-product-badge">Oven Fresh · Batch #001</span>
+              <div class="shop-media-tag-bottom">🧈 100% Churned Butter · 0% Palm Oil</div>
+              <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate Mini Cookies" id="main-product-img">
+            </div>
+            
+            <div class="shop-product-thumbnails" id="shop-thumbnails">
+              <button class="shop-thumb-btn is-active" type="button" data-src="assets/img/slide-double-chocolate.webp">
+                <img src="assets/img/slide-double-chocolate.webp" alt="Thumbnail 1">
+              </button>
+              <button class="shop-thumb-btn" type="button" data-src="assets/img/crumbly-packaging.jpg">
+                <img src="assets/img/crumbly-packaging.jpg" alt="Thumbnail 2">
+              </button>
+              <button class="shop-thumb-btn" type="button" data-src="assets/img/cookie-hand-holding.jpg">
+                <img src="assets/img/cookie-hand-holding.jpg" alt="Thumbnail 3">
+              </button>
+            </div>
           </div>
 
           <!-- Right: E-Commerce Product Configuration -->
@@ -457,7 +471,7 @@
             <div class="shop-status-and-stock">
               <div class="shop-live-status">
                 <span class="shop-live-status-dot"></span>
-                <span>Immediate Pre-Order Active</span>
+                <span>Launch Active</span>
               </div>
               <div class="shop-stock-pill" id="shop-batch-scarcity">
                 <span class="shop-fire-icon">🔥</span>
@@ -470,88 +484,107 @@
               Rich artisanal dark cocoa & 100% pure churned creamery butter. Baked fresh without a single drop of palm oil for an intense cocoa snap.
             </p>
 
-            <!-- Pack Size Selection (Interactive Radio Cards) -->
-            <div class="shop-config-block">
-              <div class="shop-variant-label">
-                <span>Select Flavour:</span>
-                <span id="pack-selection-summary" class="shop-selection-pill">Double Chocolate (180g)</span>
-              </div>
-
-              <div class="shop-pack-picker" style="margin-top:10px;">
-                <!-- Flavour 1: Double Chocolate -->
-                <button class="shop-pack-btn is-active" type="button" data-pack-id="1" data-variant-id="47857840423061" data-price="449" data-mrp="559" data-name="Double Chocolate (180g)">
-                  <div class="shop-pack-top-row">
-                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
-                    <span class="shop-pack-title">Double Chocolate</span>
-                  </div>
-                  <span class="shop-pack-coins">180g Box</span>
-                  <div class="shop-pack-price-row">
-                    <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
-                  </div>
-                </button>
-
-                <!-- Flavour 2: Choco Chips -->
-                <button class="shop-pack-btn" type="button" data-pack-id="2" data-variant-id="0000000000000" data-price="449" data-mrp="559" data-name="Choco Chips (180g)">
-                  <div class="shop-pack-top-row">
-                    <span class="shop-pack-radio"><span class="shop-radio-inner"></span></span>
-                    <span class="shop-pack-title">Choco Chips</span>
-                  </div>
-                  <span class="shop-pack-coins">180g Box</span>
-                  <div class="shop-pack-price-row">
-                    <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            <!-- Dynamic Savings & Reward Callout -->
-            <div class="shop-savings-banner" id="shop-savings-banner">
-              <span class="shop-savings-icon">🎁</span>
-              <span id="shop-savings-text">You save <b>₹110</b> today · Fresh Oven-Baked Dispatch Guarantee!</span>
-            </div>
-
-            <!-- Quantity Selector & Direct 1-Click Buy Button -->
-            <div class="shop-actions-row">
-              <div class="shop-qty-wrap">
-                <span class="shop-qty-lbl">Qty:</span>
-                <div class="shop-qty-box">
-                  <button class="shop-qty-btn" id="qty-minus-btn" type="button" aria-label="Decrease quantity" disabled>−</button>
-                  <span class="shop-qty-val" id="qty-display">1</span>
-                  <button class="shop-qty-btn" id="qty-plus-btn" type="button" aria-label="Increase quantity">+</button>
+            <div class="light-config-wrapper">
+              <!-- Flavour Selection -->
+              <div class="shop-config-block">
+                <div class="shop-variant-label">
+                  <span>Select Flavour:</span>
+                  <span id="flavour-selection-summary" class="shop-selection-pill">Double Chocolate</span>
+                </div>
+                <div class="shop-pack-picker" id="flavour-picker">
+                  <button class="shop-pack-btn is-active" type="button" data-flavour="chocolate">
+                    <div class="shop-pack-top-row">
+                      <span class="shop-pack-icon">🍫</span>
+                      <span class="shop-pack-title">Double Chocolate</span>
+                    </div>
+                  </button>
+                  <button class="shop-pack-btn" type="button" data-flavour="chocochips">
+                    <div class="shop-pack-top-row">
+                      <span class="shop-pack-icon">🍪</span>
+                      <span class="shop-pack-title">Choco Chips</span>
+                    </div>
+                  </button>
                 </div>
               </div>
 
-              <!-- Direct Checkout URL Button with Animated Shimmer -->
-              <a href="https://crumblyblr.myshopify.com/cart/47857840423061:1" class="btn shop-buy-now-btn" id="direct-checkout-cta">
-                <span class="shop-btn-shine"></span>
-                <span class="shop-btn-text" id="direct-checkout-text">Add to Cart • ₹449 ➔</span>
-              </a>
-            </div>
+              <!-- Pack Selection -->
+              <div class="shop-config-block">
+                <div class="shop-variant-label">
+                  <span>Select Pack:</span>
+                  <span id="pack-selection-summary" class="shop-selection-pill">Single Box (180g)</span>
+                </div>
+                <div class="shop-pack-picker" id="pack-picker">
+                  <button class="shop-pack-btn is-active" type="button" data-pack="single">
+                    <div class="shop-pack-top-row">
+                      <span class="shop-pack-title">Single Box</span>
+                    </div>
+                    <span class="shop-pack-coins">180g Box</span>
+                    <div class="shop-pack-price-row">
+                      <span class="shop-pack-price"><strike>₹559</strike> ₹449</span>
+                    </div>
+                  </button>
+                  <button class="shop-pack-btn best-value-btn" type="button" data-pack="duo">
+                    <span class="shop-pack-badge-tag glowing">🔥 BEST VALUE</span>
+                    <div class="shop-pack-top-row">
+                      <span class="shop-pack-title">Duo Box</span>
+                    </div>
+                    <span class="shop-pack-coins">360g (2x 180g)</span>
+                    <div class="shop-pack-price-row">
+                      <span class="shop-pack-price"><strike>₹1118</strike> ₹749</span>
+                    </div>
+                  </button>
+                </div>
+              </div>
 
-            <!-- Payment Security & Instant Checkout Badges -->
-            <div class="shop-security-badges">
-              <span>🔒 1-Click Shopify Checkout</span>
-              <span class="shop-sec-divider">·</span>
-              <span>⚡ UPI / GPay / PhonePe / Cards</span>
-            </div>
+              <!-- Dynamic Savings & Reward Callout -->
+              <div class="shop-savings-banner" id="shop-savings-banner">
+                <span class="shop-savings-icon">🎁</span>
+                <span id="shop-savings-text">You save <b>₹110</b> today · Fresh Oven-Baked Dispatch Guarantee!</span>
+              </div>
 
-            <!-- Trust & Shipping Micro-Notes -->
-            <div class="shop-trust-notes">
-              <div class="shop-trust-note-item">
-                <span class="shop-trust-icon">⚡</span>
-                <span><b>Express Air Dispatch</b> (24–48h Metros)</span>
+              <!-- Quantity Selector & Add To Cart Button -->
+              <div class="shop-actions-row light-mode-actions">
+                <div class="shop-qty-wrap">
+                  <span class="shop-qty-lbl">Qty:</span>
+                  <div class="shop-qty-box">
+                    <button class="shop-qty-btn" id="qty-minus-btn" type="button" aria-label="Decrease quantity" disabled>−</button>
+                    <span class="shop-qty-val" id="qty-display">1</span>
+                    <button class="shop-qty-btn" id="qty-plus-btn" type="button" aria-label="Increase quantity">+</button>
+                  </div>
+                </div>
+
+                <!-- Add to Cart Button (Adds to Local State) -->
+                <button class="btn shop-buy-now-btn light-glow-btn" id="add-to-cart-btn" type="button">
+                  <span class="shop-btn-shine"></span>
+                  <span class="shop-btn-text" id="add-to-cart-text">Add to Cart • ₹449</span>
+                </button>
               </div>
-              <div class="shop-trust-note-item">
-                <span class="shop-trust-icon">🧈</span>
-                <span><b>100% Pure Butter</b> · 0% Palm Oil</span>
+
+              <!-- Payment Security Badges -->
+              <div class="shop-security-badges" style="color:var(--muted)">
+                <span>🔒 Secure Shopify Checkout</span>
+                <span class="shop-sec-divider">·</span>
+                <span>⚡ UPI / GPay / Cards</span>
               </div>
-              <div class="shop-trust-note-item">
-                <span class="shop-trust-icon">🔒</span>
-                <span><b>Direct Shopify Checkout</b> (Cards, UPI)</span>
-              </div>
-              <div class="shop-trust-note-item">
-                <span class="shop-trust-icon">🛡️</span>
-                <span><b>Nitrogen Sealed</b> Freshness Lock</span>
+
+              <!-- Trust & Shipping Micro-Notes -->
+              <div class="shop-trust-notes light-trust-grid">
+                <div class="shop-trust-note-item">
+                  <span class="shop-trust-icon">⚡</span>
+                  <span><b>Express Dispatch</b><br>24-48h Metros</span>
+                </div>
+                <div class="shop-trust-note-item">
+                  <span class="shop-trust-icon">🧈</span>
+                  <span><b>100% Pure Butter</b><br>0% Palm Oil</span>
+                </div>
+                <div class="shop-trust-note-item">
+                  <span class="shop-trust-icon">🛡️</span>
+                  <span><b>Nitrogen Sealed</b><br>Freshness Lock</span>
+                </div>
+                <div class="shop-trust-note-item">
+                  <span class="shop-trust-icon">🍪</span>
+                  <span><b>Oven Baked</b><br>Zero Preservatives</span>
+                </div>
               </div>
             </div>
           </div>
@@ -593,6 +626,22 @@
               <h4 class="shop-drop-title">Red Velvet</h4>
               <p style="font-size:12px;color:var(--muted);line-height:1.45;">
                 Cocoa buttermilk dough &amp; white chocolate drops.
+              </p>
+              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
+              <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
+            </div>
+          </div>
+
+          <!-- Drop 04: Wholesome Oats -->
+          <div class="shop-drop-card rv">
+            <div class="shop-drop-thumb">
+              <img src="assets/img/slide-oats.webp" alt="CRUMBLY Wholesome Oats">
+            </div>
+            <div class="shop-drop-info">
+              <span class="shop-drop-tag">🌾 Drop 04 · Coming Soon</span>
+              <h4 class="shop-drop-title">Wholesome Oats</h4>
+              <p style="font-size:12px;color:var(--muted);line-height:1.45;">
+                Toasted whole grain oats and warm cinnamon spice.
               </p>
               <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
               <a href="#waitlist" class="btn btn--ghost btn--sm" style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
@@ -762,6 +811,19 @@
       </div>
     </div>
   </main>
+
+  <div id="floating-cart" class="floating-cart is-hidden">
+    <div class="floating-cart-info">
+      <span class="floating-cart-icon">🛒</span>
+      <div style="display:flex; flex-direction:column; gap:2px;">
+        <span class="floating-cart-count" id="fc-count">0 items added</span>
+        <span class="floating-cart-total" id="fc-total">₹0</span>
+      </div>
+    </div>
+    <button id="floating-cart-checkout-btn" class="btn floating-checkout-btn">
+      Checkout Now ➔
+    </button>
+  </div>
 
   <audio data-audio loop preload="none" src="assets/cookie-theme.mp3"></audio>
 

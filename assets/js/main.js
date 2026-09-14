@@ -526,65 +526,71 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 })();
 
 /* ══════════════════════════════════════════════════════════
-   DTC E-COMMERCE PRODUCT CONFIGURATOR & 1-CLICK CHECKOUT
-   (Takes zero customer inputs on page — sends straight to Shopify)
+   DTC E-COMMERCE PRODUCT CONFIGURATOR & MULTI-ITEM CART
    ══════════════════════════════════════════════════════════ */
 (() => {
-  let selectedPackId = 1;
+  let selectedFlavour = 'chocolate';
+  let selectedPack = 'single';
   let quantity = 1;
+  let cart = []; // Store items: { variantId, qty, price, name, packName }
 
-  const packBtns = document.querySelectorAll('.shop-pack-btn');
+  const flavourBtns = document.querySelectorAll('#flavour-picker .shop-pack-btn');
+  const packBtns = document.querySelectorAll('#pack-picker .shop-pack-btn');
   const qtyMinus = document.getElementById('qty-minus-btn');
   const qtyPlus = document.getElementById('qty-plus-btn');
   const qtyDisplay = document.getElementById('qty-display');
-  const checkoutBtn = document.getElementById('direct-checkout-cta');
-  const checkoutText = document.getElementById('direct-checkout-text');
-  const summaryText = document.getElementById('pack-selection-summary');
+  
+  const addToCartBtn = document.getElementById('add-to-cart-btn');
+  const addToCartText = document.getElementById('add-to-cart-text');
+  
+  const flavourSummary = document.getElementById('flavour-selection-summary');
+  const packSummary = document.getElementById('pack-selection-summary');
   const savingsBanner = document.getElementById('shop-savings-banner');
   const savingsText = document.getElementById('shop-savings-text');
 
-  if (!checkoutBtn) return;
+  // Floating Cart Elements
+  const floatingCart = document.getElementById('floating-cart');
+  const fcCount = document.getElementById('fc-count');
+  const fcTotal = document.getElementById('fc-total');
+  const fcCheckoutBtn = document.getElementById('floating-cart-checkout-btn');
 
-  function updateCheckoutLink() {
-    const packData = CRUMBLY_CONFIG.PACKS[selectedPackId] || CRUMBLY_CONFIG.PACKS[1];
-    const unitPrice = packData.price;
-    const unitMrp = packData.mrp || (unitPrice + 110);
+  if (!addToCartBtn) return;
+  
+  // Matrix of products
+  // NOTE: Choco Chips needs a real Variant ID in production.
+  const PRODUCTS = {
+    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 449, mrp: 559, variantId: '47857840423061' },
+    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 749, mrp: 1118, variantId: '47857840423061' }, 
+    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 449, mrp: 559, variantId: '47857840423062' }, // Dummy ID
+    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 749, mrp: 1118, variantId: '47857840423062' }
+  };
+
+  function updateConfiguratorUI() {
+    const key = `${selectedFlavour}_${selectedPack}`;
+    const product = PRODUCTS[key] || PRODUCTS['chocolate_single'];
+    
+    const unitPrice = product.price;
+    const unitMrp = product.mrp;
     const totalPrice = unitPrice * quantity;
     const totalMrp = unitMrp * quantity;
     const totalSavings = totalMrp - totalPrice;
-    const variantId = packData.variantId;
 
-    // Build 1-click Shopify direct checkout URL
-    const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
-    const url = `https://${domain}/cart/${variantId}:${quantity}`;
-
-    checkoutBtn.href = url;
-    const ctaLabel = `Add to Cart • ₹${totalPrice} ➔`;
-    if (checkoutText) {
-      checkoutText.textContent = ctaLabel;
-    } else {
-      checkoutBtn.textContent = ctaLabel;
+    if (addToCartText) {
+      addToCartText.textContent = `Add to Cart • ₹${totalPrice}`;
     }
 
-    if (summaryText) {
-      summaryText.textContent = `${packData.name} (${quantity} unit${quantity > 1 ? 's' : ''})`;
-    }
+    if (flavourSummary) flavourSummary.textContent = product.name;
+    if (packSummary) packSummary.textContent = product.packName;
 
-    // Dynamic savings banner update
     if (savingsText) {
-      if (selectedPackId === 1) {
-        savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
-      } else if (selectedPackId === 2) {
-        savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
-      }
+      savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
       if (savingsBanner) {
         savingsBanner.classList.remove('pop');
-        void savingsBanner.offsetWidth; // Trigger reflow
+        void savingsBanner.offsetWidth; 
         savingsBanner.classList.add('pop');
       }
     }
 
-    // Update quantity button disabled state
     if (qtyMinus) {
       qtyMinus.disabled = (quantity <= 1);
       qtyMinus.classList.toggle('is-disabled', quantity <= 1);
@@ -593,30 +599,145 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       qtyPlus.disabled = (quantity >= 10);
       qtyPlus.classList.toggle('is-disabled', quantity >= 10);
     }
+
+    // Dynamic Flavour Thumbnail & Image update
+    const thumb1Btn = document.querySelector('.shop-thumb-btn:nth-child(1)');
+    const thumb1Img = thumb1Btn ? thumb1Btn.querySelector('img') : null;
+    const mainImg = document.getElementById('main-product-img');
+    const flavourImg = selectedFlavour === 'chocolate' ? 'assets/img/slide-double-chocolate.webp' : 'assets/img/choco-chips-product.jpg';
+
+    if (thumb1Img && thumb1Btn) {
+      thumb1Img.src = flavourImg;
+      thumb1Btn.setAttribute('data-src', flavourImg);
+      // Reset active state to the first thumbnail when flavour changes
+      const allThumbs = document.querySelectorAll('.shop-thumb-btn');
+      allThumbs.forEach(t => t.classList.remove('is-active'));
+      thumb1Btn.classList.add('is-active');
+      
+      if (mainImg) {
+        // Add fade effect
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+          mainImg.src = flavourImg;
+          mainImg.style.opacity = '1';
+        }, 200);
+      }
+    }
   }
 
-  checkoutBtn.addEventListener('click', () => {
+  // Thumbnail Click Handler
+  const thumbnails = document.querySelectorAll('.shop-thumb-btn');
+  const mainProductImg = document.getElementById('main-product-img');
+
+  thumbnails.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Remove active class from all
+      thumbnails.forEach(t => t.classList.remove('is-active'));
+      // Add active class to clicked
+      btn.classList.add('is-active');
+      
+      const newSrc = btn.getAttribute('data-src');
+      if (mainProductImg && newSrc) {
+        mainProductImg.style.opacity = '0';
+        setTimeout(() => {
+          mainProductImg.src = newSrc;
+          mainProductImg.style.opacity = '1';
+        }, 200);
+      }
+    });
+  });
+
+  function renderFloatingCart() {
+    if (!floatingCart) return;
+    if (cart.length === 0) {
+      floatingCart.classList.remove('is-visible');
+      return;
+    }
+
+    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+    const totalValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+    fcCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} added`;
+    fcTotal.textContent = `₹${totalValue}`;
+    floatingCart.classList.add('is-visible');
+  }
+
+  // Add to Local Cart
+  addToCartBtn.addEventListener('click', () => {
+    const key = `${selectedFlavour}_${selectedPack}`;
+    const product = PRODUCTS[key] || PRODUCTS['chocolate_single'];
+
+    // Check if variant already exists in cart, if so, add to qty
+    const existing = cart.find(i => i.variantId === product.variantId);
+    if (existing) {
+      existing.qty += quantity;
+    } else {
+      cart.push({
+        variantId: product.variantId,
+        qty: quantity,
+        price: product.price,
+        name: product.name,
+        packName: product.packName
+      });
+    }
+
+    renderFloatingCart();
+
+    // Reset qty picker to 1 after adding
+    quantity = 1;
+    if (qtyDisplay) qtyDisplay.textContent = quantity;
+    updateConfiguratorUI();
+
+    // Button animation feedback
+    const originalText = addToCartText.textContent;
+    addToCartText.textContent = 'Added! ✓';
+    addToCartBtn.style.background = '#4CAF50';
+    setTimeout(() => {
+      addToCartText.textContent = originalText;
+      addToCartBtn.style.background = '';
+    }, 1500);
+
     try {
-      const packData = CRUMBLY_CONFIG.PACKS[selectedPackId] || CRUMBLY_CONFIG.PACKS[1];
       if (typeof window.fbq === 'function') {
-        window.fbq('track', 'InitiateCheckout', {
-          content_name: packData.name,
-          content_category: 'Cookies',
-          content_ids: [packData.variantId],
-          num_items: quantity,
-          value: packData.price * quantity,
+        window.fbq('track', 'AddToCart', {
+          content_name: `${product.name} - ${product.packName}`,
+          content_ids: [product.variantId],
+          value: product.price * quantity,
           currency: 'INR'
         });
       }
     } catch (_) { }
   });
 
+  // Execute Multi-Item Shopify Checkout
+  if (fcCheckoutBtn) {
+    fcCheckoutBtn.addEventListener('click', () => {
+      if (cart.length === 0) return;
+      const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
+      
+      // Shopify permalink format: /cart/ID1:QTY1,ID2:QTY2
+      const cartItemsStr = cart.map(item => `${item.variantId}:${item.qty}`).join(',');
+      const url = `https://${domain}/cart/${cartItemsStr}`;
+      
+      window.location.href = url;
+    });
+  }
+
+  flavourBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      flavourBtns.forEach(b => b.classList.remove('is-active'));
+      btn.classList.add('is-active');
+      selectedFlavour = btn.dataset.flavour;
+      updateConfiguratorUI();
+    });
+  });
+
   packBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       packBtns.forEach(b => b.classList.remove('is-active'));
       btn.classList.add('is-active');
-      selectedPackId = +btn.dataset.packId;
-      updateCheckoutLink();
+      selectedPack = btn.dataset.pack;
+      updateConfiguratorUI();
     });
   });
 
@@ -634,7 +755,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
         quantity--;
         qtyDisplay.textContent = quantity;
         bumpQty();
-        updateCheckoutLink();
+        updateConfiguratorUI();
       }
     });
 
@@ -643,12 +764,12 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
         quantity++;
         qtyDisplay.textContent = quantity;
         bumpQty();
-        updateCheckoutLink();
+        updateConfiguratorUI();
       }
     });
   }
 
-  updateCheckoutLink();
+  updateConfiguratorUI();
 })();
 
 /* ══════════════════════════════════════════════════════════
