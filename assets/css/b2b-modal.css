@@ -22,7 +22,7 @@
   pointer-events: auto;
 }
 
-.b2b-modal-card {
+.b2b-modal-content {
   background: #FFFFFF;
   border-radius: 16px;
   width: 100%;
@@ -35,7 +35,7 @@
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.b2b-modal-backdrop.is-open .b2b-modal-card {
+.b2b-modal-backdrop.is-open .b2b-modal-content {
   transform: translateY(0);
 }
 
