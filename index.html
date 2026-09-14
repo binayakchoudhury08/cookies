@@ -848,7 +848,7 @@
         <button class="b2b-tab is-active" data-target="b2b-pane-dash">Dashboard</button>
         <button class="b2b-tab" data-target="b2b-pane-b2c">B2C POS</button>
         <button class="b2b-tab" data-target="b2b-pane-b2b">B2B POS</button>
-        <button class="b2b-tab" data-target="b2b-pane-sup">Suppliers</button>
+        <button class="b2b-tab" data-target="b2b-pane-settings">Settings</button>
       </div>
 
       <div class="b2b-content">
@@ -1000,13 +1000,17 @@
               <ul id="client-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
             </div>
             <div>
-              <h3 class="b2b-section-title">Manage Flavours</h3>
+              <h3 class="b2b-section-title">Manage Suppliers & Flavours</h3>
               <form id="form-flavour" class="b2b-form" style="max-width: 100%;">
+                <div class="b2b-form-group">
+                  <label>Supplier Name</label>
+                  <input type="text" id="set-supplier-name" required placeholder="e.g. Blue Tokai">
+                </div>
                 <div class="b2b-form-group">
                   <label>Flavour / Item Name</label>
                   <input type="text" id="set-flavour-name" required placeholder="e.g. Double Chocolate">
                 </div>
-                <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Flavour</button>
+                <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Supplier & Flavour</button>
               </form>
               <ul id="flavour-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
             </div>

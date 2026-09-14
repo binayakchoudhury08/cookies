@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Database structure in LocalStorage (Offline First)
   const REV_KEY = 'CRUMBLY_REVENUE_DB_V1';
   function loadRevDB() {
-    let db = { b2c: [], b2b: [], clients: [], flavours: [] };
+    let db = { b2c: [], b2b: [], clients: [], flavours: [], supplierFlavours: [] };
     try {
       const data = localStorage.getItem(REV_KEY);
       if (data) {
@@ -31,6 +31,19 @@ document.addEventListener('DOMContentLoaded', () => {
           });
           delete db.suppliers;
           modified = true;
+        }
+
+        // Migrate string flavours to supplierFlavours
+        if (db.flavours && db.flavours.length > 0) {
+          if (!db.supplierFlavours) db.supplierFlavours = [];
+          db.flavours.forEach(f => {
+            const exists = db.supplierFlavours.find(sf => sf.flavour === f);
+            if (!exists) {
+              db.supplierFlavours.push({ supplier: 'In-House', flavour: f });
+              modified = true;
+            }
+          });
+          db.flavours = [];
         }
 
         if(modified) localStorage.setItem(REV_KEY, JSON.stringify(db));
@@ -121,26 +134,50 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear
     if(clientList) clientList.innerHTML = '';
     if(flavourList) flavourList.innerHTML = '';
-    if(b2bClientSel) b2bClientSel.innerHTML = '';
-    if(b2bFlavourSel) b2bFlavourSel.innerHTML = '';
-    if(b2cFlavourSel) b2cFlavourSel.innerHTML = '';
+    if(b2bClientSel) b2bClientSel.innerHTML = '<option value="" disabled selected>Select Client</option>';
+    if(b2bFlavourSel) b2bFlavourSel.innerHTML = '<option value="" disabled selected>Select Flavour</option>';
+    if(b2cFlavourSel) b2cFlavourSel.innerHTML = '<option value="" disabled selected>Select Flavour</option>';
 
     // Default Flavours if empty
-    if(db.flavours.length === 0) {
-      db.flavours = ['Double Chocolate', 'Choco Chips', 'Oatmeal Raisin', 'Assorted Box'];
+    if(!db.supplierFlavours || db.supplierFlavours.length === 0) {
+      db.supplierFlavours = [
+        { supplier: 'In-House', flavour: 'Double Chocolate' },
+        { supplier: 'In-House', flavour: 'Choco Chips' },
+        { supplier: 'In-House', flavour: 'Oatmeal Raisin' }
+      ];
       saveRevDB(db);
     }
 
-    db.clients.forEach(c => {
-      if(clientList) clientList.innerHTML += `<li>${c}</li>`;
+    db.clients.forEach((c, idx) => {
+      if(clientList) clientList.innerHTML += `<li style="display:flex; justify-content:space-between;">${c} <button type="button" onclick="window.delClient(${idx})" style="background:none;border:none;cursor:pointer;color:red;" title="Delete">✖</button></li>`;
       if(b2bClientSel) b2bClientSel.innerHTML += `<option value="${c}">${c}</option>`;
     });
 
-    db.flavours.forEach(f => {
-      if(flavourList) flavourList.innerHTML += `<li>${f}</li>`;
-      if(b2bFlavourSel) b2bFlavourSel.innerHTML += `<option value="${f}">${f}</option>`;
-      if(b2cFlavourSel) b2cFlavourSel.innerHTML += `<option value="${f}">${f}</option>`;
+    db.supplierFlavours.forEach((sf, idx) => {
+      const displayName = `${sf.supplier} - ${sf.flavour}`;
+      if(flavourList) flavourList.innerHTML += `<li style="display:flex; justify-content:space-between;">${displayName} <button type="button" onclick="window.delFlavour(${idx})" style="background:none;border:none;cursor:pointer;color:red;" title="Delete">✖</button></li>`;
+      if(b2bFlavourSel) b2bFlavourSel.innerHTML += `<option value="${displayName}">${displayName}</option>`;
+      if(b2cFlavourSel) b2cFlavourSel.innerHTML += `<option value="${displayName}">${displayName}</option>`;
     });
+  }
+
+  // Expose delete functions globally so onclick works
+  window.delClient = (idx) => {
+    const db = loadRevDB();
+    if(confirm('Delete client?')) {
+      db.clients.splice(idx, 1);
+      saveRevDB(db);
+      renderSettings();
+    }
+  };
+
+  window.delFlavour = (idx) => {
+    const db = loadRevDB();
+    if(confirm('Delete supplier & flavour?')) {
+      db.supplierFlavours.splice(idx, 1);
+      saveRevDB(db);
+      renderSettings();
+    }
   }
 
   if (formClient) {
@@ -161,11 +198,15 @@ document.addEventListener('DOMContentLoaded', () => {
     formFlavour.addEventListener('submit', (e) => {
       e.preventDefault();
       const db = loadRevDB();
+      const supplierName = document.getElementById('set-supplier-name').value.trim();
       const newFlavour = document.getElementById('set-flavour-name').value.trim();
-      if (newFlavour && !db.flavours.includes(newFlavour)) {
-        db.flavours.push(newFlavour);
-        saveRevDB(db);
-        renderSettings();
+      if (supplierName && newFlavour) {
+        const exists = db.supplierFlavours.find(sf => sf.supplier === supplierName && sf.flavour === newFlavour);
+        if (!exists) {
+          db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour });
+          saveRevDB(db);
+          renderSettings();
+        }
       }
       formFlavour.reset();
     });
