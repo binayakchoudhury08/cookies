@@ -861,10 +861,10 @@
           </div>
           
           <div class="b2b-kpi-grid">
-            <div class="b2b-kpi-card" style="grid-column: span 3; display: flex; flex-direction: column; gap: 8px;">
+            <div class="b2b-kpi-card b2b-kpi-main">
               <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                 <div>
-                  <span class="b2b-kpi-title">TOTAL REVENUE (₹10 LAKH GOAL)</span>
+                  <span class="b2b-kpi-title">TOTAL REVENUE (₹5 LAKH GOAL)</span>
                   <span class="b2b-kpi-val" id="b2b-val-total">₹0</span>
                 </div>
                 <span style="font-size: 14px; font-weight: 600; color: #888;" id="b2b-target-pct">0%</span>
@@ -915,7 +915,7 @@
                 <!-- Populated by JS from Flavours -->
               </select>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="b2b-responsive-grid-2">
               <div class="b2b-form-group">
                 <label>Quantity (Boxes)</label>
                 <input type="number" id="b2c-qty" required min="1" value="1">
@@ -942,7 +942,7 @@
           <h3 class="b2b-section-title">Record Bulk/B2B Order</h3>
           <form id="form-b2b" class="b2b-form">
             <input type="hidden" id="b2b-id" value="">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="b2b-responsive-grid-2">
               <div class="b2b-form-group">
                 <label>Client Name</label>
                 <select id="b2b-client" required>
@@ -956,7 +956,7 @@
                 </select>
               </div>
             </div>
-            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+            <div class="b2b-responsive-grid-3">
               <div class="b2b-form-group">
                 <label>Unit</label>
                 <select id="b2b-unit" required>
@@ -987,7 +987,7 @@
 
         <!-- Settings Pane -->
         <div id="b2b-pane-settings" class="b2b-tab-pane">
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+          <div class="b2b-responsive-grid-2-settings">
             <div>
               <h3 class="b2b-section-title">Manage B2B Clients</h3>
               <form id="form-client" class="b2b-form" style="max-width: 100%;">

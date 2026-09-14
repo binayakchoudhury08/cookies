@@ -400,7 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const totalRev = totalB2C + totalB2B;
-    const target = 1000000;
+    const target = 500000;
     const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
 
     const elTotal = document.getElementById('b2b-val-total');
