@@ -8,6 +8,9 @@
   <meta name="description"
     content="CRUMBLY — mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats, made without palm oil. 100% Pure Butter. You know you want it. Launch now active.">
   <link rel="canonical" href="https://crumblyblr.shop/">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1A1A1A">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 
   <!-- Meta Pixel Code -->
   <script>
@@ -1025,6 +1028,15 @@
   <script src="assets/js/admin-db.js"></script>
   <script src="assets/js/b2b-modal.js" defer></script>
   <script src="assets/js/main.js" defer></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+  </script>
 </body>
 
 </html>

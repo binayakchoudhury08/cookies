@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const THE_PIN = "7069";
 
   triggerBtn.addEventListener('click', (e) => {
-    e.preventDefault(); 
+    if (e && e.preventDefault) e.preventDefault(); 
     modal.classList.add('is-open');
     pinOverlay.style.display = 'flex'; // Lock with PIN screen
     pinInput.value = '';
@@ -428,5 +428,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if(dateInput) dateInput.value = '';
       renderDashboard();
     });
+  }
+
+  // Auto-open if PWA trigger
+  if (window.location.search.includes('b2b=true')) {
+    if (triggerBtn) triggerBtn.click();
   }
 });
