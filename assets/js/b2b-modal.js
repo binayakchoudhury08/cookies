@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const pinInput = document.getElementById('b2b-pin-input');
   const pinBtn = document.getElementById('b2b-pin-btn');
   const pinError = document.getElementById('b2b-pin-error');
-  const THE_PIN = "2024";
+  const THE_PIN = "7069";
 
   triggerBtn.addEventListener('click', (e) => {
     e.preventDefault(); 
