@@ -766,13 +766,30 @@ document.addEventListener('DOMContentLoaded', () => {
       gsheetSyncStatus.style.color = '#666';
 
       try {
-        const response = await fetch(webhookUrl, {
+        let currentPayload = { ...payload };
+        let response = await fetch(webhookUrl, {
           method: 'POST',
-          body: JSON.stringify(payload),
+          body: JSON.stringify(currentPayload),
           headers: { 'Content-Type': 'text/plain' }
         });
         
-        const result = await response.json();
+        let result = await response.json();
+        
+        // Auto-retry if Spreadsheet ID is stale/deleted (permission error)
+        if (!result.success && result.error && (result.error.toLowerCase().includes('permission') || result.error.toLowerCase().includes('access'))) {
+           localStorage.removeItem('CRUMBLY_GSHEET_ID');
+           currentPayload.spreadsheetId = ''; // Clear the stale ID
+           
+           gsheetSyncStatus.textContent = 'Stale sheet detected. Creating a new one...';
+           
+           response = await fetch(webhookUrl, {
+             method: 'POST',
+             body: JSON.stringify(currentPayload),
+             headers: { 'Content-Type': 'text/plain' }
+           });
+           result = await response.json();
+        }
+
         if (result.success) {
           gsheetSyncStatus.textContent = 'Sync successful!';
           gsheetSyncStatus.style.color = 'green';
