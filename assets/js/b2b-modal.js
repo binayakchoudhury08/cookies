@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Database structure in LocalStorage (Offline First)
   const REV_KEY = 'CRUMBLY_REVENUE_DB_V1';
   function loadRevDB() {
-    let db = { b2c: [], b2b: [], clients: [], flavours: [], supplierFlavours: [] };
+    let db = { b2c: [], b2b: [], clients: [], flavours: [], supplierFlavours: [], boxSizes: ['80g', '180g'] };
     try {
       const data = localStorage.getItem(REV_KEY);
       if (data) {
@@ -64,11 +64,12 @@ document.addEventListener('DOMContentLoaded', () => {
   async function initRevDB() {
     if (!supabase) return;
     try {
-      const [b2cReq, b2bReq, cliReq, flavReq] = await Promise.all([
+      const [b2cReq, b2bReq, cliReq, flavReq, settingsReq] = await Promise.all([
         supabase.from('tracker_b2c').select('*'),
         supabase.from('tracker_b2b').select('*'),
         supabase.from('tracker_clients').select('*'),
-        supabase.from('tracker_flavours').select('*')
+        supabase.from('tracker_flavours').select('*'),
+        supabase.from('tracker_settings').select('*')
       ]);
       
       const db = loadRevDB();
@@ -76,18 +77,43 @@ document.addEventListener('DOMContentLoaded', () => {
       let isCloudEmpty = (!b2cReq.data || b2cReq.data.length === 0) && (!b2bReq.data || b2bReq.data.length === 0);
       if (isCloudEmpty) {
         console.log('Tracker Cloud DB is empty. Migrating...');
-        if (db.b2c) { for (let o of db.b2c) await supabase.from('tracker_b2c').insert({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, qty: o.qty, unit_cost: o.unitCost, price: o.price, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
-        if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
+        if (db.b2c) { for (let o of db.b2c) await supabase.from('tracker_b2c').insert({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, size: o.size || '80g', qty: o.qty, unit_cost: o.unitCost, price: o.price, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
+        if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.clients) { for (let c of db.clients) await supabase.from('tracker_clients').insert({ name: c }); }
-        if (db.supplierFlavours) { for (let f of db.supplierFlavours) await supabase.from('tracker_flavours').insert({ supplier: f.supplier, flavour: f.flavour, b2c_cogs: f.b2cCogs || 0, b2b_cogs: f.b2bCogs || 0 }); }
+        
+        const boxCogsInit = { '80g': 71.25, '180g': 147.00 }; // rough fallback if missing
+        if (db.supplierFlavours) { 
+          for (let f of db.supplierFlavours) {
+            let bCogs = f.boxCogs || {};
+            if (f.b2c80gCogs) bCogs['80g'] = f.b2c80gCogs;
+            if (f.b2c180gCogs) bCogs['180g'] = f.b2c180gCogs;
+            await supabase.from('tracker_flavours').insert({ supplier: f.supplier, flavour: f.flavour, b2b_cogs: f.b2bCogs || 0, box_cogs: bCogs }); 
+          }
+        }
+        await supabase.from('tracker_settings').insert({ key: 'box_sizes', value: db.boxSizes });
         return;
       }
       
-      if (b2cReq.data) db.b2c = b2cReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, qty: o.qty, unitCost: o.unit_cost, price: o.price, advance: o.advance, cogs: o.cogs, profit: o.profit }));
-      if (b2bReq.data) db.b2b = b2bReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, kg: o.kg, unitCost: o.unit_cost, cost: o.cost, advance: o.advance, cogs: o.cogs, profit: o.profit }));
+      if (b2cReq.data) db.b2c = b2cReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, size: o.size || '80g', qty: o.qty, unitCost: o.unit_cost, price: o.price, advance: o.advance, cogs: o.cogs, profit: o.profit }));
+      if (b2bReq.data) db.b2b = b2bReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unitCost: o.unit_cost, cost: o.cost, advance: o.advance, cogs: o.cogs, profit: o.profit }));
       if (cliReq.data) db.clients = cliReq.data.map(c => c.name);
-      if (flavReq.data) db.supplierFlavours = flavReq.data.map(f => ({ supplier: f.supplier, flavour: f.flavour, b2cCogs: f.b2c_cogs, b2bCogs: f.b2b_cogs }));
+      if (flavReq.data) db.supplierFlavours = flavReq.data.map(f => ({ supplier: f.supplier, flavour: f.flavour, b2bCogs: f.b2b_cogs, boxCogs: f.box_cogs || {} }));
+      if (settingsReq && settingsReq.data) {
+        const boxSizesRow = settingsReq.data.find(r => r.key === 'box_sizes');
+        if (boxSizesRow && boxSizesRow.value) {
+          db.boxSizes = boxSizesRow.value;
+        } else if (!isCloudEmpty) {
+          await supabase.from('tracker_settings').insert({ key: 'box_sizes', value: db.boxSizes });
+        }
+      }
       
+      // Migrate old b2c80gCogs logic in local DB to boxCogs
+      db.supplierFlavours.forEach(sf => {
+        if (!sf.boxCogs) sf.boxCogs = {};
+        if (sf.b2c80gCogs !== undefined) { sf.boxCogs['80g'] = sf.b2c80gCogs; delete sf.b2c80gCogs; }
+        if (sf.b2c180gCogs !== undefined) { sf.boxCogs['180g'] = sf.b2c180gCogs; delete sf.b2c180gCogs; }
+      });
+
       saveRevDB(db);
     } catch (e) {
       console.error('Tracker Sync Error', e);
@@ -170,19 +196,27 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderSettings() {
     const db = loadRevDB();
     
+    const boxSizeList = document.getElementById('box-size-list');
+    const dynamicCogsContainer = document.getElementById('dynamic-cogs-container');
+    const b2cSizeSel = document.getElementById('b2c-size');
+    const b2bSizeSel = document.getElementById('b2b-size');
+
     // Clear
     if(clientList) clientList.innerHTML = '';
     if(flavourList) flavourList.innerHTML = '';
+    if(boxSizeList) boxSizeList.innerHTML = '';
     if(b2bClientSel) b2bClientSel.innerHTML = '<option value="" disabled selected>Select Client</option>';
     if(b2bFlavourSel) b2bFlavourSel.innerHTML = '<option value="" disabled selected>Select Flavour</option>';
     if(b2cFlavourSel) b2cFlavourSel.innerHTML = '<option value="" disabled selected>Select Flavour</option>';
+    if(b2cSizeSel) b2cSizeSel.innerHTML = '';
+    if(b2bSizeSel) b2bSizeSel.innerHTML = '';
+    if(dynamicCogsContainer) dynamicCogsContainer.innerHTML = '';
 
     // Default Flavours if empty
     if(!db.supplierFlavours || db.supplierFlavours.length === 0) {
       db.supplierFlavours = [
-        { supplier: 'In-House', flavour: 'Double Chocolate' },
-        { supplier: 'In-House', flavour: 'Choco Chips' },
-        { supplier: 'In-House', flavour: 'Oatmeal Raisin' }
+        { supplier: 'In-House', flavour: 'Double Chocolate', boxCogs: {'80g':71.25, '180g':147}, b2bCogs: 850 },
+        { supplier: 'In-House', flavour: 'Choco Chips', boxCogs: {'80g':71.25, '180g':147}, b2bCogs: 850 }
       ];
       saveRevDB(db);
     }
@@ -190,6 +224,21 @@ document.addEventListener('DOMContentLoaded', () => {
     db.clients.forEach((c, idx) => {
       if(clientList) clientList.innerHTML += `<li style="display:flex; justify-content:space-between;">${c} <button type="button" onclick="window.delClient(${idx})" style="background:none;border:none;cursor:pointer;color:red;" title="Delete">✖</button></li>`;
       if(b2bClientSel) b2bClientSel.innerHTML += `<option value="${c}">${c}</option>`;
+    });
+
+    db.boxSizes.forEach((sz, idx) => {
+      if(boxSizeList) boxSizeList.innerHTML += `<li style="display:flex; justify-content:space-between;">${sz} <button type="button" onclick="window.delBoxSize(${idx})" style="background:none;border:none;cursor:pointer;color:red;" title="Delete">✖</button></li>`;
+      if(b2cSizeSel) b2cSizeSel.innerHTML += `<option value="${sz}">${sz}</option>`;
+      if(b2bSizeSel) b2bSizeSel.innerHTML += `<option value="${sz}">${sz}</option>`;
+      
+      if(dynamicCogsContainer) {
+        dynamicCogsContainer.innerHTML += `
+          <div class="b2b-form-group" style="flex:1; min-width: 120px;">
+            <label>COGS (${sz}) (₹)</label>
+            <input type="number" class="dyn-cogs-input" data-size="${sz}" required min="0" step="0.1" value="0">
+          </div>
+        `;
+      }
     });
 
     db.supplierFlavours.forEach((sf, idx) => {
@@ -209,6 +258,16 @@ document.addEventListener('DOMContentLoaded', () => {
       saveRevDB(db);
       renderSettings();
       if (supabase && clientName) supabase.from('tracker_clients').delete().eq('name', clientName).then();
+    }
+  };
+  
+  window.delBoxSize = (idx) => {
+    const db = loadRevDB();
+    if(confirm('Delete box size? Note: Existing orders with this size will keep their data, but you won\'t be able to select this size for new orders.')) {
+      db.boxSizes.splice(idx, 1);
+      saveRevDB(db);
+      renderSettings();
+      if (supabase) supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes').then();
     }
   };
 
@@ -238,22 +297,43 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  const formBoxSize = document.getElementById('form-box-size');
+  if (formBoxSize) {
+    formBoxSize.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const db = loadRevDB();
+      const newSize = document.getElementById('set-box-size-name').value.trim();
+      if (newSize && !db.boxSizes.includes(newSize)) {
+        db.boxSizes.push(newSize);
+        saveRevDB(db);
+        renderSettings();
+        if (supabase) supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes').then();
+      }
+      formBoxSize.reset();
+    });
+  }
+
   if (formFlavour) {
     formFlavour.addEventListener('submit', (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const supplierName = document.getElementById('set-supplier-name').value.trim();
       const newFlavour = document.getElementById('set-flavour-name').value.trim();
-      const b2cCogs = parseFloat(document.getElementById('set-flavour-b2c-cogs').value) || 0;
       const b2bCogs = parseFloat(document.getElementById('set-flavour-b2b-cogs').value) || 0;
+      
+      const boxCogs = {};
+      document.querySelectorAll('.dyn-cogs-input').forEach(input => {
+        const size = input.getAttribute('data-size');
+        boxCogs[size] = parseFloat(input.value) || 0;
+      });
 
       if (supplierName && newFlavour) {
         const exists = db.supplierFlavours.find(sf => sf.supplier === supplierName && sf.flavour === newFlavour);
         if (!exists) {
-          db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour, b2cCogs, b2bCogs });
+          db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour, boxCogs, b2bCogs });
           saveRevDB(db);
           renderSettings();
-          if (supabase) supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, b2c_cogs: b2cCogs, b2b_cogs: b2bCogs }).then();
+          if (supabase) supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, box_cogs: boxCogs, b2b_cogs: b2bCogs }).then();
         }
       }
       formFlavour.reset();
@@ -279,6 +359,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const b2bUnitCost = document.getElementById('b2b-unit-cost');
   const b2bCost = document.getElementById('b2b-cost');
 
+  const b2bUnit = document.getElementById('b2b-unit');
+  const b2bSizeGroup = document.getElementById('b2b-size-group');
+  if (b2bUnit && b2bSizeGroup) {
+    b2bUnit.addEventListener('change', () => {
+      if (b2bUnit.value === 'Box') {
+        b2bSizeGroup.style.display = 'block';
+        if(document.getElementById('b2b-kg')) document.getElementById('b2b-kg').previousElementSibling.textContent = 'Quantity (Boxes)';
+      } else {
+        b2bSizeGroup.style.display = 'none';
+        if(document.getElementById('b2b-kg')) document.getElementById('b2b-kg').previousElementSibling.textContent = 'Quantity (KG)';
+      }
+    });
+  }
+
   function calcB2B() {
     if (b2bKg && b2bUnitCost && b2bCost) {
       const q = parseFloat(b2bKg.value) || 0;
@@ -297,8 +391,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const db = loadRevDB();
       const idInput = document.getElementById('b2c-id');
       const flavourVal = document.getElementById('b2c-flavour').value;
+      const sizeVal = document.getElementById('b2c-size') ? document.getElementById('b2c-size').value : (db.boxSizes.length > 0 ? db.boxSizes[0] : '80g');
       const fObj = db.supplierFlavours.find(sf => `${sf.supplier} - ${sf.flavour}` === flavourVal);
-      const baseCogs = fObj ? (fObj.b2cCogs || 0) : 0;
+      const baseCogs = fObj && fObj.boxCogs && fObj.boxCogs[sizeVal] ? fObj.boxCogs[sizeVal] : 0;
       const qty = parseFloat(b2cQty.value);
       const price = parseFloat(b2cPrice.value);
       const totalCogs = baseCogs * qty;
@@ -309,6 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
         date: new Date().toISOString(),
         type: 'B2C',
         flavour: flavourVal,
+        size: sizeVal,
         qty: qty,
         unitCost: parseFloat(b2cUnitCost.value),
         price: price,
@@ -320,10 +416,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idInput.value) {
         const idx = db.b2c.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2c[idx] = { ...db.b2c[idx], ...order };
-        if (supabase) supabase.from('tracker_b2c').update({ flavour: order.flavour, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
+        if (supabase) supabase.from('tracker_b2c').update({ flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
       } else {
         db.b2c.push(order);
-        if (supabase) supabase.from('tracker_b2c').insert({ id: order.id, date: order.date, type: order.type, flavour: order.flavour, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
+        if (supabase) supabase.from('tracker_b2c').insert({ id: order.id, date: order.date, type: order.type, flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
       }
 
       saveRevDB(db);
@@ -340,8 +436,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const db = loadRevDB();
       const idInput = document.getElementById('b2b-id');
       const flavourVal = document.getElementById('b2b-flavour').value;
+      const unitVal = document.getElementById('b2b-unit').value;
+      const sizeVal = document.getElementById('b2b-size') ? document.getElementById('b2b-size').value : null;
+      
       const fObj = db.supplierFlavours.find(sf => `${sf.supplier} - ${sf.flavour}` === flavourVal);
-      const baseCogs = fObj ? (fObj.b2bCogs || 0) : 0;
+      let baseCogs = 0;
+      if (fObj) {
+        if (unitVal === 'Box' && sizeVal && fObj.boxCogs && fObj.boxCogs[sizeVal]) {
+          baseCogs = fObj.boxCogs[sizeVal];
+        } else {
+          baseCogs = fObj.b2bCogs || 0;
+        }
+      }
+      
       const kg = parseFloat(b2bKg.value);
       const cost = parseFloat(b2bCost.value); // This is selling price total
       const totalCogs = baseCogs * kg;
@@ -353,7 +460,8 @@ document.addEventListener('DOMContentLoaded', () => {
         type: 'B2B',
         client: document.getElementById('b2b-client').value,
         flavour: flavourVal,
-        unit: document.getElementById('b2b-unit').value,
+        unit: unitVal,
+        size: unitVal === 'Box' ? sizeVal : null,
         kg: kg,
         unitCost: parseFloat(b2bUnitCost.value),
         cost: cost,
@@ -365,7 +473,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idInput.value) {
         const idx = db.b2b.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2b[idx] = { ...db.b2b[idx], ...order };
-        if (supabase) supabase.from('tracker_b2b').update({ client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
+        if (supabase) supabase.from('tracker_b2b').update({ client: order.client, flavour: order.flavour, unit: order.unit, size: order.size, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
       } else {
         db.b2b.push(order);
         if (supabase) supabase.from('tracker_b2b').insert({ id: order.id, date: order.date, type: order.type, client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
@@ -412,6 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (order) {
             document.getElementById('b2c-id').value = order.id;
             document.getElementById('b2c-flavour').value = order.flavour;
+            if (document.getElementById('b2c-size')) document.getElementById('b2c-size').value = order.size || '80g';
             document.getElementById('b2c-qty').value = order.qty || 1;
             document.getElementById('b2c-unit-cost').value = order.unitCost || (order.price / (order.qty || 1));
             document.getElementById('b2c-advance').value = order.advance || 0;
@@ -426,6 +535,16 @@ document.addEventListener('DOMContentLoaded', () => {
             if(order.client) document.getElementById('b2b-client').value = order.client;
             document.getElementById('b2b-flavour').value = order.flavour;
             document.getElementById('b2b-unit').value = order.unit || 'KG';
+            
+            const b2bUnitSel = document.getElementById('b2b-unit');
+            const b2bSizeGroup = document.getElementById('b2b-size-group');
+            if (b2bUnitSel.value === 'Box') {
+              if (b2bSizeGroup) b2bSizeGroup.style.display = 'block';
+              if (document.getElementById('b2b-size')) document.getElementById('b2b-size').value = order.size || '';
+            } else {
+              if (b2bSizeGroup) b2bSizeGroup.style.display = 'none';
+            }
+            
             document.getElementById('b2b-kg').value = order.kg || 1;
             document.getElementById('b2b-unit-cost').value = order.unitCost || (order.cost / (order.kg || 1));
             document.getElementById('b2b-advance').value = order.advance || 0;
@@ -447,8 +566,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(tbody) tbody.innerHTML = '';
 
     const allOrders = [];
-    db.b2c.forEach(o => allOrders.push({ ...o, amount: o.price, profit: o.profit || 0, qtyStr: (o.qty || 1) + ' Box', desc: o.flavour }));
-    db.b2b.forEach(o => allOrders.push({ ...o, amount: o.cost, profit: o.profit || 0, qtyStr: (o.kg || 1) + ' ' + (o.unit || 'KG'), desc: (o.client ? `${o.client} - ${o.flavour}` : o.flavour) }));
+    db.b2c.forEach(o => allOrders.push({ ...o, amount: o.price, profit: o.profit || 0, qtyStr: (o.qty || 1) + ' Box', desc: `${o.flavour} (${o.size || '80g'})` }));
+    db.b2b.forEach(o => {
+      let desc = o.client ? `${o.client} - ${o.flavour}` : o.flavour;
+      if (o.unit === 'Box' && o.size) desc += ` (${o.size})`;
+      allOrders.push({ ...o, amount: o.cost, profit: o.profit || 0, qtyStr: (o.kg || 1) + ' ' + (o.unit || 'KG'), desc });
+    });
 
     allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -578,7 +701,8 @@ document.addEventListener('DOMContentLoaded', () => {
         b2c: db.b2c,
         b2b: db.b2b,
         clients: db.clients,
-        flavours: db.supplierFlavours
+        flavours: db.supplierFlavours,
+        boxSizes: db.boxSizes
       };
 
       btnGSheetSync.textContent = 'Syncing...';
@@ -656,14 +780,14 @@ document.addEventListener('DOMContentLoaded', () => {
       XLSX.utils.book_append_sheet(wb, wsDash, "Dashboard");
 
       // 2. B2C Orders
-      const b2cData = [["ID", "Date", "Flavour", "Qty (Boxes)", "Selling Price/Box", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
-      db.b2c.forEach(o => b2cData.push([o.id, o.date, o.flavour, o.qty, o.unitCost, o.price, o.cogs || 0, o.profit || 0, o.advance]));
+      const b2cData = [["ID", "Date", "Flavour", "Size", "Qty (Boxes)", "Selling Price/Box", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
+      db.b2c.forEach(o => b2cData.push([o.id, o.date, o.flavour, o.size || '80g', o.qty, o.unitCost, o.price, o.cogs || 0, o.profit || 0, o.advance]));
       const wsB2C = XLSX.utils.aoa_to_sheet(b2cData);
       XLSX.utils.book_append_sheet(wb, wsB2C, "B2C Orders");
 
       // 3. B2B Orders
-      const b2bData = [["ID", "Date", "Client", "Flavour", "Unit", "Quantity", "Selling Price/Unit", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
-      db.b2b.forEach(o => b2bData.push([o.id, o.date, o.client, o.flavour, o.unit, o.kg, o.unitCost, o.cost, o.cogs || 0, o.profit || 0, o.advance]));
+      const b2bData = [["ID", "Date", "Client", "Flavour", "Unit", "Size", "Quantity", "Selling Price/Unit", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
+      db.b2b.forEach(o => b2bData.push([o.id, o.date, o.client, o.flavour, o.unit, o.size || '', o.kg, o.unitCost, o.cost, o.cogs || 0, o.profit || 0, o.advance]));
       const wsB2B = XLSX.utils.aoa_to_sheet(b2bData);
       XLSX.utils.book_append_sheet(wb, wsB2B, "B2B Orders");
 
@@ -674,8 +798,13 @@ document.addEventListener('DOMContentLoaded', () => {
       XLSX.utils.book_append_sheet(wb, wsClients, "Clients");
 
       // 5. Flavours
-      const flavourData = [["Supplier", "Flavour", "B2C Base Cost (₹/Box)", "B2B Base Cost (₹/KG)"]];
-      db.supplierFlavours.forEach(f => flavourData.push([f.supplier, f.flavour, f.b2cCogs || 0, f.b2bCogs || 0]));
+      const flavourData = [["Supplier", "Flavour", ...db.boxSizes.map(sz => `COGS ${sz} (₹)`), "B2B COGS (₹/KG)"]];
+      db.supplierFlavours.forEach(f => {
+        const row = [f.supplier, f.flavour];
+        db.boxSizes.forEach(sz => row.push(f.boxCogs && f.boxCogs[sz] ? f.boxCogs[sz] : 0));
+        row.push(f.b2bCogs || 0);
+        flavourData.push(row);
+      });
       const wsFlavours = XLSX.utils.aoa_to_sheet(flavourData);
       XLSX.utils.book_append_sheet(wb, wsFlavours, "Flavours");
 
