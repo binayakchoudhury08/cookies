@@ -74,9 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const db = loadRevDB();
       
-      let isCloudEmpty = (!b2cReq.data || b2cReq.data.length === 0) && (!b2bReq.data || b2bReq.data.length === 0);
+      let isCloudEmpty = (!b2cReq.data || b2cReq.data.length === 0) && 
+                         (!b2bReq.data || b2bReq.data.length === 0) &&
+                         (!cliReq.data || cliReq.data.length === 0) &&
+                         (!flavReq.data || flavReq.data.length === 0);
+                         
       if (isCloudEmpty) {
-        console.log('Tracker Cloud DB is empty. Migrating...');
+        console.log('Tracker Cloud DB is completely empty. Migrating local data...');
         if (db.b2c) { for (let o of db.b2c) await supabase.from('tracker_b2c').insert({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, size: o.size || '80g', qty: o.qty, unit_cost: o.unitCost, price: o.price, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.clients) { for (let c of db.clients) await supabase.from('tracker_clients').insert({ name: c }); }
