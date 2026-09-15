@@ -704,6 +704,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gsheetLink) gsheetLink.href = 'https://docs.google.com/spreadsheets/d/' + savedSheetId;
   }
 
+  const btnGsheetReset = document.getElementById('btn-gsheet-reset');
+  if (btnGsheetReset) {
+    btnGsheetReset.addEventListener('click', () => {
+      localStorage.removeItem('CRUMBLY_GSHEET_ID');
+      if (gsheetIdGroup) gsheetIdGroup.style.display = 'none';
+      if (gsheetIdInput) gsheetIdInput.value = '';
+      if (gsheetSyncStatus) {
+        gsheetSyncStatus.textContent = 'Spreadsheet ID unlinked. Next sync will create a new one.';
+        gsheetSyncStatus.style.color = '#666';
+      }
+    });
+  }
+
   if (btnGSheetSync) {
     btnGSheetSync.addEventListener('click', async () => {
       const webhookUrl = gsheetWebhookInput.value.trim();
