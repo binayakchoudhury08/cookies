@@ -250,40 +250,49 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Expose delete functions globally so onclick works
-  window.delClient = (idx) => {
+  window.delClient = async (idx) => {
     const db = loadRevDB();
     if(confirm('Delete client?')) {
       const clientName = db.clients[idx];
       db.clients.splice(idx, 1);
       saveRevDB(db);
       renderSettings();
-      if (supabase && clientName) supabase.from('tracker_clients').delete().eq('name', clientName).then();
+      if (supabase && clientName) {
+        const { error } = await supabase.from('tracker_clients').delete().eq('name', clientName);
+        if (error) alert('Supabase Delete Error: ' + error.message);
+      }
     }
   };
   
-  window.delBoxSize = (idx) => {
+  window.delBoxSize = async (idx) => {
     const db = loadRevDB();
     if(confirm('Delete box size? Note: Existing orders with this size will keep their data, but you won\'t be able to select this size for new orders.')) {
       db.boxSizes.splice(idx, 1);
       saveRevDB(db);
       renderSettings();
-      if (supabase) supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes').then();
+      if (supabase) {
+        const { error } = await supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes');
+        if (error) alert('Supabase Update Error: ' + error.message);
+      }
     }
   };
 
-  window.delFlavour = (idx) => {
+  window.delFlavour = async (idx) => {
     const db = loadRevDB();
     if(confirm('Delete supplier & flavour?')) {
       const f = db.supplierFlavours[idx];
       db.supplierFlavours.splice(idx, 1);
       saveRevDB(db);
       renderSettings();
-      if (supabase && f) supabase.from('tracker_flavours').delete().match({ supplier: f.supplier, flavour: f.flavour }).then();
+      if (supabase && f) {
+        const { error } = await supabase.from('tracker_flavours').delete().match({ supplier: f.supplier, flavour: f.flavour });
+        if (error) alert('Supabase Delete Error: ' + error.message);
+      }
     }
   }
 
   if (formClient) {
-    formClient.addEventListener('submit', (e) => {
+    formClient.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const newClient = document.getElementById('set-client-name').value.trim();
@@ -291,7 +300,10 @@ document.addEventListener('DOMContentLoaded', () => {
         db.clients.push(newClient);
         saveRevDB(db);
         renderSettings();
-        if (supabase) supabase.from('tracker_clients').insert({ name: newClient }).then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_clients').insert({ name: newClient });
+          if (error) alert('Supabase Insert Error: ' + error.message);
+        }
       }
       formClient.reset();
     });
@@ -299,7 +311,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const formBoxSize = document.getElementById('form-box-size');
   if (formBoxSize) {
-    formBoxSize.addEventListener('submit', (e) => {
+    formBoxSize.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const newSize = document.getElementById('set-box-size-name').value.trim();
@@ -307,14 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
         db.boxSizes.push(newSize);
         saveRevDB(db);
         renderSettings();
-        if (supabase) supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes').then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_settings').update({ value: db.boxSizes }).eq('key', 'box_sizes');
+          if (error) alert('Supabase Update Error: ' + error.message);
+        }
       }
       formBoxSize.reset();
     });
   }
 
   if (formFlavour) {
-    formFlavour.addEventListener('submit', (e) => {
+    formFlavour.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const supplierName = document.getElementById('set-supplier-name').value.trim();
@@ -333,7 +348,10 @@ document.addEventListener('DOMContentLoaded', () => {
           db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour, boxCogs, b2bCogs });
           saveRevDB(db);
           renderSettings();
-          if (supabase) supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, box_cogs: boxCogs, b2b_cogs: b2bCogs }).then();
+          if (supabase) {
+            const { error } = await supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, box_cogs: boxCogs, b2b_cogs: b2bCogs });
+            if (error) alert('Supabase Insert Error: ' + error.message);
+          }
         }
       }
       formFlavour.reset();
@@ -386,7 +404,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Orders Logic ---
   if (formB2C) {
-    formB2C.addEventListener('submit', (e) => {
+    formB2C.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const idInput = document.getElementById('b2c-id');
@@ -416,10 +434,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idInput.value) {
         const idx = db.b2c.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2c[idx] = { ...db.b2c[idx], ...order };
-        if (supabase) supabase.from('tracker_b2c').update({ flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_b2c').update({ flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id);
+          if (error) alert('Supabase Update Error: ' + error.message);
+        }
       } else {
         db.b2c.push(order);
-        if (supabase) supabase.from('tracker_b2c').insert({ id: order.id, date: order.date, type: order.type, flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_b2c').insert({ id: order.id, date: order.date, type: order.type, flavour: order.flavour, size: order.size, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit });
+          if (error) alert('Supabase Insert Error: ' + error.message);
+        }
       }
 
       saveRevDB(db);
@@ -431,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (formB2B) {
-    formB2B.addEventListener('submit', (e) => {
+    formB2B.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const idInput = document.getElementById('b2b-id');
@@ -473,10 +497,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (idInput.value) {
         const idx = db.b2b.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2b[idx] = { ...db.b2b[idx], ...order };
-        if (supabase) supabase.from('tracker_b2b').update({ client: order.client, flavour: order.flavour, unit: order.unit, size: order.size, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_b2b').update({ client: order.client, flavour: order.flavour, unit: order.unit, size: order.size, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id);
+          if (error) alert('Supabase Update Error: ' + error.message);
+        }
       } else {
         db.b2b.push(order);
-        if (supabase) supabase.from('tracker_b2b').insert({ id: order.id, date: order.date, type: order.type, client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
+        if (supabase) {
+          const { error } = await supabase.from('tracker_b2b').insert({ id: order.id, date: order.date, type: order.type, client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit });
+          if (error) alert('Supabase Insert Error: ' + error.message);
+        }
       }
 
       saveRevDB(db);
@@ -490,7 +520,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Edit / Delete Delegation
   const tbody = document.getElementById('b2b-ledger-body');
   if (tbody) {
-    tbody.addEventListener('click', (e) => {
+    tbody.addEventListener('click', async (e) => {
       const btn = e.target.closest('button');
       if (!btn) return;
       const type = btn.dataset.type;
@@ -503,11 +533,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!confirm('Delete this transaction?')) return;
         if (type === 'B2C') {
            db.b2c = db.b2c.filter(o => o.id !== id);
-           if (supabase) supabase.from('tracker_b2c').delete().eq('id', id).then();
+           if (supabase) {
+             const { error } = await supabase.from('tracker_b2c').delete().eq('id', id);
+             if (error) alert('Supabase Delete Error: ' + error.message);
+           }
         }
         if (type === 'B2B') {
            db.b2b = db.b2b.filter(o => o.id !== id);
-           if (supabase) supabase.from('tracker_b2b').delete().eq('id', id).then();
+           if (supabase) {
+             const { error } = await supabase.from('tracker_b2b').delete().eq('id', id);
+             if (error) alert('Supabase Delete Error: ' + error.message);
+           }
         }
         saveRevDB(db);
         renderDashboard();
