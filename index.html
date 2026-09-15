@@ -1031,9 +1031,14 @@
 
         <!-- Settings Pane -->
         <div id="b2b-pane-settings" class="b2b-tab-pane">
-          <div class="b2b-responsive-grid-2-settings">
-            <div>
-              <h3 class="b2b-section-title">Manage Box Sizes</h3>
+          <div class="b2b-settings-grid">
+            
+            <!-- Box Sizes Card -->
+            <div class="b2b-setting-card">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">📦</span>
+                <h3 class="b2b-setting-title">Manage Box Sizes</h3>
+              </div>
               <form id="form-box-size" class="b2b-form" style="max-width: 100%;">
                 <div class="b2b-form-group">
                   <label>Size (e.g. 250g)</label>
@@ -1042,8 +1047,14 @@
                 <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Box Size</button>
               </form>
               <ul id="box-size-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
+            </div>
 
-              <h3 class="b2b-section-title" style="margin-top:32px;">Manage B2B Clients</h3>
+            <!-- Clients Card -->
+            <div class="b2b-setting-card">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">🏢</span>
+                <h3 class="b2b-setting-title">Manage B2B Clients</h3>
+              </div>
               <form id="form-client" class="b2b-form" style="max-width: 100%;">
                 <div class="b2b-form-group">
                   <label>Client Name</label>
@@ -1053,48 +1064,74 @@
               </form>
               <ul id="client-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
             </div>
-            <div>
-              <h3 class="b2b-section-title">Manage Suppliers & Flavours</h3>
-              <form id="form-flavour" class="b2b-form" style="max-width: 100%;">
-                <div class="b2b-form-group">
-                  <label>Supplier Name</label>
-                  <input type="text" id="set-supplier-name" required placeholder="e.g. Blue Tokai">
+
+            <!-- Flavours Card -->
+            <div class="b2b-setting-card b2b-setting-card-wide">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">🍪</span>
+                <h3 class="b2b-setting-title">Manage Suppliers & Flavours</h3>
+              </div>
+              <div class="b2b-responsive-grid-2">
+                <div>
+                  <form id="form-flavour" class="b2b-form" style="max-width: 100%;">
+                    <div class="b2b-form-group">
+                      <label>Supplier Name</label>
+                      <input type="text" id="set-supplier-name" required placeholder="e.g. Blue Tokai">
+                    </div>
+                    <div class="b2b-form-group">
+                      <label>Flavour / Item Name</label>
+                      <input type="text" id="set-flavour-name" required placeholder="e.g. Double Chocolate">
+                    </div>
+                    
+                    <div style="margin-top: 12px; padding: 12px; background: #FAFAFA; border-radius: 8px; border: 1px solid #EAEaea;">
+                      <h4 style="font-size:12px; text-transform:uppercase; color:#888; margin:0 0 12px 0;">Cost of Goods Sold (COGS)</h4>
+                      <div id="dynamic-cogs-container" style="display:flex; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+                        <!-- Dynamic COGS inputs will be rendered here by JS -->
+                      </div>
+                      <div class="b2b-form-group" style="flex:1;">
+                        <label>B2B COGS (KG)</label>
+                        <input type="number" id="set-flavour-b2b-cogs" required min="0" step="0.1" value="0">
+                      </div>
+                    </div>
+                    
+                    <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Supplier & Flavour</button>
+                  </form>
                 </div>
-                <div class="b2b-form-group">
-                  <label>Flavour / Item Name</label>
-                  <input type="text" id="set-flavour-name" required placeholder="e.g. Double Chocolate">
+                <div>
+                  <ul id="flavour-list" class="b2b-supplier-list" style="height:100%; max-height:400px; overflow-y:auto;"></ul>
                 </div>
-                <div id="dynamic-cogs-container" style="display:flex; flex-wrap:wrap; gap:12px;">
-                  <!-- Dynamic COGS inputs will be rendered here by JS -->
+              </div>
+            </div>
+
+            <!-- Webhook Card -->
+            <div class="b2b-setting-card b2b-setting-card-wide" style="border-top: 4px solid #20A352;">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">🔄</span>
+                <h3 class="b2b-setting-title">Google Sheets Sync</h3>
+              </div>
+              <p class="b2b-setting-desc">Set up a Google Apps Script Webhook to automatically backup your tracker data to Google Sheets in real-time.</p>
+              
+              <div class="b2b-form" style="max-width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end;">
+                <div class="b2b-form-group" style="grid-column: 1 / -1;">
+                  <label>Google Apps Script Webhook URL</label>
+                  <input type="text" id="gsheet-webhook" placeholder="https://script.google.com/macros/s/..." style="width: 100%;">
                 </div>
-                <div style="margin-top:12px;">
-                  <div class="b2b-form-group" style="flex:1;">
-                    <label>B2B COGS (KG)</label>
-                    <input type="number" id="set-flavour-b2b-cogs" required min="0" step="0.1" value="0">
+                
+                <div class="b2b-form-group" style="display:none; grid-column: 1 / -1;" id="gsheet-id-group">
+                  <label>Spreadsheet ID (Auto-filled on first sync)</label>
+                  <div style="display:flex; gap:12px; align-items:center;">
+                    <input type="text" id="gsheet-id" readonly style="background:#EFEFEF; flex:1;">
+                    <a href="#" id="gsheet-link" target="_blank" style="font-size:12px; padding: 10px 16px; background: #e8f4fd; color:#4a90e2; border-radius:8px; text-decoration:none; font-weight:600;">Open Sheet ➔</a>
                   </div>
                 </div>
-                <button type="submit" class="b2b-btn-submit" style="margin-top:0;">Add Supplier & Flavour</button>
-              </form>
-              <ul id="flavour-list" class="b2b-supplier-list" style="margin-top: 16px;"></ul>
+                
+                <div style="grid-column: 1 / -1; display:flex; justify-content:space-between; align-items:center;">
+                  <p id="gsheet-sync-status" style="font-size:13px; font-weight:bold; margin:0;"></p>
+                  <button type="button" class="b2b-btn-submit" id="btn-gsheet-sync" style="background:#20A352; margin:0; padding: 12px 24px;">Sync to Google Sheets Now</button>
+                </div>
+              </div>
             </div>
-          </div>
-          
-          <hr style="border:0; border-top:1px solid #EFEFEF; margin: 32px 0;">
-          
-          <h3 class="b2b-section-title">Google Sheets Sync</h3>
-          <p style="font-size:13px; color:#666; margin-bottom:16px;">Set up a Google Apps Script Webhook to automatically backup your tracker data to Google Sheets.</p>
-          <div class="b2b-form" style="max-width: 500px;">
-            <div class="b2b-form-group">
-              <label>Google Apps Script Webhook URL</label>
-              <input type="text" id="gsheet-webhook" placeholder="https://script.google.com/macros/s/...">
-            </div>
-            <div class="b2b-form-group" style="display:none;" id="gsheet-id-group">
-              <label>Spreadsheet ID (Auto-filled on first sync)</label>
-              <input type="text" id="gsheet-id" readonly style="background:#EFEFEF;">
-              <a href="#" id="gsheet-link" target="_blank" style="font-size:12px; margin-top:4px; display:inline-block; color:#4a90e2;">Open Sheet</a>
-            </div>
-            <button type="button" class="b2b-btn-submit" id="btn-gsheet-sync" style="background:#20A352;">Sync to Google Sheets Now</button>
-            <p id="gsheet-sync-status" style="font-size:13px; margin-top:8px; font-weight:bold;"></p>
+
           </div>
         </div>
       </div>
