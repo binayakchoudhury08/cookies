@@ -561,8 +561,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const db = loadRevDB();
     const filterVal = document.querySelector('.b2b-date-input').value;
 
-    let totalB2C = 0, totalB2B = 0;
-    let profitB2C = 0, profitB2B = 0;
+    let allTimeB2C = 0, allTimeB2B = 0;
+    let filteredB2C = 0, filteredB2B = 0;
+    let filteredProfitB2C = 0, filteredProfitB2B = 0;
+    
     if(tbody) tbody.innerHTML = '';
 
     const allOrders = [];
@@ -579,10 +581,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const dDate = new Date(o.date);
       const ymd = dDate.toISOString().slice(0, 10);
       
-      if (o.type === 'B2C') { totalB2C += o.amount; profitB2C += o.profit; }
-      if (o.type === 'B2B') { totalB2B += o.amount; profitB2B += o.profit; }
+      if (o.type === 'B2C') { allTimeB2C += o.amount; }
+      if (o.type === 'B2B') { allTimeB2B += o.amount; }
 
       if (filterVal && ymd !== filterVal) return;
+
+      if (o.type === 'B2C') { filteredB2C += o.amount; filteredProfitB2C += o.profit; }
+      if (o.type === 'B2B') { filteredB2B += o.amount; filteredProfitB2B += o.profit; }
 
       if(tbody) {
         const tr = document.createElement('tr');
@@ -602,25 +607,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    const totalRev = totalB2C + totalB2B;
-    const totalProfit = profitB2C + profitB2B;
+    const totalRev = allTimeB2C + allTimeB2B;
     const target = 1000000;
     const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
-    const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
+
+    const filteredTotalRev = filteredB2C + filteredB2B;
+    const filteredTotalProfit = filteredProfitB2C + filteredProfitB2B;
+    const margin = filteredTotalRev > 0 ? ((filteredTotalProfit / filteredTotalRev) * 100).toFixed(1) : 0;
 
     const elTotal = document.getElementById('b2b-val-total');
     if(elTotal) elTotal.textContent = `₹${totalRev.toLocaleString()}`;
     const elB2B = document.getElementById('b2b-val-b2b');
-    if(elB2B) elB2B.textContent = `₹${totalB2B.toLocaleString()}`;
+    if(elB2B) elB2B.textContent = `₹${filteredB2B.toLocaleString()}`;
     const elB2C = document.getElementById('b2b-val-b2c');
-    if(elB2C) elB2C.textContent = `₹${totalB2C.toLocaleString()}`;
+    if(elB2C) elB2C.textContent = `₹${filteredB2C.toLocaleString()}`;
     
     const elProfitTotal = document.getElementById('b2b-val-profit');
-    if(elProfitTotal) elProfitTotal.textContent = `₹${totalProfit.toLocaleString()}`;
+    if(elProfitTotal) elProfitTotal.textContent = `₹${filteredTotalProfit.toLocaleString()}`;
     const elProfitB2B = document.getElementById('b2b-val-b2b-profit');
-    if(elProfitB2B) elProfitB2B.textContent = `₹${profitB2B.toLocaleString()}`;
+    if(elProfitB2B) elProfitB2B.textContent = `₹${filteredProfitB2B.toLocaleString()}`;
     const elProfitB2C = document.getElementById('b2b-val-b2c-profit');
-    if(elProfitB2C) elProfitB2C.textContent = `₹${profitB2C.toLocaleString()}`;
+    if(elProfitB2C) elProfitB2C.textContent = `₹${filteredProfitB2C.toLocaleString()}`;
     const elMargin = document.getElementById('b2b-val-margin');
     if(elMargin) elMargin.textContent = `${margin}%`;
 
