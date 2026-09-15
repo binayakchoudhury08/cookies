@@ -6,11 +6,15 @@
  * Orders, Finance P&L, Expenses, Inventory, Logistics, and Waitlist CRM.
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const DB = window.CRUMBLY_DB;
   if (!DB) {
     console.error('CRUMBLY_DB is not loaded!');
     return;
+  }
+
+  if (DB.initDB) {
+    await DB.initDB();
   }
 
   /* ══════════════════════════════════════════════════════════

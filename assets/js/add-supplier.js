@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const DB = window.CRUMBLY_DB;
   if (!DB || !DB.isAuthenticated()) {
-    window.location.href = 'login.html';
+    setTimeout(() => window.location.href = 'login.html', 500);
     return;
   }
 
@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
       DB.addSupplier(supData);
       
       // Redirect back to dashboard Settings tab
-      window.location.href = 'admin.html#settings';
+      setTimeout(() => window.location.href = 'admin.html#settings', 500);
     });
   }
 });
+

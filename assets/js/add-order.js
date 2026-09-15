@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!DB) return;
 
   if (!DB.isAuthenticated()) {
-    window.location.href = 'login.html';
+    setTimeout(() => window.location.href = 'login.html', 500);
     return;
   }
 
@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       DB.addOrder(orderData);
-      window.location.href = 'admin.html#orders';
+      setTimeout(() => window.location.href = 'admin.html#orders', 500);
     });
   }
 });
+

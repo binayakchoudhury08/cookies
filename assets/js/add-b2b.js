@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const DB = window.CRUMBLY_DB;
   if (!DB || !DB.isAuthenticated()) {
-    window.location.href = 'login.html';
+    setTimeout(() => window.location.href = 'login.html', 500);
     return;
   }
 
@@ -35,7 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
       DB.addB2BOrder(orderData);
       
       // Redirect back to dashboard B2B tab
-      window.location.href = 'admin.html#b2b';
+      setTimeout(() => window.location.href = 'admin.html#b2b', 500);
     });
   }
 });
+

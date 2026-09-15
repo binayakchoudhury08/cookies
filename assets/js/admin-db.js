@@ -11,6 +11,11 @@ const CRUMBLY_DB = (() => {
   const AUTH_KEY = 'CRUMBLY_ADMIN_AUTH_SESSION';
 
   // Realistic initial seed data for CRUMBLY bakery business
+  
+  const SUPABASE_URL = 'https://zpwsflfzoktwlwixsdut.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3NmbGZ6b2t0d2x3aXhzZHV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDE4OTcsImV4cCI6MjEwNTAxNzg5N30.yk-vmXvZuZKslHSZc4_9OvOhAUUOf4-8i2pqk3JcCDs';
+  const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
   const SEED_DATA = {
     settings: {
       brandName: "CRUMBLY",
@@ -211,6 +216,68 @@ const CRUMBLY_DB = (() => {
 
   // Public API
   return {
+    // Supabase Sync
+    initDB: async () => {
+      if (!supabase) return { success: false, message: 'Supabase client not loaded' };
+      try {
+        const [settings, inv, batches, orders, exp, log, leads, sup, b2bc, b2bo] = await Promise.all([
+          supabase.from('settings').select('*').single(),
+          supabase.from('inventory').select('*'),
+          supabase.from('batches').select('*'),
+          supabase.from('orders').select('*'),
+          supabase.from('expenses').select('*'),
+          supabase.from('logistics').select('*'),
+          supabase.from('crm_leads').select('*'),
+          supabase.from('suppliers').select('*'),
+          supabase.from('b2b_clients').select('*'),
+          supabase.from('b2b_orders').select('*')
+        ]);
+        
+        const db = loadDB();
+        
+        let isCloudEmpty = (!inv.data || inv.data.length === 0) && (!orders.data || orders.data.length === 0) && (!exp.data || exp.data.length === 0);
+        
+        if (isCloudEmpty) {
+          console.log('Cloud DB is empty. Migrating local data to Supabase...');
+          if (db.inventory) { for (let i of db.inventory) { await supabase.from('inventory').insert({ id: i.id, name: i.name, category: i.category, current_qty: i.currentQty, min_threshold: i.minThreshold, unit: i.unit, unit_cost: i.unitCost, supplier: i.supplier }); } }
+          if (db.batches) { for (let b of db.batches) { await supabase.from('batches').insert({ id: b.id, date: b.date, flavour: b.flavour, target_qty: b.targetQty, actual_yield: b.actualYield, reject_qty: b.rejectQty, baker: b.baker, oven_temp: b.ovenTemp, pass_rate: b.passRate, expiry_date: b.expiryDate }); } }
+          if (db.orders) { for (let o of db.orders) { await supabase.from('orders').insert({ id: o.id, date: o.date, customer_name: o.customerName, customer_phone: o.customerPhone, customer_email: o.customerEmail, shipping_address: o.shippingAddress, city: o.city, items: o.items, total_amount: o.totalAmount, payment_status: o.paymentStatus, payment_method: o.paymentMethod, fulfillment_status: o.fulfillmentStatus, carrier: o.carrier, awb: o.awb, notes: o.notes }); } }
+          if (db.expenses) { for (let e of db.expenses) { await supabase.from('expenses').insert({ id: e.id, date: e.date, category: e.category, title: e.title, amount: e.amount, vendor: e.vendor, payment_method: e.paymentMethod, receipt_no: e.receiptNo, notes: e.notes }); } }
+          if (db.logistics) { for (let l of db.logistics) { await supabase.from('logistics').insert({ id: l.id, order_id: l.orderId, customer: l.customer, destination: l.destination, carrier: l.carrier, awb: l.awb, dispatch_date: l.dispatchDate, est_delivery: l.estDelivery, shipping_cost: l.shippingCost, status: l.status }); } }
+          if (db.crmLeads) { for (let l of db.crmLeads) { await supabase.from('crm_leads').insert({ id: l.id, date: l.date, name: l.name, email: l.email, phone: l.phone, address: l.address, flavours: l.flavours, status: l.status }); } }
+          if (db.suppliers) { for (let s of db.suppliers) { await supabase.from('suppliers').insert({ id: s.id, name: s.name, supplies: s.supplies, phone: s.phone, email: s.email }); } }
+          if (db.b2bClients) { for (let c of db.b2bClients) { await supabase.from('b2b_clients').insert({ id: c.id, name: c.name }); } }
+          if (db.b2bOrders) { for (let o of db.b2bOrders) { await supabase.from('b2b_orders').insert({ id: o.id, client_name: o.clientName, contact_person: o.contactPerson, phone: o.phone, flavours: o.flavours, unit: o.unit, total_amount: o.totalAmount, payment_terms: o.paymentTerms, delivery_date: o.deliveryDate, date: o.date }); } }
+          console.log('Migration complete.');
+          return { success: true };
+        }
+
+        // Standard pull if cloud is not empty
+        if (settings.data) {
+          db.settings = { brandName: settings.data.brand_name || 'CRUMBLY', tagline: settings.data.tagline || 'YOU KNOW YOU WANT IT.', currency: settings.data.currency || '₹', masterPin: settings.data.master_pin || '7069', sessionTimeoutMin: settings.data.session_timeout_min || 60, supportWhatsApp: settings.data.support_whatsapp || '917069666910', helplinePhone: settings.data.helpline_phone || '917008246057', lowStockAlertEmail: settings.data.low_stock_alert_email || 'admin@crumbly.in' };
+        }
+        
+        if (inv.data) db.inventory = inv.data.map(i => ({ id: i.id, name: i.name, category: i.category, currentQty: i.current_qty, minThreshold: i.min_threshold, unit: i.unit, unitCost: i.unit_cost, supplier: i.supplier }));
+        if (batches.data) db.batches = batches.data.map(b => ({ id: b.id, date: b.date, flavour: b.flavour, targetQty: b.target_qty, actualYield: b.actual_yield, rejectQty: b.reject_qty, baker: b.baker, ovenTemp: b.oven_temp, passRate: b.pass_rate, expiryDate: b.expiry_date }));
+        if (orders.data) db.orders = orders.data.map(o => ({ id: o.id, date: o.date, customerName: o.customer_name, customerPhone: o.customer_phone, customerEmail: o.customer_email, shippingAddress: o.shipping_address, city: o.city, items: o.items, totalAmount: o.total_amount, paymentStatus: o.payment_status, paymentMethod: o.payment_method, fulfillmentStatus: o.fulfillment_status, carrier: o.carrier, awb: o.awb, notes: o.notes }));
+        if (exp.data) db.expenses = exp.data.map(e => ({ id: e.id, date: e.date, category: e.category, title: e.title, amount: e.amount, vendor: e.vendor, paymentMethod: e.payment_method, receiptNo: e.receipt_no, notes: e.notes }));
+        if (log.data) db.logistics = log.data.map(l => ({ id: l.id, orderId: l.order_id, customer: l.customer, destination: l.destination, carrier: l.carrier, awb: l.awb, dispatchDate: l.dispatch_date, estDelivery: l.est_delivery, shippingCost: l.shipping_cost, status: l.status }));
+        if (leads.data) db.crmLeads = leads.data.map(l => ({ id: l.id, date: l.date, name: l.name, email: l.email, phone: l.phone, address: l.address, flavours: l.flavours, status: l.status }));
+        if (sup.data) db.suppliers = sup.data.map(s => ({ id: s.id, name: s.name, supplies: s.supplies, phone: s.phone, email: s.email }));
+        if (b2bc.data) db.b2bClients = b2bc.data.map(c => ({ id: c.id, name: c.name }));
+        if (b2bo.data) db.b2bOrders = b2bo.data.map(o => ({ id: o.id, clientName: o.client_name, contactPerson: o.contact_person, phone: o.phone, flavours: o.flavours, unit: o.unit, totalAmount: o.total_amount, paymentTerms: o.payment_terms, deliveryDate: o.delivery_date, date: o.date }));
+        
+        db.orders.sort((a,b) => b.id.localeCompare(a.id));
+        db.expenses.sort((a,b) => b.id.localeCompare(a.id));
+        
+        saveDB(db);
+        return { success: true };
+      } catch (e) {
+        console.error('Supabase init failed', e);
+        return { success: false, message: e.message };
+      }
+    },
+
     // Auth & Security
     isAuthenticated: () => {
       try {
@@ -301,6 +368,17 @@ const CRUMBLY_DB = (() => {
 
       saveDB(db);
       return newOrder;
+      if (supabase) {
+        supabase.from('orders').insert({
+          id: newOrder.id, date: newOrder.date, customer_name: newOrder.customerName, customer_phone: newOrder.customerPhone, customer_email: newOrder.customerEmail, shipping_address: newOrder.shippingAddress, city: newOrder.city, items: newOrder.items, total_amount: newOrder.totalAmount, payment_status: newOrder.paymentStatus, payment_method: newOrder.paymentMethod, fulfillment_status: newOrder.fulfillmentStatus, carrier: newOrder.carrier, awb: newOrder.awb, notes: newOrder.notes
+        }).then();
+        if (newOrder.carrier && newOrder.awb) {
+           const lId = "LOG-" + String(db.logistics.length).padStart(2, '0');
+           supabase.from('logistics').insert({
+             id: lId, order_id: newOrder.id, customer: newOrder.customerName, destination: newOrder.city || newOrder.shippingAddress, carrier: newOrder.carrier, awb: newOrder.awb, dispatch_date: newOrder.date.slice(0, 10), est_delivery: '2-3 Days', shipping_cost: 95, status: 'Manifest Created'
+           }).then();
+        }
+      }
     },
     updateOrderStatus: (orderId, newStatus) => {
       const db = loadDB();
@@ -316,6 +394,11 @@ const CRUMBLY_DB = (() => {
         }
         saveDB(db);
         return order;
+        if (supabase) {
+          supabase.from('orders').update({ fulfillment_status: newStatus }).eq('id', orderId).then();
+          const log = db.logistics.find(l => l.orderId === orderId);
+          if (log) supabase.from('logistics').update({ status: log.status }).eq('order_id', orderId).then();
+        }
       }
       return null;
     },
@@ -334,11 +417,17 @@ const CRUMBLY_DB = (() => {
       db.expenses.unshift(newExpense);
       saveDB(db);
       return newExpense;
+      if (supabase) {
+        supabase.from('expenses').insert({
+          id: newExpense.id, date: newExpense.date, category: newExpense.category, title: newExpense.title, amount: newExpense.amount, vendor: newExpense.vendor, payment_method: newExpense.paymentMethod, receipt_no: newExpense.receiptNo, notes: newExpense.notes
+        }).then();
+      }
     },
     deleteExpense: (id) => {
       const db = loadDB();
       db.expenses = db.expenses.filter(e => e.id !== id);
       saveDB(db);
+      if (supabase) supabase.from('expenses').delete().eq('id', id).then();
     },
 
     // Inventory & Raw Materials
@@ -350,6 +439,7 @@ const CRUMBLY_DB = (() => {
         item.currentQty = Math.max(0, +(item.currentQty + adjustmentQty).toFixed(2));
         saveDB(db);
         return item;
+        if (supabase) supabase.from('inventory').update({ current_qty: item.currentQty }).eq('id', invId).then();
       }
       return null;
     },
@@ -360,6 +450,7 @@ const CRUMBLY_DB = (() => {
       db.inventory.push(newItem);
       saveDB(db);
       return newItem;
+      if (supabase) supabase.from('inventory').insert({ id: newItem.id, name: newItem.name, category: newItem.category, current_qty: newItem.currentQty, min_threshold: newItem.minThreshold, unit: newItem.unit, unit_cost: newItem.unitCost, supplier: newItem.supplier }).then();
     },
 
     // Baking Batches
@@ -375,6 +466,7 @@ const CRUMBLY_DB = (() => {
       db.batches.unshift(newBatch);
       saveDB(db);
       return newBatch;
+      if (supabase) supabase.from('batches').insert({ id: newBatch.id, date: newBatch.date, flavour: newBatch.flavour, target_qty: newBatch.targetQty, actual_yield: newBatch.actualYield, reject_qty: newBatch.rejectQty, baker: newBatch.baker, oven_temp: newBatch.ovenTemp, pass_rate: newBatch.passRate, expiry_date: newBatch.expiryDate }).then();
     },
 
     // Logistics & Dispatch
@@ -386,6 +478,7 @@ const CRUMBLY_DB = (() => {
         log.status = status;
         saveDB(db);
         return log;
+        if (supabase) supabase.from('logistics').update({ status: status }).eq('id', logId).then();
       }
       return null;
     },
@@ -403,6 +496,7 @@ const CRUMBLY_DB = (() => {
       db.crmLeads.unshift(newLead);
       saveDB(db);
       return newLead;
+      if (supabase) supabase.from('crm_leads').insert({ id: newLead.id, date: newLead.date, name: newLead.name, email: newLead.email, phone: newLead.phone, address: newLead.address, flavours: newLead.flavours, status: newLead.status }).then();
     },
     updateLeadStatus: (leadId, status) => {
       const db = loadDB();
@@ -411,6 +505,7 @@ const CRUMBLY_DB = (() => {
         lead.status = status;
         saveDB(db);
         return lead;
+        if (supabase) supabase.from('crm_leads').update({ status: status }).eq('id', leadId).then();
       }
       return null;
     },
@@ -425,6 +520,7 @@ const CRUMBLY_DB = (() => {
       db.suppliers.push(newSupplier);
       saveDB(db);
       return newSupplier;
+      if (supabase) supabase.from('suppliers').insert({ id: newSupplier.id, name: newSupplier.name, supplies: newSupplier.supplies, phone: newSupplier.phone, email: newSupplier.email }).then();
     },
     deleteSupplier: (id) => {
       const db = loadDB();
@@ -432,6 +528,7 @@ const CRUMBLY_DB = (() => {
         db.suppliers = db.suppliers.filter(s => s.id !== id);
         saveDB(db);
       }
+        if (supabase) supabase.from('suppliers').delete().eq('id', id).then();
     },
 
     // B2B Clients
@@ -444,6 +541,7 @@ const CRUMBLY_DB = (() => {
       db.b2bClients.push(newClient);
       saveDB(db);
       return newClient;
+      if (supabase) supabase.from('b2b_clients').insert({ id: newClient.id, name: newClient.name }).then();
     },
     deleteB2BClient: (id) => {
       const db = loadDB();
@@ -451,6 +549,7 @@ const CRUMBLY_DB = (() => {
         db.b2bClients = db.b2bClients.filter(c => c.id !== id);
         saveDB(db);
       }
+        if (supabase) supabase.from('b2b_clients').delete().eq('id', id).then();
     },
 
     // B2B Orders
@@ -466,6 +565,7 @@ const CRUMBLY_DB = (() => {
       if (!db.b2bOrders) db.b2bOrders = [];
       db.b2bOrders.unshift(newOrder);
       saveDB(db);
+      if (supabase) supabase.from('b2b_orders').insert({ id: newOrder.id, client_name: newOrder.clientName, contact_person: newOrder.contactPerson, phone: newOrder.phone, flavours: newOrder.flavours, unit: newOrder.unit, total_amount: newOrder.totalAmount, payment_terms: newOrder.paymentTerms, delivery_date: newOrder.deliveryDate, date: newOrder.date }).then();
       return newOrder;
     },
 

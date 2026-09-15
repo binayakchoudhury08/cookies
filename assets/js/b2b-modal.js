@@ -5,6 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
   if (!modal || !triggerBtn || !closeBtn) return;
 
+  const SUPABASE_URL = 'https://zpwsflfzoktwlwixsdut.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpwd3NmbGZ6b2t0d2x3aXhzZHV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0NDE4OTcsImV4cCI6MjEwNTAxNzg5N30.yk-vmXvZuZKslHSZc4_9OvOhAUUOf4-8i2pqk3JcCDs';
+  const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+
   // Database structure in LocalStorage (Offline First)
   const REV_KEY = 'CRUMBLY_REVENUE_DB_V1';
   function loadRevDB() {
@@ -56,6 +61,39 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem(REV_KEY, JSON.stringify(db));
   }
 
+  async function initRevDB() {
+    if (!supabase) return;
+    try {
+      const [b2cReq, b2bReq, cliReq, flavReq] = await Promise.all([
+        supabase.from('tracker_b2c').select('*'),
+        supabase.from('tracker_b2b').select('*'),
+        supabase.from('tracker_clients').select('*'),
+        supabase.from('tracker_flavours').select('*')
+      ]);
+      
+      const db = loadRevDB();
+      
+      let isCloudEmpty = (!b2cReq.data || b2cReq.data.length === 0) && (!b2bReq.data || b2bReq.data.length === 0);
+      if (isCloudEmpty) {
+        console.log('Tracker Cloud DB is empty. Migrating...');
+        if (db.b2c) { for (let o of db.b2c) await supabase.from('tracker_b2c').insert({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, qty: o.qty, unit_cost: o.unitCost, price: o.price, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
+        if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
+        if (db.clients) { for (let c of db.clients) await supabase.from('tracker_clients').insert({ name: c }); }
+        if (db.supplierFlavours) { for (let f of db.supplierFlavours) await supabase.from('tracker_flavours').insert({ supplier: f.supplier, flavour: f.flavour, b2c_cogs: f.b2cCogs || 0, b2b_cogs: f.b2bCogs || 0 }); }
+        return;
+      }
+      
+      if (b2cReq.data) db.b2c = b2cReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, qty: o.qty, unitCost: o.unit_cost, price: o.price, advance: o.advance, cogs: o.cogs, profit: o.profit }));
+      if (b2bReq.data) db.b2b = b2bReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, kg: o.kg, unitCost: o.unit_cost, cost: o.cost, advance: o.advance, cogs: o.cogs, profit: o.profit }));
+      if (cliReq.data) db.clients = cliReq.data.map(c => c.name);
+      if (flavReq.data) db.supplierFlavours = flavReq.data.map(f => ({ supplier: f.supplier, flavour: f.flavour, b2cCogs: f.b2c_cogs, b2bCogs: f.b2b_cogs }));
+      
+      saveRevDB(db);
+    } catch (e) {
+      console.error('Tracker Sync Error', e);
+    }
+  }
+
   // Authentication & Open/Close Logic
   const pinOverlay = document.getElementById('b2b-pin-overlay');
   const pinInput = document.getElementById('b2b-pin-input');
@@ -72,9 +110,10 @@ document.addEventListener('DOMContentLoaded', () => {
     pinInput.focus();
   });
 
-  function unlockTracker() {
+  async function unlockTracker() {
     if (pinInput.value === THE_PIN) {
       pinOverlay.style.display = 'none';
+      await initRevDB();
       renderSettings();
       renderDashboard(); 
     } else {
@@ -165,18 +204,22 @@ document.addEventListener('DOMContentLoaded', () => {
   window.delClient = (idx) => {
     const db = loadRevDB();
     if(confirm('Delete client?')) {
+      const clientName = db.clients[idx];
       db.clients.splice(idx, 1);
       saveRevDB(db);
       renderSettings();
+      if (supabase && clientName) supabase.from('tracker_clients').delete().eq('name', clientName).then();
     }
   };
 
   window.delFlavour = (idx) => {
     const db = loadRevDB();
     if(confirm('Delete supplier & flavour?')) {
+      const f = db.supplierFlavours[idx];
       db.supplierFlavours.splice(idx, 1);
       saveRevDB(db);
       renderSettings();
+      if (supabase && f) supabase.from('tracker_flavours').delete().match({ supplier: f.supplier, flavour: f.flavour }).then();
     }
   }
 
@@ -189,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         db.clients.push(newClient);
         saveRevDB(db);
         renderSettings();
+        if (supabase) supabase.from('tracker_clients').insert({ name: newClient }).then();
       }
       formClient.reset();
     });
@@ -200,12 +244,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const db = loadRevDB();
       const supplierName = document.getElementById('set-supplier-name').value.trim();
       const newFlavour = document.getElementById('set-flavour-name').value.trim();
+      const b2cCogs = parseFloat(document.getElementById('set-flavour-b2c-cogs').value) || 0;
+      const b2bCogs = parseFloat(document.getElementById('set-flavour-b2b-cogs').value) || 0;
+
       if (supplierName && newFlavour) {
         const exists = db.supplierFlavours.find(sf => sf.supplier === supplierName && sf.flavour === newFlavour);
         if (!exists) {
-          db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour });
+          db.supplierFlavours.push({ supplier: supplierName, flavour: newFlavour, b2cCogs, b2bCogs });
           saveRevDB(db);
           renderSettings();
+          if (supabase) supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, b2c_cogs: b2cCogs, b2b_cogs: b2bCogs }).then();
         }
       }
       formFlavour.reset();
@@ -248,22 +296,34 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const db = loadRevDB();
       const idInput = document.getElementById('b2c-id');
+      const flavourVal = document.getElementById('b2c-flavour').value;
+      const fObj = db.supplierFlavours.find(sf => `${sf.supplier} - ${sf.flavour}` === flavourVal);
+      const baseCogs = fObj ? (fObj.b2cCogs || 0) : 0;
+      const qty = parseFloat(b2cQty.value);
+      const price = parseFloat(b2cPrice.value);
+      const totalCogs = baseCogs * qty;
+      const profit = price - totalCogs;
+
       const order = {
         id: idInput.value || 'b2c-'+Date.now().toString(),
         date: new Date().toISOString(),
         type: 'B2C',
-        flavour: document.getElementById('b2c-flavour').value,
-        qty: parseFloat(b2cQty.value),
+        flavour: flavourVal,
+        qty: qty,
         unitCost: parseFloat(b2cUnitCost.value),
-        price: parseFloat(b2cPrice.value),
+        price: price,
+        cogs: totalCogs,
+        profit: profit,
         advance: parseFloat(document.getElementById('b2c-advance').value) || 0
       };
 
       if (idInput.value) {
         const idx = db.b2c.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2c[idx] = { ...db.b2c[idx], ...order };
+        if (supabase) supabase.from('tracker_b2c').update({ flavour: order.flavour, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
       } else {
         db.b2c.push(order);
+        if (supabase) supabase.from('tracker_b2c').insert({ id: order.id, date: order.date, type: order.type, flavour: order.flavour, qty: order.qty, unit_cost: order.unitCost, price: order.price, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
       }
 
       saveRevDB(db);
@@ -279,24 +339,36 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       const db = loadRevDB();
       const idInput = document.getElementById('b2b-id');
+      const flavourVal = document.getElementById('b2b-flavour').value;
+      const fObj = db.supplierFlavours.find(sf => `${sf.supplier} - ${sf.flavour}` === flavourVal);
+      const baseCogs = fObj ? (fObj.b2bCogs || 0) : 0;
+      const kg = parseFloat(b2bKg.value);
+      const cost = parseFloat(b2bCost.value); // This is selling price total
+      const totalCogs = baseCogs * kg;
+      const profit = cost - totalCogs;
+
       const order = {
         id: idInput.value || 'b2b-'+Date.now().toString(),
         date: new Date().toISOString(),
         type: 'B2B',
         client: document.getElementById('b2b-client').value,
-        flavour: document.getElementById('b2b-flavour').value,
+        flavour: flavourVal,
         unit: document.getElementById('b2b-unit').value,
-        kg: parseFloat(b2bKg.value),
+        kg: kg,
         unitCost: parseFloat(b2bUnitCost.value),
-        cost: parseFloat(b2bCost.value),
+        cost: cost,
+        cogs: totalCogs,
+        profit: profit,
         advance: parseFloat(document.getElementById('b2b-advance').value) || 0
       };
 
       if (idInput.value) {
         const idx = db.b2b.findIndex(o => o.id === idInput.value);
         if (idx !== -1) db.b2b[idx] = { ...db.b2b[idx], ...order };
+        if (supabase) supabase.from('tracker_b2b').update({ client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).eq('id', order.id).then();
       } else {
         db.b2b.push(order);
+        if (supabase) supabase.from('tracker_b2b').insert({ id: order.id, date: order.date, type: order.type, client: order.client, flavour: order.flavour, unit: order.unit, kg: order.kg, unit_cost: order.unitCost, cost: order.cost, advance: order.advance, cogs: order.cogs, profit: order.profit }).then();
       }
 
       saveRevDB(db);
@@ -321,8 +393,14 @@ document.addEventListener('DOMContentLoaded', () => {
       
       if (action === 'delete') {
         if (!confirm('Delete this transaction?')) return;
-        if (type === 'B2C') db.b2c = db.b2c.filter(o => o.id !== id);
-        if (type === 'B2B') db.b2b = db.b2b.filter(o => o.id !== id);
+        if (type === 'B2C') {
+           db.b2c = db.b2c.filter(o => o.id !== id);
+           if (supabase) supabase.from('tracker_b2c').delete().eq('id', id).then();
+        }
+        if (type === 'B2B') {
+           db.b2b = db.b2b.filter(o => o.id !== id);
+           if (supabase) supabase.from('tracker_b2b').delete().eq('id', id).then();
+        }
         saveRevDB(db);
         renderDashboard();
       }
@@ -365,11 +443,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterVal = document.querySelector('.b2b-date-input').value;
 
     let totalB2C = 0, totalB2B = 0;
+    let profitB2C = 0, profitB2B = 0;
     if(tbody) tbody.innerHTML = '';
 
     const allOrders = [];
-    db.b2c.forEach(o => allOrders.push({ ...o, amount: o.price, qtyStr: (o.qty || 1) + ' Box', desc: o.flavour }));
-    db.b2b.forEach(o => allOrders.push({ ...o, amount: o.cost, qtyStr: (o.kg || 1) + ' ' + (o.unit || 'KG'), desc: (o.client ? `${o.client} - ${o.flavour}` : o.flavour) }));
+    db.b2c.forEach(o => allOrders.push({ ...o, amount: o.price, profit: o.profit || 0, qtyStr: (o.qty || 1) + ' Box', desc: o.flavour }));
+    db.b2b.forEach(o => allOrders.push({ ...o, amount: o.cost, profit: o.profit || 0, qtyStr: (o.kg || 1) + ' ' + (o.unit || 'KG'), desc: (o.client ? `${o.client} - ${o.flavour}` : o.flavour) }));
 
     allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -378,8 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const ymd = dDate.toISOString().slice(0, 10);
       if (filterVal && ymd !== filterVal) return;
 
-      if (o.type === 'B2C') totalB2C += o.amount;
-      if (o.type === 'B2B') totalB2B += o.amount;
+      if (o.type === 'B2C') { totalB2C += o.amount; profitB2C += o.profit; }
+      if (o.type === 'B2B') { totalB2B += o.amount; profitB2B += o.profit; }
 
       if(tbody) {
         const tr = document.createElement('tr');
@@ -400,8 +479,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const totalRev = totalB2C + totalB2B;
-    const target = 500000;
+    const totalProfit = profitB2C + profitB2B;
+    const target = 1000000;
     const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
+    const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
 
     const elTotal = document.getElementById('b2b-val-total');
     if(elTotal) elTotal.textContent = `₹${totalRev.toLocaleString()}`;
@@ -410,6 +491,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const elB2C = document.getElementById('b2b-val-b2c');
     if(elB2C) elB2C.textContent = `₹${totalB2C.toLocaleString()}`;
     
+    const elProfitTotal = document.getElementById('b2b-val-profit');
+    if(elProfitTotal) elProfitTotal.textContent = `₹${totalProfit.toLocaleString()}`;
+    const elProfitB2B = document.getElementById('b2b-val-b2b-profit');
+    if(elProfitB2B) elProfitB2B.textContent = `₹${profitB2B.toLocaleString()}`;
+    const elProfitB2C = document.getElementById('b2b-val-b2c-profit');
+    if(elProfitB2C) elProfitB2C.textContent = `₹${profitB2C.toLocaleString()}`;
+    const elMargin = document.getElementById('b2b-val-margin');
+    if(elMargin) elMargin.textContent = `${margin}%`;
+
     const elPct = document.getElementById('b2b-target-pct');
     if(elPct) elPct.textContent = `${pct}%`;
     const elFill = document.getElementById('b2b-target-fill');
@@ -427,6 +517,170 @@ document.addEventListener('DOMContentLoaded', () => {
     clearBtn.addEventListener('click', () => {
       if(dateInput) dateInput.value = '';
       renderDashboard();
+    });
+  }
+
+  // --- Google Sheets Sync Logic ---
+  const btnGSheetSync = document.getElementById('btn-gsheet-sync');
+  const gsheetWebhookInput = document.getElementById('gsheet-webhook');
+  const gsheetIdGroup = document.getElementById('gsheet-id-group');
+  const gsheetIdInput = document.getElementById('gsheet-id');
+  const gsheetLink = document.getElementById('gsheet-link');
+  const gsheetSyncStatus = document.getElementById('gsheet-sync-status');
+
+  const savedWebhook = localStorage.getItem('CRUMBLY_GSHEET_WEBHOOK');
+  const savedSheetId = localStorage.getItem('CRUMBLY_GSHEET_ID');
+  
+  if (savedWebhook && gsheetWebhookInput) gsheetWebhookInput.value = savedWebhook;
+  if (savedSheetId && gsheetIdGroup) {
+    gsheetIdGroup.style.display = 'block';
+    gsheetIdInput.value = savedSheetId;
+    if (gsheetLink) gsheetLink.href = 'https://docs.google.com/spreadsheets/d/' + savedSheetId;
+  }
+
+  if (btnGSheetSync) {
+    btnGSheetSync.addEventListener('click', async () => {
+      const webhookUrl = gsheetWebhookInput.value.trim();
+      if (!webhookUrl) {
+        gsheetSyncStatus.textContent = 'Please enter a valid Webhook URL.';
+        gsheetSyncStatus.style.color = 'red';
+        return;
+      }
+      
+      localStorage.setItem('CRUMBLY_GSHEET_WEBHOOK', webhookUrl);
+      const db = loadRevDB();
+      
+      let totalB2C = 0, totalB2B = 0;
+      let profitB2C = 0, profitB2B = 0;
+      db.b2c.forEach(o => { totalB2C += (o.price || 0); profitB2C += (o.profit || 0); });
+      db.b2b.forEach(o => { totalB2B += (o.cost || 0); profitB2B += (o.profit || 0); });
+      
+      const totalRev = totalB2C + totalB2B;
+      const totalProfit = profitB2C + profitB2B;
+      const pct = Math.min(100, (totalRev / 1000000) * 100).toFixed(1);
+      const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
+      
+      const dashboard = [
+        ["Metric", "Value"],
+        ["Total Revenue (₹)", totalRev],
+        ["B2C Revenue (₹)", totalB2C],
+        ["B2B Revenue (₹)", totalB2B],
+        ["Goal Progress (%)", pct + "%"],
+        ["Total Profit (₹)", totalProfit],
+        ["B2C Profit (₹)", profitB2C],
+        ["B2B Profit (₹)", profitB2B],
+        ["Blended Margin (%)", margin + "%"]
+      ];
+
+      const payload = {
+        spreadsheetId: localStorage.getItem('CRUMBLY_GSHEET_ID') || '',
+        dashboard: dashboard,
+        b2c: db.b2c,
+        b2b: db.b2b,
+        clients: db.clients,
+        flavours: db.supplierFlavours
+      };
+
+      btnGSheetSync.textContent = 'Syncing...';
+      gsheetSyncStatus.textContent = 'Sending data to Google Sheets...';
+      gsheetSyncStatus.style.color = '#666';
+
+      try {
+        const response = await fetch(webhookUrl, {
+          method: 'POST',
+          body: JSON.stringify(payload),
+          headers: { 'Content-Type': 'text/plain' }
+        });
+        
+        const result = await response.json();
+        if (result.success) {
+          gsheetSyncStatus.textContent = 'Sync successful!';
+          gsheetSyncStatus.style.color = 'green';
+          
+          if (result.spreadsheetId) {
+            localStorage.setItem('CRUMBLY_GSHEET_ID', result.spreadsheetId);
+            if (gsheetIdGroup) gsheetIdGroup.style.display = 'block';
+            if (gsheetIdInput) gsheetIdInput.value = result.spreadsheetId;
+            if (gsheetLink) gsheetLink.href = result.spreadsheetUrl || ('https://docs.google.com/spreadsheets/d/' + result.spreadsheetId);
+          }
+        } else {
+          gsheetSyncStatus.textContent = 'Sync failed: ' + (result.error || 'Unknown error');
+          gsheetSyncStatus.style.color = 'red';
+        }
+      } catch (err) {
+        gsheetSyncStatus.textContent = 'Network error. Make sure the Webhook URL is correct.';
+        gsheetSyncStatus.style.color = 'red';
+        console.error(err);
+      } finally {
+        btnGSheetSync.textContent = 'Sync to Google Sheets Now';
+      }
+    });
+  }
+
+  // --- Excel Export Logic (Multi-Tab) ---
+  const btnExport = document.getElementById('b2b-btn-export');
+  if (btnExport) {
+    btnExport.addEventListener('click', () => {
+      if (typeof XLSX === 'undefined') {
+        alert('Excel export library is still loading. Please try again in a moment.');
+        return;
+      }
+      
+      const db = loadRevDB();
+      const timestamp = new Date().toISOString().slice(0,10);
+      const wb = XLSX.utils.book_new();
+
+      // 1. Dashboard Sheet
+      let totalB2C = 0, totalB2B = 0;
+      let profitB2C = 0, profitB2B = 0;
+      db.b2c.forEach(o => { totalB2C += (o.price || 0); profitB2C += (o.profit || 0); });
+      db.b2b.forEach(o => { totalB2B += (o.cost || 0); profitB2B += (o.profit || 0); });
+      
+      const totalRev = totalB2C + totalB2B;
+      const totalProfit = profitB2C + profitB2B;
+      const pct = Math.min(100, (totalRev / 1000000) * 100).toFixed(1);
+      const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
+      
+      const dashData = [
+        ["Metric", "Value"],
+        ["Total Revenue (₹)", totalRev],
+        ["B2C Revenue (₹)", totalB2C],
+        ["B2B Revenue (₹)", totalB2B],
+        ["Goal Progress (%)", pct + "%"],
+        ["Total Profit (₹)", totalProfit],
+        ["B2C Profit (₹)", profitB2C],
+        ["B2B Profit (₹)", profitB2B],
+        ["Blended Margin (%)", margin + "%"]
+      ];
+      const wsDash = XLSX.utils.aoa_to_sheet(dashData);
+      XLSX.utils.book_append_sheet(wb, wsDash, "Dashboard");
+
+      // 2. B2C Orders
+      const b2cData = [["ID", "Date", "Flavour", "Qty (Boxes)", "Selling Price/Box", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
+      db.b2c.forEach(o => b2cData.push([o.id, o.date, o.flavour, o.qty, o.unitCost, o.price, o.cogs || 0, o.profit || 0, o.advance]));
+      const wsB2C = XLSX.utils.aoa_to_sheet(b2cData);
+      XLSX.utils.book_append_sheet(wb, wsB2C, "B2C Orders");
+
+      // 3. B2B Orders
+      const b2bData = [["ID", "Date", "Client", "Flavour", "Unit", "Quantity", "Selling Price/Unit", "Total Revenue", "Total COGS", "Net Profit", "Advance"]];
+      db.b2b.forEach(o => b2bData.push([o.id, o.date, o.client, o.flavour, o.unit, o.kg, o.unitCost, o.cost, o.cogs || 0, o.profit || 0, o.advance]));
+      const wsB2B = XLSX.utils.aoa_to_sheet(b2bData);
+      XLSX.utils.book_append_sheet(wb, wsB2B, "B2B Orders");
+
+      // 4. Clients
+      const clientData = [["Client Name"]];
+      db.clients.forEach(c => clientData.push([c]));
+      const wsClients = XLSX.utils.aoa_to_sheet(clientData);
+      XLSX.utils.book_append_sheet(wb, wsClients, "Clients");
+
+      // 5. Flavours
+      const flavourData = [["Supplier", "Flavour", "B2C Base Cost (₹/Box)", "B2B Base Cost (₹/KG)"]];
+      db.supplierFlavours.forEach(f => flavourData.push([f.supplier, f.flavour, f.b2cCogs || 0, f.b2bCogs || 0]));
+      const wsFlavours = XLSX.utils.aoa_to_sheet(flavourData);
+      XLSX.utils.book_append_sheet(wb, wsFlavours, "Flavours");
+
+      // Trigger Download
+      XLSX.writeFile(wb, `crumbly_b2b_tracker_${timestamp}.xlsx`);
     });
   }
 
