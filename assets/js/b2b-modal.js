@@ -578,10 +578,11 @@ document.addEventListener('DOMContentLoaded', () => {
     allOrders.forEach(o => {
       const dDate = new Date(o.date);
       const ymd = dDate.toISOString().slice(0, 10);
-      if (filterVal && ymd !== filterVal) return;
-
+      
       if (o.type === 'B2C') { totalB2C += o.amount; profitB2C += o.profit; }
       if (o.type === 'B2B') { totalB2B += o.amount; profitB2B += o.profit; }
+
+      if (filterVal && ymd !== filterVal) return;
 
       if(tbody) {
         const tr = document.createElement('tr');
