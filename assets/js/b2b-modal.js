@@ -301,8 +301,8 @@ document.addEventListener('DOMContentLoaded', () => {
         saveRevDB(db);
         renderSettings();
         if (supabase) {
-          const { error } = await supabase.from('tracker_clients').insert({ name: newClient });
-          if (error) alert('Supabase Insert Error: ' + error.message);
+          const { error } = await supabase.from('tracker_clients').upsert({ name: newClient }, { onConflict: 'name' });
+          if (error) alert('Supabase Upsert Error: ' + error.message);
         }
       }
       formClient.reset();
@@ -349,8 +349,11 @@ document.addEventListener('DOMContentLoaded', () => {
           saveRevDB(db);
           renderSettings();
           if (supabase) {
-            const { error } = await supabase.from('tracker_flavours').insert({ supplier: supplierName, flavour: newFlavour, box_cogs: boxCogs, b2b_cogs: b2bCogs });
-            if (error) alert('Supabase Insert Error: ' + error.message);
+            const { error } = await supabase.from('tracker_flavours').upsert(
+              { supplier: supplierName, flavour: newFlavour, box_cogs: boxCogs, b2b_cogs: b2bCogs },
+              { onConflict: 'supplier,flavour' }
+            );
+            if (error) alert('Supabase Upsert Error: ' + error.message);
           }
         }
       }
