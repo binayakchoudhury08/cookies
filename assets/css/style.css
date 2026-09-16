@@ -4153,3 +4153,131 @@
   justify-content: space-between;
   border: 1px solid rgba(0,0,0,0.05);
 }
+
+/* CART MODAL */
+.cart-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(38, 20, 8, 0.4);
+  backdrop-filter: blur(8px);
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.cart-modal-backdrop.is-visible {
+  display: flex;
+}
+.cart-modal {
+  background: #FFFFFF;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 450px;
+  padding: 24px;
+  box-shadow: 0 20px 40px -10px rgba(38, 20, 8, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 85vh;
+}
+.cart-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.cart-modal-title {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0;
+}
+.cart-modal-close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.cart-modal-items {
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 8px;
+}
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+}
+.cart-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cart-item-title {
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--ink);
+}
+.cart-item-pack {
+  font-size: 12px;
+  color: var(--muted);
+}
+.cart-item-price {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--ink);
+}
+.cart-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.cart-item-qty-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #FFFFFF;
+  font-weight: bold;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.cart-item-qty {
+  font-size: 14px;
+  font-weight: 600;
+  width: 16px;
+  text-align: center;
+}
+.cart-item-remove {
+  background: #FEE2E2;
+  color: #DC2626;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.cart-modal-footer {
+  border-top: 1px dashed var(--line);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.cart-modal-total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: 800;
+}

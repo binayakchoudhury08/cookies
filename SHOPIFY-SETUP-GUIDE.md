@@ -29,7 +29,7 @@ flowchart TD
 1. Open your **Shopify Admin** (`https://admin.shopify.com/store/YOUR_STORE`).
 2. Go to **Products** → Click **Add product**.
 3. **Title**: `CRUMBLY - Chocolate Mini Coins (Pre-Order)`
-4. **Description**: `Mini coin-shaped cookies in rich Chocolate, made with pure butter and zero palm oil.`
+4. **Description**: `Mini coin-shaped cookies in rich Chocolate, made with pure butter.`
 5. **Media**: Upload cookie pack images.
 6. **Inventory**:
    - ⚠️ **VERY IMPORTANT**: Check the box **"Continue selling when out of stock"** (so pre-orders never get blocked).

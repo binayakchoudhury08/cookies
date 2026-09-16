@@ -17,14 +17,14 @@ const CRUMBLY_CONFIG = {
       weight: "180g",
       price: 449,
       mrp: 559,
-      variantId: "47857840423061"
+      variantId: "48011888132245"
     },
     2: {
       name: "Choco Chips (180g)",
       weight: "180g",
       price: 449,
       mrp: 559,
-      variantId: "0000000000000"
+      variantId: "47857840423061"
     }
   },
 
@@ -326,7 +326,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   };
 
   const stepsInfo = {
-    1: { pill: '💥 Step 2 of 5 · Corner Cut Little!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness with 0% palm oil.', integrity: '85% Intact', pct: '85%' },
+    1: { pill: '💥 Step 2 of 5 · Corner Cut Little!', title: '100% Pure Butter Crust', desc: 'First bite snapped! Real creamery butter delivers clean crispness.', integrity: '85% Intact', pct: '85%' },
     2: { pill: '💥 Step 3 of 5 · Second Corner Broken!', title: 'Handy Coin Geometry', desc: 'Second section broken! Engineered for single-bite satisfaction with zero crumbs.', integrity: '70% Intact', pct: '70%' },
     3: { pill: '💥 Step 4 of 5 · Third Corner Chipped!', title: 'Rich Cocoa Snap', desc: 'Crisp corner snapped! Intense chocolate aroma released from the dairy core.', integrity: '55% Intact', pct: '55%' },
     4: { pill: '💥 Step 5 of 5 · All 4 Corners Cut Little!', title: 'Tap Center Core to Shatter', desc: 'All 4 corners gently cut! Now tap the center core to shatter and reveal what is inside!', integrity: '40% Intact', pct: '40%' },
@@ -554,15 +554,20 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   const fcTotal = document.getElementById('fc-total');
   const fcCheckoutBtn = document.getElementById('floating-cart-checkout-btn');
 
+  const cartModal = document.getElementById('cart-modal');
+  const cartModalClose = document.getElementById('cart-modal-close');
+  const cartModalItems = document.getElementById('cart-modal-items');
+  const cartModalTotal = document.getElementById('cart-modal-total');
+  const cartModalCheckoutBtn = document.getElementById('cart-modal-checkout-btn');
+
   if (!addToCartBtn) return;
   
   // Matrix of products
-  // NOTE: Choco Chips needs a real Variant ID in production.
   const PRODUCTS = {
-    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 449, mrp: 559, variantId: '47857840423061' },
-    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 749, mrp: 1118, variantId: '47857840423061' }, 
-    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 449, mrp: 559, variantId: '47857840423062' }, // Dummy ID
-    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 749, mrp: 1118, variantId: '47857840423062' }
+    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', img: 'assets/img/double_chocolate_single_box.jpeg' },
+    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', img: 'assets/img/double_chocolate_duo_pack.jpeg' }, 
+    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', img: 'assets/img/choco_chips_single_box.jpeg' },
+    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', img: 'assets/img/choco_chips_duo_pack.jpeg' }
   };
 
   function updateConfiguratorUI() {
@@ -604,7 +609,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     const thumb1Btn = document.querySelector('.shop-thumb-btn:nth-child(1)');
     const thumb1Img = thumb1Btn ? thumb1Btn.querySelector('img') : null;
     const mainImg = document.getElementById('main-product-img');
-    const flavourImg = selectedFlavour === 'chocolate' ? 'assets/img/slide-double-chocolate.webp' : 'assets/img/choco-chips-product.jpg';
+    const flavourImg = product.img;
 
     if (thumb1Img && thumb1Btn) {
       thumb1Img.src = flavourImg;
@@ -651,6 +656,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     if (!floatingCart) return;
     if (cart.length === 0) {
       floatingCart.classList.remove('is-visible');
+      if (cartModal) cartModal.classList.remove('is-visible');
       return;
     }
 
@@ -660,6 +666,81 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     fcCount.textContent = `${totalItems} item${totalItems > 1 ? 's' : ''} added`;
     fcTotal.textContent = `₹${totalValue}`;
     floatingCart.classList.add('is-visible');
+  }
+
+  function renderCartModal() {
+    if (!cartModalItems || !cartModalTotal) return;
+    
+    cartModalItems.innerHTML = '';
+    const totalValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    cart.forEach((item, index) => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cart-item';
+      itemEl.innerHTML = `
+        <div class="cart-item-info">
+          <span class="cart-item-title">${item.name}</span>
+          <span class="cart-item-pack">${item.packName}</span>
+          <span class="cart-item-price">₹${item.price}</span>
+        </div>
+        <div class="cart-item-actions">
+          <button class="cart-item-qty-btn cart-btn-minus" data-idx="${index}">−</button>
+          <span class="cart-item-qty">${item.qty}</span>
+          <button class="cart-item-qty-btn cart-btn-plus" data-idx="${index}">+</button>
+          <button class="cart-item-remove" data-idx="${index}">🗑️</button>
+        </div>
+      `;
+      cartModalItems.appendChild(itemEl);
+    });
+
+    cartModalTotal.textContent = `₹${totalValue}`;
+
+    document.querySelectorAll('.cart-btn-minus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.getAttribute('data-idx');
+        if (cart[idx].qty > 1) {
+          cart[idx].qty--;
+        } else {
+          cart.splice(idx, 1);
+        }
+        renderCartModal();
+        renderFloatingCart();
+      });
+    });
+
+    document.querySelectorAll('.cart-btn-plus').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.getAttribute('data-idx');
+        cart[idx].qty++;
+        renderCartModal();
+        renderFloatingCart();
+      });
+    });
+
+    document.querySelectorAll('.cart-item-remove').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = e.target.getAttribute('data-idx');
+        cart.splice(idx, 1);
+        renderCartModal();
+        renderFloatingCart();
+      });
+    });
+  }
+
+  if (floatingCart) {
+    floatingCart.addEventListener('click', (e) => {
+      if (e.target.closest('#floating-cart-checkout-btn')) return; // ignore checkout btn
+      if (cartModal) {
+        renderCartModal();
+        cartModal.classList.add('is-visible');
+      }
+    });
+  }
+
+  if (cartModalClose) {
+    cartModalClose.addEventListener('click', () => {
+      cartModal.classList.remove('is-visible');
+    });
   }
 
   // Add to Local Cart
@@ -710,17 +791,26 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   });
 
   // Execute Multi-Item Shopify Checkout
+  function doCheckout() {
+    if (cart.length === 0) return;
+    const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
+    
+    // Shopify permalink format: /cart/ID1:QTY1,ID2:QTY2
+    const cartItemsStr = cart.map(item => `${item.variantId}:${item.qty}`).join(',');
+    const url = `https://${domain}/cart/${cartItemsStr}`;
+    
+    window.location.href = url;
+  }
+
   if (fcCheckoutBtn) {
-    fcCheckoutBtn.addEventListener('click', () => {
-      if (cart.length === 0) return;
-      const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
-      
-      // Shopify permalink format: /cart/ID1:QTY1,ID2:QTY2
-      const cartItemsStr = cart.map(item => `${item.variantId}:${item.qty}`).join(',');
-      const url = `https://${domain}/cart/${cartItemsStr}`;
-      
-      window.location.href = url;
+    fcCheckoutBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      doCheckout();
     });
+  }
+
+  if (cartModalCheckoutBtn) {
+    cartModalCheckoutBtn.addEventListener('click', doCheckout);
   }
 
   flavourBtns.forEach(btn => {
