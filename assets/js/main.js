@@ -605,6 +605,26 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       qtyPlus.classList.toggle('is-disabled', quantity >= 10);
     }
 
+    // Update Pack Selector Prices Dynamically
+    const singlePackBtn = document.querySelector('.shop-pack-btn[data-pack="single"]');
+    const duoPackBtn = document.querySelector('.shop-pack-btn[data-pack="duo"]');
+    
+    if (singlePackBtn) {
+      const singleProduct = PRODUCTS[`${selectedFlavour}_single`];
+      const priceRow = singlePackBtn.querySelector('.shop-pack-price');
+      if (priceRow && singleProduct) {
+        priceRow.innerHTML = `<strike>₹${singleProduct.mrp}</strike> ₹${singleProduct.price}`;
+      }
+    }
+
+    if (duoPackBtn) {
+      const duoProduct = PRODUCTS[`${selectedFlavour}_duo`];
+      const priceRow = duoPackBtn.querySelector('.shop-pack-price');
+      if (priceRow && duoProduct) {
+        priceRow.innerHTML = `<strike>₹${duoProduct.mrp}</strike> ₹${duoProduct.price}`;
+      }
+    }
+
     // Dynamic Flavour Thumbnail & Image update
     const thumb1Btn = document.querySelector('.shop-thumb-btn:nth-child(1)');
     const thumb1Img = thumb1Btn ? thumb1Btn.querySelector('img') : null;
