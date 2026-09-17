@@ -1,16 +1,17 @@
 {
-  "name": "Crumbly B2B Tracker",
+  "name": "Crumbly Cookies",
   "short_name": "Crumbly",
-  "description": "B2B & Revenue Tracker for Crumbly Cookies",
-  "start_url": "/?b2b=true",
+  "description": "Mini coin-shaped cookies in Double Chocolate and Choco Chips. 100% Pure Butter.",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#1A1A1A",
-  "theme_color": "#1A1A1A",
+  "background_color": "#ffffff",
+  "theme_color": "#E9723D",
   "icons": [
     {
       "src": "assets/img/brand-logo-square.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
