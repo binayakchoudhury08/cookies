@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Database structure in LocalStorage (Offline First)
   const REV_KEY = 'CRUMBLY_REVENUE_DB_V1';
   function loadRevDB() {
-    let db = { b2c: [], b2b: [], clients: [], flavours: [], supplierFlavours: [], boxSizes: ['80g', '180g'] };
+    let db = { b2c: [], b2b: [], expenses: [], clients: [], flavours: [], supplierFlavours: [], boxSizes: ['80g', '180g'] };
     try {
       const data = localStorage.getItem(REV_KEY);
       if (data) {
@@ -145,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pinOverlay.style.display = 'none';
       await initRevDB();
       renderSettings();
+      renderExpenses();
       renderDashboard(); 
     } else {
       pinError.style.display = 'block';
@@ -421,8 +422,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const baseCogs = fObj && fObj.boxCogs && fObj.boxCogs[sizeVal] ? fObj.boxCogs[sizeVal] : 0;
       const qty = parseFloat(b2cQty.value);
       const price = parseFloat(b2cPrice.value);
+      const discount = parseFloat(document.getElementById('b2c-discount').value) || 0;
+      const taxRate = parseFloat(document.getElementById('b2c-tax').value) || 0;
+      
+      const subtotal = price;
+      const afterDiscount = subtotal - discount;
+      const taxAmount = afterDiscount * (taxRate / 100);
+      const finalPrice = afterDiscount + taxAmount;
       const totalCogs = baseCogs * qty;
-      const profit = price - totalCogs;
+      const profit = finalPrice - totalCogs;
 
       const order = {
         id: idInput.value || 'b2c-'+Date.now().toString(),
@@ -432,7 +440,12 @@ document.addEventListener('DOMContentLoaded', () => {
         size: sizeVal,
         qty: qty,
         unitCost: parseFloat(b2cUnitCost.value),
-        price: price,
+        price: finalPrice,
+        discount: discount,
+        tax: taxAmount,
+        status: document.getElementById('b2c-status').value,
+        remarks: document.getElementById('b2c-remarks').value,
+        pinned: false,
         cogs: totalCogs,
         profit: profit,
         advance: parseFloat(document.getElementById('b2c-advance').value) || 0
@@ -457,6 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formB2C.reset();
       idInput.value = '';
       b2cQty.value = '1';
+      document.getElementById('b2c-discount').value = '0';
       document.getElementById('b2c-date').value = new Date().toISOString().slice(0, 10);
       renderDashboard();
     });
@@ -483,8 +497,15 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const kg = parseFloat(b2bKg.value);
       const cost = parseFloat(b2bCost.value); // This is selling price total
+      const discount = parseFloat(document.getElementById('b2b-discount').value) || 0;
+      const taxRate = parseFloat(document.getElementById('b2b-tax').value) || 0;
+      
+      const subtotal = cost;
+      const afterDiscount = subtotal - discount;
+      const taxAmount = afterDiscount * (taxRate / 100);
+      const finalPrice = afterDiscount + taxAmount;
       const totalCogs = baseCogs * kg;
-      const profit = cost - totalCogs;
+      const profit = finalPrice - totalCogs;
 
       const order = {
         id: idInput.value || 'b2b-'+Date.now().toString(),
@@ -496,7 +517,12 @@ document.addEventListener('DOMContentLoaded', () => {
         size: unitVal === 'Box' ? sizeVal : null,
         kg: kg,
         unitCost: parseFloat(b2bUnitCost.value),
-        cost: cost,
+        cost: finalPrice, // override to final price
+        discount: discount,
+        tax: taxAmount,
+        status: document.getElementById('b2b-status').value,
+        remarks: document.getElementById('b2b-remarks').value,
+        pinned: false,
         cogs: totalCogs,
         profit: profit,
         advance: parseFloat(document.getElementById('b2b-advance').value) || 0
@@ -521,8 +547,33 @@ document.addEventListener('DOMContentLoaded', () => {
       formB2B.reset();
       idInput.value = '';
       b2bKg.value = '1';
+      document.getElementById('b2b-discount').value = '0';
       document.getElementById('b2b-date').value = new Date().toISOString().slice(0, 10);
       renderDashboard();
+    });
+  }
+  
+  // --- Expense Form Logic ---
+  const formExpense = document.getElementById('form-expense');
+  if (formExpense) {
+    formExpense.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const db = loadRevDB();
+      const expense = {
+        id: 'exp-'+Date.now().toString(),
+        date: document.getElementById('exp-date').value ? new Date(document.getElementById('exp-date').value).toISOString() : new Date().toISOString(),
+        category: document.getElementById('exp-category').value,
+        amount: parseFloat(document.getElementById('exp-amount').value) || 0,
+        note: document.getElementById('exp-note').value
+      };
+      if (!db.expenses) db.expenses = [];
+      db.expenses.push(expense);
+      saveRevDB(db);
+      formExpense.reset();
+      document.getElementById('exp-date').value = new Date().toISOString().slice(0, 10);
+      renderExpenses();
+      renderDashboard();
+      alert('Expense logged successfully!');
     });
   }
 
@@ -633,7 +684,26 @@ document.addEventListener('DOMContentLoaded', () => {
           document.getElementById('inv-adv').textContent = `₹${o.advance || 0}`;
           document.getElementById('inv-total').textContent = `₹${(o.price || o.cost) - (o.advance || 0)}`;
 
-          window.print();
+          if (typeof html2pdf !== 'undefined') {
+            const printEl = document.getElementById('print-invoice');
+            printEl.style.display = 'block';
+            printEl.style.position = 'relative'; // ensure it renders
+            printEl.style.visibility = 'visible';
+            
+            const opt = {
+              margin:       10,
+              filename:     `crumbly_invoice_${o.id}.pdf`,
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2 },
+              jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(printEl).save().then(() => {
+              printEl.style.display = 'none';
+            });
+          } else {
+            window.print();
+          }
         }
       }
     });
@@ -664,7 +734,12 @@ document.addEventListener('DOMContentLoaded', () => {
       allOrders.push({ ...o, amount: o.cost, profit: o.profit || 0, qtyStr: (o.kg || 1) + ' ' + (o.unit || 'KG'), desc });
     });
 
-    allOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // Sorting and Pinned
+    allOrders.sort((a, b) => {
+      if (a.pinned && !b.pinned) return -1;
+      if (!a.pinned && b.pinned) return 1;
+      return new Date(b.date) - new Date(a.date);
+    });
 
     allOrders.forEach(o => {
       const dDate = new Date(o.date);
@@ -685,9 +760,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if(tbody) {
         const tr = document.createElement('tr');
+        const statClass = o.status ? `status-${o.status.toLowerCase()}` : 'status-pending';
+        const statText = o.status || 'Pending';
+        const star = o.pinned ? '⭐' : '☆';
+        
         tr.innerHTML = `
+          <td><input type="checkbox" class="b2b-row-check" data-id="${o.id}" data-type="${o.type}"></td>
+          <td style="cursor:pointer;" class="btn-pin" data-id="${o.id}" data-type="${o.type}">${star}</td>
           <td>${ymd}</td>
           <td>${o.type}</td>
+          <td><span class="status-badge ${statClass}">${statText}</span></td>
           <td>${o.desc}</td>
           <td>${o.qtyStr}</td>
           <td>₹${o.amount}</td>
@@ -703,6 +785,44 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.appendChild(tr);
       }
     });
+
+    // Checkbox bulk actions listener
+    const bulkActions = document.getElementById('b2b-bulk-actions');
+    const checkAll = document.getElementById('b2b-check-all');
+    if (bulkActions && checkAll) {
+      const rowChecks = document.querySelectorAll('.b2b-row-check');
+      const updateBulkUI = () => {
+        const anyChecked = Array.from(rowChecks).some(cb => cb.checked);
+        bulkActions.style.display = anyChecked ? 'flex' : 'none';
+      };
+      checkAll.onclick = (e) => {
+        rowChecks.forEach(cb => cb.checked = e.target.checked);
+        updateBulkUI();
+      };
+      rowChecks.forEach(cb => cb.addEventListener('change', updateBulkUI));
+    }
+
+    // Pin listener
+    document.querySelectorAll('.btn-pin').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = e.currentTarget.dataset.id;
+        const type = e.currentTarget.dataset.type;
+        const o = db[type.toLowerCase()].find(x => x.id === id);
+        if (o) {
+          o.pinned = !o.pinned;
+          saveRevDB(db);
+          renderDashboard();
+        }
+      });
+    });
+
+    // Calculate Expenses
+    let totalExpenses = 0;
+    if (db.expenses) {
+      db.expenses.forEach(ex => totalExpenses += ex.amount);
+    }
+    const elExpenses = document.getElementById('b2b-val-expenses');
+    if(elExpenses) elExpenses.textContent = `₹${totalExpenses.toLocaleString()}`;
 
     // Calculate AI Insights
     let maxOrder = 0;
@@ -736,7 +856,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elTopFlavour) elTopFlavour.textContent = topFlavour;
     
     const elTopClient = document.getElementById('b2b-val-top-client');
-    if (elTopClient) elTopClient.textContent = topClient;
+    // Top 3 Leaderboard mapping if multiple exist
+    if (elTopClient) {
+      const sortedClients = Object.keys(clientRevs).sort((a,b) => clientRevs[b] - clientRevs[a]).slice(0,3);
+      if (sortedClients.length > 1) {
+        elTopClient.innerHTML = sortedClients.map((c,i) => `<div style="font-size:12px;">${i+1}. ${c} (₹${clientRevs[c]})</div>`).join('');
+      } else {
+        elTopClient.textContent = topClient;
+      }
+    }
     
     const elBiggestOrder = document.getElementById('b2b-val-biggest-order');
     if (elBiggestOrder) elBiggestOrder.textContent = `₹${maxOrder.toLocaleString()}`;
@@ -748,7 +876,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elTotalTitle = document.querySelector('.b2b-kpi-main .b2b-kpi-title');
     if (elTotalTitle) elTotalTitle.textContent = `TOTAL REVENUE (₹${(target/100000).toLocaleString()} LAKH GOAL)`;
 
-    const allTimeTotalProfit = allTimeProfitB2C + allTimeProfitB2B;
+    const allTimeTotalProfit = (allTimeProfitB2C + allTimeProfitB2B) - totalExpenses; // True Net Profit
     const margin = totalRev > 0 ? ((allTimeTotalProfit / totalRev) * 100).toFixed(1) : 0;
 
     const elTotal = document.getElementById('b2b-val-total');
@@ -849,14 +977,108 @@ document.addEventListener('DOMContentLoaded', () => {
   if(typeFilter) {
       typeFilter.addEventListener('change', renderDashboard);
   }
-  
-  if (clearBtn) {
+
+  // Quick Date Filters
+  document.querySelectorAll('.b2b-btn-date-quick').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const days = parseInt(e.currentTarget.dataset.days);
+      if (days === 0) {
+        if(dateInput) {
+          dateInput.value = new Date().toISOString().slice(0,10);
+          renderDashboard();
+        }
+      } else {
+        // We only support absolute date matching in the tracker right now,
+        // so for 7D/30D we can just clear it, or we would need to upgrade the filter logic.
+        // Let's just clear for now to show "Recent".
+        if(dateInput) {
+          dateInput.value = '';
+          renderDashboard();
+        }
+      }
+    });
+  });
+
+  if(clearBtn) {
     clearBtn.addEventListener('click', () => {
       if(dateInput) dateInput.value = '';
       if(searchInput) searchInput.value = '';
       if(typeFilter) typeFilter.value = '';
       renderDashboard();
     });
+  }
+
+  // Bulk Actions
+  const btnBulkDelete = document.getElementById('btn-bulk-delete');
+  const btnBulkPaid = document.getElementById('btn-bulk-paid');
+  
+  if (btnBulkDelete) {
+    btnBulkDelete.addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to delete selected orders?')) return;
+      const rowChecks = document.querySelectorAll('.b2b-row-check:checked');
+      const db = loadRevDB();
+      for (const cb of rowChecks) {
+        const id = cb.dataset.id;
+        const type = cb.dataset.type;
+        if (type === 'B2C') db.b2c = db.b2c.filter(o => o.id !== id);
+        if (type === 'B2B') db.b2b = db.b2b.filter(o => o.id !== id);
+      }
+      saveRevDB(db);
+      renderDashboard();
+    });
+  }
+
+  if (btnBulkPaid) {
+    btnBulkPaid.addEventListener('click', () => {
+      const rowChecks = document.querySelectorAll('.b2b-row-check:checked');
+      const db = loadRevDB();
+      for (const cb of rowChecks) {
+        const id = cb.dataset.id;
+        const type = cb.dataset.type;
+        const o = db[type.toLowerCase()].find(x => x.id === id);
+        if (o) o.status = 'Paid';
+      }
+      saveRevDB(db);
+      renderDashboard();
+    });
+  }
+
+  // Render Expenses
+  function renderExpenses() {
+    const db = loadRevDB();
+    const tbody = document.getElementById('expense-ledger-body');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    if (db.expenses) {
+      db.expenses.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(ex => {
+        const dDate = new Date(ex.date);
+        const ymd = dDate.toISOString().slice(0, 10);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${ymd}</td>
+          <td><span class="status-badge status-delivered">${ex.category}</span></td>
+          <td>${ex.note || '-'}</td>
+          <td style="color:#e03131;">₹${ex.amount}</td>
+          <td>
+            <button type="button" class="b2b-btn-icon btn-del-exp" data-id="${ex.id}" style="color:red;" title="Delete Expense">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      document.querySelectorAll('.btn-del-exp').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          if(!confirm('Delete this expense?')) return;
+          const id = e.currentTarget.dataset.id;
+          const db = loadRevDB();
+          db.expenses = db.expenses.filter(x => x.id !== id);
+          saveRevDB(db);
+          renderExpenses();
+          renderDashboard();
+        });
+      });
+    }
   }
 
   // --- Google Sheets Sync Logic ---
@@ -1145,4 +1367,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // 6. Floating Action Button Quick Sale
+  const fab = document.createElement('div');
+  fab.className = 'fab-quick-sale';
+  fab.innerHTML = '➕';
+  fab.title = 'Quick B2C Sale';
+  document.body.appendChild(fab);
+  
+  fab.addEventListener('click', () => {
+    if (!modal.classList.contains('is-open')) {
+      triggerBtn.click();
+    }
+    const b2cTab = document.querySelector('.b2b-tab[data-target="b2b-pane-b2c"]');
+    if (b2cTab) b2cTab.click();
+  });
 });

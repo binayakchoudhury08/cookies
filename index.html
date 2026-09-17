@@ -925,6 +925,7 @@
         <button class="b2b-tab is-active" data-target="b2b-pane-dash">Dashboard</button>
         <button class="b2b-tab" data-target="b2b-pane-b2c">B2C POS</button>
         <button class="b2b-tab" data-target="b2b-pane-b2b">B2B POS</button>
+        <button class="b2b-tab" data-target="b2b-pane-expenses">Expenses</button>
         <button class="b2b-tab" data-target="b2b-pane-settings">Settings</button>
       </div>
 
@@ -934,8 +935,11 @@
           <div class="b2b-filter-row"
             style="display:flex; justify-content:space-between; align-items:center; width:100%;">
             <div>
-              <span class="b2b-filter-label">Filter Date:</span>
-              <input type="date" class="b2b-date-input">
+              <span class="b2b-filter-label">Filter:</span>
+              <button class="b2b-btn-date-quick" data-days="0" style="padding:4px 8px; font-size:12px; border-radius:4px; border:1px solid #ddd; background:#fff; cursor:pointer;">Today</button>
+              <button class="b2b-btn-date-quick" data-days="7" style="padding:4px 8px; font-size:12px; border-radius:4px; border:1px solid #ddd; background:#fff; cursor:pointer;">7D</button>
+              <button class="b2b-btn-date-quick" data-days="30" style="padding:4px 8px; font-size:12px; border-radius:4px; border:1px solid #ddd; background:#fff; cursor:pointer;">30D</button>
+              <input type="date" class="b2b-date-input" style="margin-left: 6px;">
               <button class="b2b-btn-clear">Clear</button>
               <select class="b2b-type-filter" style="margin-left: 10px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Inter', sans-serif;">
                 <option value="">All Types</option>
@@ -993,6 +997,10 @@
               <span class="b2b-kpi-title">B2C PROFIT</span>
               <span class="b2b-kpi-val" id="b2b-val-b2c-profit">₹0</span>
             </div>
+            <div class="b2b-kpi-card" style="background: #fdf5f5; border: 1px solid #f5c6c6;">
+              <span class="b2b-kpi-title" style="color: #c92a2a;">TOTAL EXPENSES</span>
+              <span class="b2b-kpi-val" id="b2b-val-expenses" style="color: #e03131;">₹0</span>
+            </div>
             <div class="b2b-kpi-card" style="background: #f8f9fa;">
               <span class="b2b-kpi-title">BLENDED MARGIN</span>
               <span class="b2b-kpi-val" id="b2b-val-margin">0%</span>
@@ -1019,13 +1027,22 @@
             <canvas id="b2b-sales-chart" height="80"></canvas>
           </div>
 
-          <h3 class="b2b-section-title" style="margin-top:32px;">Transaction Ledger</h3>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:32px; margin-bottom:12px;">
+            <h3 class="b2b-section-title" style="margin:0;">Transaction Ledger</h3>
+            <div id="b2b-bulk-actions" style="display:none; gap:8px;">
+              <button class="b2b-btn-submit" id="btn-bulk-delete" style="background:#ff4c4c; padding: 6px 12px; margin:0; font-size:12px;">🗑️ Delete Selected</button>
+              <button class="b2b-btn-submit" id="btn-bulk-paid" style="background:#20A352; padding: 6px 12px; margin:0; font-size:12px;">✅ Mark Paid</button>
+            </div>
+          </div>
           <div class="b2b-table-wrap">
             <table class="b2b-table" id="b2b-ledger-table">
               <thead>
                 <tr>
+                  <th style="width:40px;"><input type="checkbox" id="b2b-check-all"></th>
+                  <th>⭐</th>
                   <th>DATE</th>
                   <th>TYPE</th>
+                  <th>STATUS</th>
                   <th>FLAVOUR</th>
                   <th>QTY</th>
                   <th>TOTAL (₹)</th>
@@ -1082,7 +1099,35 @@
               <label>Advance Received (₹)</label>
               <input type="number" id="b2c-advance" value="0" min="0">
             </div>
-            <div style="display:flex; gap: 10px;">
+            <div class="b2b-responsive-grid-3" style="margin-top:12px;">
+              <div class="b2b-form-group">
+                <label>Discount (₹)</label>
+                <input type="number" id="b2c-discount" value="0" min="0">
+              </div>
+              <div class="b2b-form-group">
+                <label>Tax / GST</label>
+                <select id="b2c-tax">
+                  <option value="0">0%</option>
+                  <option value="5">5%</option>
+                  <option value="18">18%</option>
+                </select>
+              </div>
+              <div class="b2b-form-group">
+                <label>Status</label>
+                <select id="b2c-status">
+                  <option value="Pending">Pending</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="b2b-form-group" style="margin-top:12px;">
+              <label>Remarks / Notes</label>
+              <textarea id="b2c-remarks" rows="2" placeholder="Customer requests, ribbon colors, delivery instructions..."></textarea>
+            </div>
+
+            <div style="display:flex; gap: 10px; margin-top:16px;">
               <button type="submit" class="b2b-btn-submit" style="flex:1;">Save B2C Order</button>
               <button type="button" class="b2b-btn-clear-form" onclick="document.getElementById('form-b2c').reset(); document.getElementById('b2c-id').value='';" style="flex:0.3; background:#ff4c4c; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
             </div>
@@ -1143,11 +1188,89 @@
               <label>Advance Received (₹)</label>
               <input type="number" id="b2b-advance" value="0" min="0">
             </div>
-            <div style="display:flex; gap: 10px;">
+            <div class="b2b-responsive-grid-3" style="margin-top:12px;">
+              <div class="b2b-form-group">
+                <label>Discount (₹)</label>
+                <input type="number" id="b2b-discount" value="0" min="0">
+              </div>
+              <div class="b2b-form-group">
+                <label>Tax / GST</label>
+                <select id="b2b-tax">
+                  <option value="0">0%</option>
+                  <option value="5">5%</option>
+                  <option value="18">18%</option>
+                </select>
+              </div>
+              <div class="b2b-form-group">
+                <label>Status</label>
+                <select id="b2b-status">
+                  <option value="Pending">Pending</option>
+                  <option value="Paid">Paid</option>
+                  <option value="Delivered">Delivered</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="b2b-form-group" style="margin-top:12px;">
+              <label>Remarks / Notes</label>
+              <textarea id="b2b-remarks" rows="2" placeholder="Delivery instructions, PO numbers, special requests..."></textarea>
+            </div>
+
+            <div style="display:flex; gap: 10px; margin-top:16px;">
               <button type="submit" class="b2b-btn-submit" style="flex:1;">Save B2B Order</button>
               <button type="button" class="b2b-btn-clear-form" onclick="document.getElementById('form-b2b').reset(); document.getElementById('b2b-id').value='';" style="flex:0.3; background:#ff4c4c; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
             </div>
           </form>
+          </form>
+        </div>
+
+        <!-- Expenses Pane -->
+        <div id="b2b-pane-expenses" class="b2b-tab-pane">
+          <h3 class="b2b-section-title">Log Expense</h3>
+          <form id="form-expense" class="b2b-form">
+            <div class="b2b-responsive-grid-3">
+              <div class="b2b-form-group">
+                <label>Date</label>
+                <input type="date" id="exp-date" required>
+              </div>
+              <div class="b2b-form-group">
+                <label>Category</label>
+                <select id="exp-category">
+                  <option value="Packaging">Packaging</option>
+                  <option value="Ingredients">Ingredients</option>
+                  <option value="Delivery">Delivery</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div class="b2b-form-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="exp-amount" required min="1">
+              </div>
+            </div>
+            <div class="b2b-form-group" style="margin-top:12px;">
+              <label>Description / Note</label>
+              <input type="text" id="exp-note" placeholder="e.g. Swiggy Genie fee, Zomato boxes...">
+            </div>
+            <button type="submit" class="b2b-btn-submit">Save Expense</button>
+          </form>
+
+          <h3 class="b2b-section-title" style="margin-top:32px;">Expense Ledger</h3>
+          <div class="b2b-table-wrap">
+            <table class="b2b-table">
+              <thead>
+                <tr>
+                  <th>DATE</th>
+                  <th>CATEGORY</th>
+                  <th>DESCRIPTION</th>
+                  <th>AMOUNT (₹)</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="expense-ledger-body">
+              </tbody>
+            </table>
+          </div>
         </div>
 
         <!-- Settings Pane -->
@@ -1368,6 +1491,34 @@
       #print-invoice { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; font-family: 'Inter', sans-serif; }
     }
     
+    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-paid { background: #d4edda; color: #155724; }
+    .status-delivered { background: #cce5ff; color: #004085; }
+    
+    .b2b-table th.sortable:hover { cursor: pointer; background: #e9ecef; }
+    
+    /* Floating Action Button */
+    .fab-quick-sale {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: #E9723D;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      box-shadow: 0 4px 12px rgba(233,114,61,0.4);
+      cursor: pointer;
+      z-index: 1000;
+      transition: transform 0.2s;
+    }
+    .fab-quick-sale:hover { transform: scale(1.1); }
+    
     /* Dark Mode Styles */
     body.b2b-dark-mode .b2b-modal-content { background: #1a1a1a; color: #f1f1f1; }
     body.b2b-dark-mode .b2b-header { border-bottom-color: #333; }
@@ -1399,6 +1550,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- SheetJS for multi-tab Excel export -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+  <!-- HTML2PDF for direct Invoice Download -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <script src="assets/js/admin-db.js"></script>
   <script src="assets/js/b2b-modal.js" defer></script>
