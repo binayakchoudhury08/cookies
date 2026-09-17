@@ -609,6 +609,33 @@ document.addEventListener('DOMContentLoaded', () => {
           window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
         }
       }
+
+      if (action === 'invoice') {
+        const o = db.b2c.find(x => x.id === id) || db.b2b.find(x => x.id === id);
+        if (o) {
+          document.getElementById('inv-date').textContent = new Date(o.date).toLocaleDateString();
+          document.getElementById('inv-id').textContent = o.id;
+          
+          if (o.type === 'B2B') {
+            document.getElementById('inv-client-row').style.display = 'block';
+            document.getElementById('inv-client').textContent = o.client || 'N/A';
+          } else {
+            document.getElementById('inv-client-row').style.display = 'none';
+          }
+
+          let desc = o.flavour;
+          if (o.size) desc += ` (${o.size})`;
+          
+          document.getElementById('inv-desc').textContent = desc;
+          document.getElementById('inv-type').textContent = o.type;
+          document.getElementById('inv-qty').textContent = (o.type === 'B2B' ? (o.kg || 1) + ' ' + (o.unit || 'KG') : (o.qty || 1) + ' Box');
+          document.getElementById('inv-amt').textContent = `₹${o.price || o.cost}`;
+          document.getElementById('inv-adv').textContent = `₹${o.advance || 0}`;
+          document.getElementById('inv-total').textContent = `₹${(o.price || o.cost) - (o.advance || 0)}`;
+
+          window.print();
+        }
+      }
     });
   }
 
@@ -666,6 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>₹${o.amount}</td>
           <td>₹${o.advance}</td>
           <td class="b2b-action-col">
+            <button type="button" class="b2b-btn-icon" data-action="invoice" data-id="${o.id}" data-type="${o.type}" title="Print Invoice">🖨️</button>
             <button type="button" class="b2b-btn-icon" data-action="whatsapp" data-id="${o.id}" data-type="${o.type}" title="Share via WhatsApp">📱</button>
             <button type="button" class="b2b-btn-icon" data-action="duplicate" data-id="${o.id}" data-type="${o.type}" title="Duplicate">📋</button>
             <button type="button" class="b2b-btn-icon" data-action="edit" data-id="${o.id}" data-type="${o.type}" title="Edit">✏️</button>
@@ -740,6 +768,66 @@ document.addEventListener('DOMContentLoaded', () => {
     if(elPct) elPct.textContent = `${pct}%`;
     const elFill = document.getElementById('b2b-target-fill');
     if(elFill) elFill.style.width = `${pct}%`;
+
+    // Render Chart.js
+    const ctx = document.getElementById('b2b-sales-chart');
+    if (ctx && typeof Chart !== 'undefined') {
+      const dates = [];
+      const dataB2C = [];
+      const dataB2B = [];
+
+      // Group last 7 days
+      for (let i = 6; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        const dateStr = d.toISOString().slice(0, 10);
+        dates.push(dateStr.slice(5)); // Show MM-DD
+
+        let d_b2c = 0;
+        let d_b2b = 0;
+
+        allOrders.forEach(o => {
+          if (o.date && o.date.startsWith(dateStr)) {
+            if (o.type === 'B2C') d_b2c += o.amount;
+            if (o.type === 'B2B') d_b2b += o.amount;
+          }
+        });
+        
+        dataB2C.push(d_b2c);
+        dataB2B.push(d_b2b);
+      }
+
+      if (window.b2bSalesChart) {
+        window.b2bSalesChart.destroy();
+      }
+
+      window.b2bSalesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'B2B Sales',
+              data: dataB2B,
+              backgroundColor: '#4a90e2'
+            },
+            {
+              label: 'B2C Sales',
+              data: dataB2C,
+              backgroundColor: '#e67700'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { stacked: true },
+            y: { stacked: true, beginAtZero: true }
+          }
+        }
+      });
+    }
   }
 
   const clearBtn = document.querySelector('.b2b-btn-clear');

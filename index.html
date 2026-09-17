@@ -999,7 +999,27 @@
             </div>
           </div>
 
-          <h3 class="b2b-section-title">Transaction Ledger</h3>
+          <h3 class="b2b-section-title" style="margin-top:24px; font-size:14px; color:#555;">Smart Insights & Trends</h3>
+          <div class="b2b-kpi-grid" style="margin-top: 12px; grid-template-columns: repeat(3, 1fr);">
+            <div class="b2b-kpi-card" style="background: #fff8f0; border: 1px solid #ffd8a8;">
+              <span class="b2b-kpi-title" style="color: #e67700;">🔥 TOP SELLING FLAVOUR</span>
+              <span class="b2b-kpi-val" id="b2b-val-top-flavour" style="color: #d9480f; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</span>
+            </div>
+            <div class="b2b-kpi-card" style="background: #f3f0ff; border: 1px solid #d0bfff;">
+              <span class="b2b-kpi-title" style="color: #6741d9;">💼 MOST VALUABLE CLIENT</span>
+              <span class="b2b-kpi-val" id="b2b-val-top-client" style="color: #5f3dc4; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">-</span>
+            </div>
+            <div class="b2b-kpi-card" style="background: #e3fafc; border: 1px solid #99e9f2;">
+              <span class="b2b-kpi-title" style="color: #0c8599;">📈 BIGGEST ORDER (ALL TIME)</span>
+              <span class="b2b-kpi-val" id="b2b-val-biggest-order" style="color: #0b7285; font-size: 15px;">-</span>
+            </div>
+          </div>
+          
+          <div style="margin-top:24px; padding: 16px; background: white; border: 1px solid #eee; border-radius: 8px;">
+            <canvas id="b2b-sales-chart" height="80"></canvas>
+          </div>
+
+          <h3 class="b2b-section-title" style="margin-top:32px;">Transaction Ledger</h3>
           <div class="b2b-table-wrap">
             <table class="b2b-table" id="b2b-ledger-table">
               <thead>
@@ -1253,7 +1273,56 @@
 
   <audio data-audio loop preload="none" src="assets/cookie-theme.mp3"></audio>
 
+  <!-- Print Invoice Template (Hidden by default, shown on print) -->
+  <div id="print-invoice" style="display:none;">
+    <div style="text-align: center; margin-bottom: 20px;">
+      <h1 style="font-family: 'Fredoka', sans-serif; font-size: 28px; color: #E9723D; margin:0;">CRUMBLY</h1>
+      <p style="margin:0; color: #666;">Premium Coin-Sized Cookies</p>
+    </div>
+    <div style="border-bottom: 2px solid #ddd; margin-bottom: 20px; padding-bottom: 10px;">
+      <h2 style="margin: 0; font-size: 20px;">TAX INVOICE</h2>
+      <p style="margin: 4px 0 0; color: #555;"><strong>Date:</strong> <span id="inv-date"></span> | <strong>Order ID:</strong> <span id="inv-id"></span></p>
+      <p style="margin: 4px 0 0; color: #555; display: none;" id="inv-client-row"><strong>Billed To:</strong> <span id="inv-client"></span></p>
+    </div>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+      <thead>
+        <tr style="background: #f9f9f9; text-align: left;">
+          <th style="padding: 10px; border: 1px solid #ddd;">Description</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Type</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Qty</th>
+          <th style="padding: 10px; border: 1px solid #ddd;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding: 10px; border: 1px solid #ddd;" id="inv-desc"></td>
+          <td style="padding: 10px; border: 1px solid #ddd;" id="inv-type"></td>
+          <td style="padding: 10px; border: 1px solid #ddd;" id="inv-qty"></td>
+          <td style="padding: 10px; border: 1px solid #ddd;" id="inv-amt"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="text-align: right; font-size: 18px;">
+      <p style="margin:0;"><strong>Advance Paid:</strong> <span id="inv-adv"></span></p>
+      <p style="margin:8px 0 0 0; font-size: 22px; color: #E9723D;"><strong>Grand Total:</strong> <span id="inv-total"></span></p>
+    </div>
+    <div style="margin-top: 40px; text-align: center; color: #888; font-size: 12px; border-top: 1px solid #eee; padding-top: 10px;">
+      Thank you for doing business with Crumbly! 🍪<br>
+      crumblyblr.shop
+    </div>
+  </div>
+
+  <style>
+    @media print {
+      body * { visibility: hidden; }
+      #print-invoice, #print-invoice * { visibility: visible; }
+      #print-invoice { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; font-family: 'Inter', sans-serif; }
+    }
+  </style>
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Chart.js for Sales Trends -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <!-- SheetJS for multi-tab Excel export -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 
