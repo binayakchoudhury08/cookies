@@ -423,12 +423,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const qty = parseFloat(b2cQty.value);
       const price = parseFloat(b2cPrice.value);
       const discount = parseFloat(document.getElementById('b2c-discount').value) || 0;
-      const taxRate = parseFloat(document.getElementById('b2c-tax').value) || 0;
       
       const subtotal = price;
       const afterDiscount = subtotal - discount;
-      const taxAmount = afterDiscount * (taxRate / 100);
-      const finalPrice = afterDiscount + taxAmount;
+      const finalPrice = afterDiscount;
       const totalCogs = baseCogs * qty;
       const profit = finalPrice - totalCogs;
 
@@ -442,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unitCost: parseFloat(b2cUnitCost.value),
         price: finalPrice,
         discount: discount,
-        tax: taxAmount,
+        tax: 0,
         status: document.getElementById('b2c-status').value,
         remarks: document.getElementById('b2c-remarks').value,
         pinned: false,
@@ -498,12 +496,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const kg = parseFloat(b2bKg.value);
       const cost = parseFloat(b2bCost.value); // This is selling price total
       const discount = parseFloat(document.getElementById('b2b-discount').value) || 0;
-      const taxRate = parseFloat(document.getElementById('b2b-tax').value) || 0;
       
       const subtotal = cost;
       const afterDiscount = subtotal - discount;
-      const taxAmount = afterDiscount * (taxRate / 100);
-      const finalPrice = afterDiscount + taxAmount;
+      const finalPrice = afterDiscount;
       const totalCogs = baseCogs * kg;
       const profit = finalPrice - totalCogs;
 
@@ -519,7 +515,7 @@ document.addEventListener('DOMContentLoaded', () => {
         unitCost: parseFloat(b2bUnitCost.value),
         cost: finalPrice, // override to final price
         discount: discount,
-        tax: taxAmount,
+        tax: 0,
         status: document.getElementById('b2b-status').value,
         remarks: document.getElementById('b2b-remarks').value,
         pinned: false,
@@ -765,7 +761,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const star = o.pinned ? '⭐' : '☆';
         
         tr.innerHTML = `
-          <td><input type="checkbox" class="b2b-row-check" data-id="${o.id}" data-type="${o.type}"></td>
           <td style="cursor:pointer;" class="btn-pin" data-id="${o.id}" data-type="${o.type}">${star}</td>
           <td>${ymd}</td>
           <td>${o.type}</td>
@@ -774,33 +769,16 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${o.qtyStr}</td>
           <td>₹${o.amount}</td>
           <td>₹${o.advance}</td>
-          <td class="b2b-action-col">
+          <td class="b2b-action-col" style="white-space: nowrap;">
+            <button type="button" class="b2b-btn-submit" data-action="edit" data-id="${o.id}" data-type="${o.type}" style="padding:4px 8px; font-size:12px; margin:2px; background:#4a90e2; width:auto; display:inline-block;">Edit</button>
+            <button type="button" class="b2b-btn-submit" data-action="delete" data-id="${o.id}" data-type="${o.type}" style="padding:4px 8px; font-size:12px; margin:2px; background:#ff4c4c; width:auto; display:inline-block;">Delete</button>
             <button type="button" class="b2b-btn-icon" data-action="invoice" data-id="${o.id}" data-type="${o.type}" title="Print Invoice">🖨️</button>
             <button type="button" class="b2b-btn-icon" data-action="whatsapp" data-id="${o.id}" data-type="${o.type}" title="Share via WhatsApp">📱</button>
-            <button type="button" class="b2b-btn-icon" data-action="duplicate" data-id="${o.id}" data-type="${o.type}" title="Duplicate">📋</button>
-            <button type="button" class="b2b-btn-icon" data-action="edit" data-id="${o.id}" data-type="${o.type}" title="Edit">✏️</button>
-            <button type="button" class="b2b-btn-icon" data-action="delete" data-id="${o.id}" data-type="${o.type}" title="Delete">🗑️</button>
           </td>
         `;
         tbody.appendChild(tr);
       }
     });
-
-    // Checkbox bulk actions listener
-    const bulkActions = document.getElementById('b2b-bulk-actions');
-    const checkAll = document.getElementById('b2b-check-all');
-    if (bulkActions && checkAll) {
-      const rowChecks = document.querySelectorAll('.b2b-row-check');
-      const updateBulkUI = () => {
-        const anyChecked = Array.from(rowChecks).some(cb => cb.checked);
-        bulkActions.style.display = anyChecked ? 'flex' : 'none';
-      };
-      checkAll.onclick = (e) => {
-        rowChecks.forEach(cb => cb.checked = e.target.checked);
-        updateBulkUI();
-      };
-      rowChecks.forEach(cb => cb.addEventListener('change', updateBulkUI));
-    }
 
     // Pin listener
     document.querySelectorAll('.btn-pin').forEach(btn => {
@@ -1007,42 +985,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderDashboard();
     });
   }
-
-  // Bulk Actions
-  const btnBulkDelete = document.getElementById('btn-bulk-delete');
-  const btnBulkPaid = document.getElementById('btn-bulk-paid');
-  
-  if (btnBulkDelete) {
-    btnBulkDelete.addEventListener('click', async () => {
-      if (!confirm('Are you sure you want to delete selected orders?')) return;
-      const rowChecks = document.querySelectorAll('.b2b-row-check:checked');
-      const db = loadRevDB();
-      for (const cb of rowChecks) {
-        const id = cb.dataset.id;
-        const type = cb.dataset.type;
-        if (type === 'B2C') db.b2c = db.b2c.filter(o => o.id !== id);
-        if (type === 'B2B') db.b2b = db.b2b.filter(o => o.id !== id);
-      }
-      saveRevDB(db);
-      renderDashboard();
-    });
-  }
-
-  if (btnBulkPaid) {
-    btnBulkPaid.addEventListener('click', () => {
-      const rowChecks = document.querySelectorAll('.b2b-row-check:checked');
-      const db = loadRevDB();
-      for (const cb of rowChecks) {
-        const id = cb.dataset.id;
-        const type = cb.dataset.type;
-        const o = db[type.toLowerCase()].find(x => x.id === id);
-        if (o) o.status = 'Paid';
-      }
-      saveRevDB(db);
-      renderDashboard();
-    });
-  }
-
   // Render Expenses
   function renderExpenses() {
     const db = loadRevDB();
@@ -1354,32 +1296,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 5. Factory Reset
-  const btnClearData = document.getElementById('btn-clear-data');
-  if (btnClearData) {
-    btnClearData.addEventListener('click', () => {
-      if (confirm('CRITICAL WARNING: This will permanently delete ALL orders and settings! Are you sure?')) {
-        if (confirm('Are you ABSOLUTELY sure? This cannot be undone.')) {
-          localStorage.removeItem(REV_KEY);
-          alert('Tracker has been factory reset.');
-          renderDashboard();
-        }
-      }
-    });
   }
-
-  // 6. Floating Action Button Quick Sale
-  const fab = document.createElement('div');
-  fab.className = 'fab-quick-sale';
-  fab.innerHTML = '➕';
-  fab.title = 'Quick B2C Sale';
-  document.body.appendChild(fab);
-  
-  fab.addEventListener('click', () => {
-    if (!modal.classList.contains('is-open')) {
-      triggerBtn.click();
-    }
-    const b2cTab = document.querySelector('.b2b-tab[data-target="b2b-pane-b2c"]');
-    if (b2cTab) b2cTab.click();
-  });
 });

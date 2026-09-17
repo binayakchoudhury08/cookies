@@ -1029,16 +1029,11 @@
 
           <div style="display:flex; justify-content:space-between; align-items:center; margin-top:32px; margin-bottom:12px;">
             <h3 class="b2b-section-title" style="margin:0;">Transaction Ledger</h3>
-            <div id="b2b-bulk-actions" style="display:none; gap:8px;">
-              <button class="b2b-btn-submit" id="btn-bulk-delete" style="background:#ff4c4c; padding: 6px 12px; margin:0; font-size:12px;">🗑️ Delete Selected</button>
-              <button class="b2b-btn-submit" id="btn-bulk-paid" style="background:#20A352; padding: 6px 12px; margin:0; font-size:12px;">✅ Mark Paid</button>
-            </div>
           </div>
           <div class="b2b-table-wrap">
             <table class="b2b-table" id="b2b-ledger-table">
               <thead>
                 <tr>
-                  <th style="width:40px;"><input type="checkbox" id="b2b-check-all"></th>
                   <th>⭐</th>
                   <th>DATE</th>
                   <th>TYPE</th>
@@ -1103,14 +1098,6 @@
               <div class="b2b-form-group">
                 <label>Discount (₹)</label>
                 <input type="number" id="b2c-discount" value="0" min="0">
-              </div>
-              <div class="b2b-form-group">
-                <label>Tax / GST</label>
-                <select id="b2c-tax">
-                  <option value="0">0%</option>
-                  <option value="5">5%</option>
-                  <option value="18">18%</option>
-                </select>
               </div>
               <div class="b2b-form-group">
                 <label>Status</label>
@@ -1192,14 +1179,6 @@
               <div class="b2b-form-group">
                 <label>Discount (₹)</label>
                 <input type="number" id="b2b-discount" value="0" min="0">
-              </div>
-              <div class="b2b-form-group">
-                <label>Tax / GST</label>
-                <select id="b2b-tax">
-                  <option value="0">0%</option>
-                  <option value="5">5%</option>
-                  <option value="18">18%</option>
-                </select>
               </div>
               <div class="b2b-form-group">
                 <label>Status</label>
@@ -1313,7 +1292,7 @@
                 <span class="b2b-setting-icon">💾</span>
                 <h3 class="b2b-setting-title">Data Management</h3>
               </div>
-              <p class="b2b-setting-desc">Backup your local data, restore from a backup, or factory reset the tracker.</p>
+              <p class="b2b-setting-desc">Backup your local data or restore from a backup.</p>
               <div style="display:flex; gap:16px; margin-top:16px; flex-wrap:wrap;">
                 <button type="button" id="btn-export-json" class="b2b-btn-submit" style="background:#4a90e2; flex:1;">Download Backup (.json)</button>
                 
@@ -1321,8 +1300,6 @@
                   <input type="file" id="input-import-json" accept=".json" style="position:absolute; opacity:0; width:100%; height:100%; cursor:pointer;">
                   <button type="button" class="b2b-btn-submit" style="background:#f39c12; width:100%; pointer-events:none;">Restore Backup</button>
                 </div>
-                
-                <button type="button" id="btn-clear-data" class="b2b-btn-submit" style="background:#ff4c4c; flex:1;">Factory Reset (Clear All)</button>
               </div>
             </div>
 
@@ -1498,26 +1475,6 @@
     
     .b2b-table th.sortable:hover { cursor: pointer; background: #e9ecef; }
     
-    /* Floating Action Button */
-    .fab-quick-sale {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 56px;
-      height: 56px;
-      background: #E9723D;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      box-shadow: 0 4px 12px rgba(233,114,61,0.4);
-      cursor: pointer;
-      z-index: 1000;
-      transition: transform 0.2s;
-    }
-    .fab-quick-sale:hover { transform: scale(1.1); }
     
     /* Dark Mode Styles */
     body.b2b-dark-mode .b2b-modal-content { background: #1a1a1a; color: #f1f1f1; }
