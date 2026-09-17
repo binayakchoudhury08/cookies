@@ -441,7 +441,6 @@ document.addEventListener('DOMContentLoaded', () => {
         price: finalPrice,
         discount: discount,
         tax: 0,
-        status: document.getElementById('b2c-status').value,
         remarks: document.getElementById('b2c-remarks').value,
         pinned: false,
         cogs: totalCogs,
@@ -516,7 +515,6 @@ document.addEventListener('DOMContentLoaded', () => {
         cost: finalPrice, // override to final price
         discount: discount,
         tax: 0,
-        status: document.getElementById('b2b-status').value,
         remarks: document.getElementById('b2b-remarks').value,
         pinned: false,
         cogs: totalCogs,
@@ -756,15 +754,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if(tbody) {
         const tr = document.createElement('tr');
-        const statClass = o.status ? `status-${o.status.toLowerCase()}` : 'status-pending';
-        const statText = o.status || 'Pending';
         const star = o.pinned ? '⭐' : '☆';
         
         tr.innerHTML = `
           <td style="cursor:pointer;" class="btn-pin" data-id="${o.id}" data-type="${o.type}">${star}</td>
           <td>${ymd}</td>
           <td>${o.type}</td>
-          <td><span class="status-badge ${statClass}">${statText}</span></td>
           <td>${o.desc}</td>
           <td>${o.qtyStr}</td>
           <td>₹${o.amount}</td>

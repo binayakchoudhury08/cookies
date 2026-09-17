@@ -1037,7 +1037,6 @@
                   <th>⭐</th>
                   <th>DATE</th>
                   <th>TYPE</th>
-                  <th>STATUS</th>
                   <th>FLAVOUR</th>
                   <th>QTY</th>
                   <th>TOTAL (₹)</th>
@@ -1098,14 +1097,6 @@
               <div class="b2b-form-group">
                 <label>Discount (₹)</label>
                 <input type="number" id="b2c-discount" value="0" min="0">
-              </div>
-              <div class="b2b-form-group">
-                <label>Status</label>
-                <select id="b2c-status">
-                  <option value="Pending">Pending</option>
-                  <option value="Paid">Paid</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
               </div>
             </div>
             
@@ -1179,14 +1170,6 @@
               <div class="b2b-form-group">
                 <label>Discount (₹)</label>
                 <input type="number" id="b2b-discount" value="0" min="0">
-              </div>
-              <div class="b2b-form-group">
-                <label>Status</label>
-                <select id="b2b-status">
-                  <option value="Pending">Pending</option>
-                  <option value="Paid">Paid</option>
-                  <option value="Delivered">Delivered</option>
-                </select>
               </div>
             </div>
             
@@ -1467,11 +1450,6 @@
       #print-invoice, #print-invoice * { visibility: visible; }
       #print-invoice { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; font-family: 'Inter', sans-serif; }
     }
-    
-    .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-    .status-pending { background: #fff3cd; color: #856404; }
-    .status-paid { background: #d4edda; color: #155724; }
-    .status-delivered { background: #cce5ff; color: #004085; }
     
     .b2b-table th.sortable:hover { cursor: pointer; background: #e9ecef; }
     
