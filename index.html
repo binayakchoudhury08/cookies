@@ -531,6 +531,15 @@
                   <span id="pack-selection-summary" class="shop-selection-pill">Single Box (180g)</span>
                 </div>
                 <div class="shop-pack-picker" id="pack-picker">
+                  <button class="shop-pack-btn" type="button" data-pack="mini">
+                    <div class="shop-pack-top-row">
+                      <span class="shop-pack-title">Mini Box</span>
+                    </div>
+                    <span class="shop-pack-coins">80g Box</span>
+                    <div class="shop-pack-price-row">
+                      <span class="shop-pack-price"><strike>₹299</strike> ₹239</span>
+                    </div>
+                  </button>
                   <button class="shop-pack-btn is-active" type="button" data-pack="single">
                     <div class="shop-pack-top-row">
                       <span class="shop-pack-title">Single Box</span>
@@ -928,6 +937,12 @@
               <span class="b2b-filter-label">Filter Date:</span>
               <input type="date" class="b2b-date-input">
               <button class="b2b-btn-clear">Clear</button>
+              <select class="b2b-type-filter" style="margin-left: 10px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Inter', sans-serif;">
+                <option value="">All Types</option>
+                <option value="B2C">B2C Only</option>
+                <option value="B2B">B2B Only</option>
+              </select>
+              <input type="text" class="b2b-search-input" placeholder="Search orders..." style="margin-left: 10px; padding: 6px; border: 1px solid #ddd; border-radius: 4px; font-family: 'Inter', sans-serif;">
             </div>
             <button id="b2b-btn-export"
               style="background: none; border: 1px solid #ddd; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px; display:flex; align-items:center; gap:6px;">
@@ -1010,6 +1025,10 @@
           <h3 class="b2b-section-title">Record Direct B2C Sale</h3>
           <form id="form-b2c" class="b2b-form">
             <input type="hidden" id="b2c-id" value="">
+            <div class="b2b-form-group">
+              <label>Date</label>
+              <input type="date" id="b2c-date" required>
+            </div>
             <div class="b2b-responsive-grid-2">
               <div class="b2b-form-group">
                 <label>Flavour/Item</label>
@@ -1043,7 +1062,10 @@
               <label>Advance Received (₹)</label>
               <input type="number" id="b2c-advance" value="0" min="0">
             </div>
-            <button type="submit" class="b2b-btn-submit">Save B2C Order</button>
+            <div style="display:flex; gap: 10px;">
+              <button type="submit" class="b2b-btn-submit" style="flex:1;">Save B2C Order</button>
+              <button type="button" class="b2b-btn-clear-form" onclick="document.getElementById('form-b2c').reset(); document.getElementById('b2c-id').value='';" style="flex:0.3; background:#ff4c4c; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
+            </div>
           </form>
         </div>
 
@@ -1052,6 +1074,10 @@
           <h3 class="b2b-section-title">Record Bulk/B2B Order</h3>
           <form id="form-b2b" class="b2b-form">
             <input type="hidden" id="b2b-id" value="">
+            <div class="b2b-form-group">
+              <label>Date</label>
+              <input type="date" id="b2b-date" required>
+            </div>
             <div class="b2b-responsive-grid-2">
               <div class="b2b-form-group">
                 <label>Client Name</label>
@@ -1097,7 +1123,10 @@
               <label>Advance Received (₹)</label>
               <input type="number" id="b2b-advance" value="0" min="0">
             </div>
-            <button type="submit" class="b2b-btn-submit">Save B2B Order</button>
+            <div style="display:flex; gap: 10px;">
+              <button type="submit" class="b2b-btn-submit" style="flex:1;">Save B2B Order</button>
+              <button type="button" class="b2b-btn-clear-form" onclick="document.getElementById('form-b2b').reset(); document.getElementById('b2b-id').value='';" style="flex:0.3; background:#ff4c4c; color:white; border:none; border-radius:8px; cursor:pointer;">Clear</button>
+            </div>
           </form>
         </div>
 

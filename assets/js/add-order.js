@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const carrier = document.getElementById('ord-in-carrier').value;
 
       let price = 449;
+      if (pack.includes('80g')) price = 239;
+      if (pack.includes('360g')) price = 829;
       if (pack.includes('400g')) price = 759;
       if (pack.includes('600g')) price = 1099;
 

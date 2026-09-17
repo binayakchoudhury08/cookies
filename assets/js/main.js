@@ -25,6 +25,20 @@ const CRUMBLY_CONFIG = {
       price: 449,
       mrp: 559,
       variantId: "47857840423061"
+    },
+    3: {
+      name: "Double Chocolate (80g)",
+      weight: "80g",
+      price: 239,
+      mrp: 299,
+      variantId: "48020304986261"
+    },
+    4: {
+      name: "Choco Chips (80g)",
+      weight: "80g",
+      price: 199,
+      mrp: 249,
+      variantId: "48020321075349"
     }
   },
 
@@ -539,10 +553,10 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   const qtyMinus = document.getElementById('qty-minus-btn');
   const qtyPlus = document.getElementById('qty-plus-btn');
   const qtyDisplay = document.getElementById('qty-display');
-  
+
   const addToCartBtn = document.getElementById('add-to-cart-btn');
   const addToCartText = document.getElementById('add-to-cart-text');
-  
+
   const flavourSummary = document.getElementById('flavour-selection-summary');
   const packSummary = document.getElementById('pack-selection-summary');
   const savingsBanner = document.getElementById('shop-savings-banner');
@@ -561,11 +575,13 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   const cartModalCheckoutBtn = document.getElementById('cart-modal-checkout-btn');
 
   if (!addToCartBtn) return;
-  
+
   // Matrix of products
   const PRODUCTS = {
+    'chocolate_mini': { name: 'Double Chocolate', packName: 'Mini Box (80g)', price: 239, mrp: 299, variantId: '48020304986261', img: 'assets/img/double_chocolate_single_box.jpeg' },
     'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', img: 'assets/img/double_chocolate_single_box.jpeg' },
-    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', img: 'assets/img/double_chocolate_duo_pack.jpeg' }, 
+    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', img: 'assets/img/double_chocolate_duo_pack.jpeg' },
+    'chocochips_mini': { name: 'Choco Chips', packName: 'Mini Box (80g)', price: 199, mrp: 249, variantId: '48020321075349', img: 'assets/img/choco_chips_single_box.jpeg' },
     'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', img: 'assets/img/choco_chips_single_box.jpeg' },
     'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', img: 'assets/img/choco_chips_duo_pack.jpeg' }
   };
@@ -573,7 +589,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   function updateConfiguratorUI() {
     const key = `${selectedFlavour}_${selectedPack}`;
     const product = PRODUCTS[key] || PRODUCTS['chocolate_single'];
-    
+
     const unitPrice = product.price;
     const unitMrp = product.mrp;
     const totalPrice = unitPrice * quantity;
@@ -591,7 +607,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       savingsText.innerHTML = `You save <b>₹${totalSavings}</b> today · Fresh Oven-Baked Dispatch Guarantee!`;
       if (savingsBanner) {
         savingsBanner.classList.remove('pop');
-        void savingsBanner.offsetWidth; 
+        void savingsBanner.offsetWidth;
         savingsBanner.classList.add('pop');
       }
     }
@@ -606,9 +622,18 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     }
 
     // Update Pack Selector Prices Dynamically
+    const miniPackBtn = document.querySelector('.shop-pack-btn[data-pack="mini"]');
     const singlePackBtn = document.querySelector('.shop-pack-btn[data-pack="single"]');
     const duoPackBtn = document.querySelector('.shop-pack-btn[data-pack="duo"]');
-    
+
+    if (miniPackBtn) {
+      const miniProduct = PRODUCTS[`${selectedFlavour}_mini`];
+      const priceRow = miniPackBtn.querySelector('.shop-pack-price');
+      if (priceRow && miniProduct) {
+        priceRow.innerHTML = `<strike>₹${miniProduct.mrp}</strike> ₹${miniProduct.price}`;
+      }
+    }
+
     if (singlePackBtn) {
       const singleProduct = PRODUCTS[`${selectedFlavour}_single`];
       const priceRow = singlePackBtn.querySelector('.shop-pack-price');
@@ -638,7 +663,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       const allThumbs = document.querySelectorAll('.shop-thumb-btn');
       allThumbs.forEach(t => t.classList.remove('is-active'));
       thumb1Btn.classList.add('is-active');
-      
+
       if (mainImg) {
         // Add fade effect
         mainImg.style.opacity = '0';
@@ -660,7 +685,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       thumbnails.forEach(t => t.classList.remove('is-active'));
       // Add active class to clicked
       btn.classList.add('is-active');
-      
+
       const newSrc = btn.getAttribute('data-src');
       if (mainProductImg && newSrc) {
         mainProductImg.style.opacity = '0';
@@ -690,10 +715,10 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
   function renderCartModal() {
     if (!cartModalItems || !cartModalTotal) return;
-    
+
     cartModalItems.innerHTML = '';
     const totalValue = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    
+
     cart.forEach((item, index) => {
       const itemEl = document.createElement('div');
       itemEl.className = 'cart-item';
@@ -814,11 +839,11 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   function doCheckout() {
     if (cart.length === 0) return;
     const domain = CRUMBLY_CONFIG.SHOPIFY_DOMAIN || 'crumblyblr.myshopify.com';
-    
+
     // Shopify permalink format: /cart/ID1:QTY1,ID2:QTY2
     const cartItemsStr = cart.map(item => `${item.variantId}:${item.qty}`).join(',');
     const url = `https://${domain}/cart/${cartItemsStr}`;
-    
+
     window.location.href = url;
   }
 
@@ -893,7 +918,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
   const vipAddress = document.getElementById('vip-address');
   const chkVan = document.getElementById('vip-check-vanilla');
   const chkRed = document.getElementById('vip-check-redvelvet');
-  
+
   const vipErr = document.getElementById('vip-err');
   const vipSuccess = document.getElementById('vip-success-box');
 
@@ -913,7 +938,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     const selectedFlavours = [];
     if (chkVan && chkVan.checked) selectedFlavours.push('Madagascar Vanilla');
     if (chkRed && chkRed.checked) selectedFlavours.push('Red Velvet');
-    
+
 
     if (!selectedFlavours.length) {
       vipErr.textContent = 'Please select at least one flavour for the waitlist.';

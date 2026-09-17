@@ -426,7 +426,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const order = {
         id: idInput.value || 'b2c-'+Date.now().toString(),
-        date: new Date().toISOString(),
+        date: document.getElementById('b2c-date').value ? new Date(document.getElementById('b2c-date').value).toISOString() : new Date().toISOString(),
         type: 'B2C',
         flavour: flavourVal,
         size: sizeVal,
@@ -457,6 +457,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formB2C.reset();
       idInput.value = '';
       b2cQty.value = '1';
+      document.getElementById('b2c-date').value = new Date().toISOString().slice(0, 10);
       renderDashboard();
     });
   }
@@ -487,7 +488,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const order = {
         id: idInput.value || 'b2b-'+Date.now().toString(),
-        date: new Date().toISOString(),
+        date: document.getElementById('b2b-date').value ? new Date(document.getElementById('b2b-date').value).toISOString() : new Date().toISOString(),
         type: 'B2B',
         client: document.getElementById('b2b-client').value,
         flavour: flavourVal,
@@ -520,6 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formB2B.reset();
       idInput.value = '';
       b2bKg.value = '1';
+      document.getElementById('b2b-date').value = new Date().toISOString().slice(0, 10);
       renderDashboard();
     });
   }
@@ -556,12 +558,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDashboard();
       }
       
-      if (action === 'edit') {
+      if (action === 'edit' || action === 'duplicate') {
         let order;
         if (type === 'B2C') {
           order = db.b2c.find(o => o.id === id);
           if (order) {
-            document.getElementById('b2c-id').value = order.id;
+            document.getElementById('b2c-id').value = action === 'edit' ? order.id : '';
+            document.getElementById('b2c-date').value = new Date(order.date).toISOString().slice(0, 10);
             document.getElementById('b2c-flavour').value = order.flavour;
             if (document.getElementById('b2c-size')) document.getElementById('b2c-size').value = order.size || '80g';
             document.getElementById('b2c-qty').value = order.qty || 1;
@@ -574,7 +577,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'B2B') {
           order = db.b2b.find(o => o.id === id);
           if (order) {
-            document.getElementById('b2b-id').value = order.id;
+            document.getElementById('b2b-id').value = action === 'edit' ? order.id : '';
+            document.getElementById('b2b-date').value = new Date(order.date).toISOString().slice(0, 10);
             if(order.client) document.getElementById('b2b-client').value = order.client;
             document.getElementById('b2b-flavour').value = order.flavour;
             document.getElementById('b2b-unit').value = order.unit || 'KG';
@@ -603,6 +607,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderDashboard() {
     const db = loadRevDB();
     const filterVal = document.querySelector('.b2b-date-input').value;
+    const searchVal = document.querySelector('.b2b-search-input') ? document.querySelector('.b2b-search-input').value.toLowerCase() : '';
+    const typeFilter = document.querySelector('.b2b-type-filter') ? document.querySelector('.b2b-type-filter').value : '';
+
+    const todayYMD = new Date().toISOString().slice(0, 10);
+    if (document.getElementById('b2c-date') && !document.getElementById('b2c-date').value) document.getElementById('b2c-date').value = todayYMD;
+    if (document.getElementById('b2b-date') && !document.getElementById('b2b-date').value) document.getElementById('b2b-date').value = todayYMD;
 
     let allTimeB2C = 0, allTimeB2B = 0;
     let allTimeProfitB2C = 0, allTimeProfitB2B = 0;
@@ -628,6 +638,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (o.type === 'B2B') { allTimeB2B += o.amount; allTimeProfitB2B += o.profit; }
 
       if (filterVal && ymd !== filterVal) return;
+      if (typeFilter && o.type !== typeFilter) return;
+      if (searchVal) {
+        const searchStr = `${o.desc} ${o.type} ${o.client || ''} ${ymd}`.toLowerCase();
+        if (!searchStr.includes(searchVal)) return;
+      }
 
       if (o.type === 'B2C') { filteredB2C += o.amount; }
       if (o.type === 'B2B') { filteredB2B += o.amount; }
@@ -642,6 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>₹${o.amount}</td>
           <td>₹${o.advance}</td>
           <td class="b2b-action-col">
+            <button type="button" class="b2b-btn-icon" data-action="duplicate" data-id="${o.id}" data-type="${o.type}" title="Duplicate">📋</button>
             <button type="button" class="b2b-btn-icon" data-action="edit" data-id="${o.id}" data-type="${o.type}" title="Edit">✏️</button>
             <button type="button" class="b2b-btn-icon" data-action="delete" data-id="${o.id}" data-type="${o.type}" title="Delete">🗑️</button>
           </td>
@@ -681,14 +697,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const clearBtn = document.querySelector('.b2b-btn-clear');
   const dateInput = document.querySelector('.b2b-date-input');
+  const searchInput = document.querySelector('.b2b-search-input');
+  const typeFilter = document.querySelector('.b2b-type-filter');
   
   if(dateInput) {
       dateInput.addEventListener('change', renderDashboard);
   }
   
+  if(searchInput) {
+      searchInput.addEventListener('input', renderDashboard);
+  }
+  
+  if(typeFilter) {
+      typeFilter.addEventListener('change', renderDashboard);
+  }
+  
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       if(dateInput) dateInput.value = '';
+      if(searchInput) searchInput.value = '';
+      if(typeFilter) typeFilter.value = '';
       renderDashboard();
     });
   }
