@@ -600,6 +600,15 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         }
       }
+      
+      if (action === 'whatsapp') {
+        const o = db.b2c.find(x => x.id === id) || db.b2b.find(x => x.id === id);
+        if (o) {
+          let text = `*Crumbly Order Alert* 🍪\n\n*ID:* ${o.id}\n*Type:* ${o.type}\n*Amount:* ₹${o.price || o.cost}\n*Advance:* ₹${o.advance || 0}`;
+          if (o.type === 'B2B') text += `\n*Client:* ${o.client}`;
+          window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+      }
     });
   }
 
@@ -657,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>₹${o.amount}</td>
           <td>₹${o.advance}</td>
           <td class="b2b-action-col">
+            <button type="button" class="b2b-btn-icon" data-action="whatsapp" data-id="${o.id}" data-type="${o.type}" title="Share via WhatsApp">📱</button>
             <button type="button" class="b2b-btn-icon" data-action="duplicate" data-id="${o.id}" data-type="${o.type}" title="Duplicate">📋</button>
             <button type="button" class="b2b-btn-icon" data-action="edit" data-id="${o.id}" data-type="${o.type}" title="Edit">✏️</button>
             <button type="button" class="b2b-btn-icon" data-action="delete" data-id="${o.id}" data-type="${o.type}" title="Delete">🗑️</button>
@@ -665,6 +675,43 @@ document.addEventListener('DOMContentLoaded', () => {
         tbody.appendChild(tr);
       }
     });
+
+    // Calculate AI Insights
+    let maxOrder = 0;
+    const flavourCounts = {};
+    const clientRevs = {};
+
+    allOrders.forEach(o => {
+      if (o.amount > maxOrder) maxOrder = o.amount;
+      
+      const fKey = o.flavour;
+      if (!flavourCounts[fKey]) flavourCounts[fKey] = 0;
+      flavourCounts[fKey] += (o.qty || o.kg || 1);
+
+      if (o.type === 'B2B' && o.client) {
+        if (!clientRevs[o.client]) clientRevs[o.client] = 0;
+        clientRevs[o.client] += o.amount;
+      }
+    });
+
+    let topFlavour = '-', topClient = '-';
+    let highestF = 0, highestC = 0;
+
+    for (const f in flavourCounts) {
+      if (flavourCounts[f] > highestF) { highestF = flavourCounts[f]; topFlavour = f; }
+    }
+    for (const c in clientRevs) {
+      if (clientRevs[c] > highestC) { highestC = clientRevs[c]; topClient = c; }
+    }
+
+    const elTopFlavour = document.getElementById('b2b-val-top-flavour');
+    if (elTopFlavour) elTopFlavour.textContent = topFlavour;
+    
+    const elTopClient = document.getElementById('b2b-val-top-client');
+    if (elTopClient) elTopClient.textContent = topClient;
+    
+    const elBiggestOrder = document.getElementById('b2b-val-biggest-order');
+    if (elBiggestOrder) elBiggestOrder.textContent = `₹${maxOrder.toLocaleString()}`;
 
     const totalRev = allTimeB2C + allTimeB2B;
     const target = 1000000;
