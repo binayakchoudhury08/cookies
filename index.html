@@ -1154,6 +1154,55 @@
         <div id="b2b-pane-settings" class="b2b-tab-pane">
           <div class="b2b-settings-grid">
 
+            <!-- App Appearance Card -->
+            <div class="b2b-setting-card">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">🎨</span>
+                <h3 class="b2b-setting-title">App Appearance</h3>
+              </div>
+              <p class="b2b-setting-desc">Switch between light and dark themes for the tracker.</p>
+              <div class="b2b-form-group" style="display:flex; align-items:center; justify-content:space-between; margin-top:16px;">
+                <label style="margin:0; font-weight:600;">Dark Mode</label>
+                <label class="switch" style="position:relative; display:inline-block; width:50px; height:24px;">
+                  <input type="checkbox" id="b2b-dark-mode-toggle" style="opacity:0; width:0; height:0;">
+                  <span class="slider" style="position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#ccc; transition:.4s; border-radius:34px;"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Revenue Goal Card -->
+            <div class="b2b-setting-card">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">🎯</span>
+                <h3 class="b2b-setting-title">Revenue Goal</h3>
+              </div>
+              <p class="b2b-setting-desc">Set your total revenue target for the progress bar.</p>
+              <div class="b2b-form-group" style="margin-top:16px;">
+                <label>Target Amount (₹)</label>
+                <input type="number" id="b2b-target-goal" value="1000000" min="1">
+              </div>
+              <button type="button" class="b2b-btn-submit" id="btn-save-goal" style="margin-top:0;">Save Goal</button>
+            </div>
+
+            <!-- Data Management Card -->
+            <div class="b2b-setting-card b2b-setting-card-wide" style="border-top: 4px solid #ff4c4c;">
+              <div class="b2b-setting-card-header">
+                <span class="b2b-setting-icon">💾</span>
+                <h3 class="b2b-setting-title">Data Management</h3>
+              </div>
+              <p class="b2b-setting-desc">Backup your local data, restore from a backup, or factory reset the tracker.</p>
+              <div style="display:flex; gap:16px; margin-top:16px; flex-wrap:wrap;">
+                <button type="button" id="btn-export-json" class="b2b-btn-submit" style="background:#4a90e2; flex:1;">Download Backup (.json)</button>
+                
+                <div style="flex:1; position:relative;">
+                  <input type="file" id="input-import-json" accept=".json" style="position:absolute; opacity:0; width:100%; height:100%; cursor:pointer;">
+                  <button type="button" class="b2b-btn-submit" style="background:#f39c12; width:100%; pointer-events:none;">Restore Backup</button>
+                </div>
+                
+                <button type="button" id="btn-clear-data" class="b2b-btn-submit" style="background:#ff4c4c; flex:1;">Factory Reset (Clear All)</button>
+              </div>
+            </div>
+
             <!-- Box Sizes Card -->
             <div class="b2b-setting-card">
               <div class="b2b-setting-card-header">
@@ -1318,6 +1367,31 @@
       #print-invoice, #print-invoice * { visibility: visible; }
       #print-invoice { display: block !important; position: absolute; left: 0; top: 0; width: 100%; padding: 20px; font-family: 'Inter', sans-serif; }
     }
+    
+    /* Dark Mode Styles */
+    body.b2b-dark-mode .b2b-modal-content { background: #1a1a1a; color: #f1f1f1; }
+    body.b2b-dark-mode .b2b-header { border-bottom-color: #333; }
+    body.b2b-dark-mode .b2b-title { color: #f1f1f1; }
+    body.b2b-dark-mode .b2b-tab { color: #aaa; }
+    body.b2b-dark-mode .b2b-tab.is-active { color: #E9723D; border-bottom-color: #E9723D; }
+    body.b2b-dark-mode .b2b-tab:hover { background: #333; }
+    body.b2b-dark-mode .b2b-form-group label { color: #ccc; }
+    body.b2b-dark-mode .b2b-form-group input, 
+    body.b2b-dark-mode .b2b-form-group select { background: #2a2a2a; color: #fff; border-color: #444; }
+    body.b2b-dark-mode .b2b-table th { background: #333; color: #ddd; border-bottom-color: #444; }
+    body.b2b-dark-mode .b2b-table td { border-bottom-color: #444; color: #eee; }
+    body.b2b-dark-mode .b2b-kpi-card { background: #2a2a2a !important; border-color: #444 !important; }
+    body.b2b-dark-mode .b2b-kpi-title { color: #aaa !important; }
+    body.b2b-dark-mode .b2b-kpi-val { color: #fff !important; }
+    body.b2b-dark-mode .b2b-setting-card { background: #2a2a2a; border-color: #444; }
+    body.b2b-dark-mode .b2b-setting-title { color: #f1f1f1; }
+    body.b2b-dark-mode .b2b-setting-desc { color: #aaa; }
+    body.b2b-dark-mode .b2b-supplier-list li { border-bottom-color: #444; }
+    
+    /* Toggle Switch CSS */
+    .switch input:checked + .slider { background-color: #E9723D; }
+    .switch .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+    .switch input:checked + .slider:before { transform: translateX(26px); }
   </style>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

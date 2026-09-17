@@ -742,8 +742,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (elBiggestOrder) elBiggestOrder.textContent = `₹${maxOrder.toLocaleString()}`;
 
     const totalRev = allTimeB2C + allTimeB2B;
-    const target = 1000000;
+    const target = parseInt(localStorage.getItem('CRUMBLY_B2B_GOAL')) || 1000000;
     const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
+    
+    const elTotalTitle = document.querySelector('.b2b-kpi-main .b2b-kpi-title');
+    if (elTotalTitle) elTotalTitle.textContent = `TOTAL REVENUE (₹${(target/100000).toLocaleString()} LAKH GOAL)`;
 
     const allTimeTotalProfit = allTimeProfitB2C + allTimeProfitB2B;
     const margin = totalRev > 0 ? ((allTimeTotalProfit / totalRev) * 100).toFixed(1) : 0;
@@ -1005,7 +1008,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const totalRev = totalB2C + totalB2B;
       const totalProfit = profitB2C + profitB2B;
-      const pct = Math.min(100, (totalRev / 1000000) * 100).toFixed(1);
+      const target = parseInt(localStorage.getItem('CRUMBLY_B2B_GOAL')) || 1000000;
+      const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
       const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
       
       const dashData = [
@@ -1059,5 +1063,86 @@ document.addEventListener('DOMContentLoaded', () => {
   // Auto-open if PWA trigger
   if (window.location.search.includes('b2b=true')) {
     if (triggerBtn) triggerBtn.click();
+  }
+
+  // --- NEW SETTINGS LOGIC ---
+  
+  // 1. Dark Mode
+  const darkModeToggle = document.getElementById('b2b-dark-mode-toggle');
+  if (darkModeToggle) {
+    const isDark = localStorage.getItem('CRUMBLY_B2B_DARK_MODE') === 'true';
+    darkModeToggle.checked = isDark;
+    if (isDark) document.body.classList.add('b2b-dark-mode');
+    
+    darkModeToggle.addEventListener('change', (e) => {
+      localStorage.setItem('CRUMBLY_B2B_DARK_MODE', e.target.checked);
+      document.body.classList.toggle('b2b-dark-mode', e.target.checked);
+    });
+  }
+
+  // 2. Revenue Goal
+  const goalInput = document.getElementById('b2b-target-goal');
+  const btnSaveGoal = document.getElementById('btn-save-goal');
+  if (goalInput && btnSaveGoal) {
+    goalInput.value = localStorage.getItem('CRUMBLY_B2B_GOAL') || 1000000;
+    btnSaveGoal.addEventListener('click', () => {
+      localStorage.setItem('CRUMBLY_B2B_GOAL', goalInput.value);
+      alert('Goal saved successfully!');
+      renderDashboard();
+    });
+  }
+
+  // 3. Data Export / Backup
+  const btnExportJson = document.getElementById('btn-export-json');
+  if (btnExportJson) {
+    btnExportJson.addEventListener('click', () => {
+      const dataStr = localStorage.getItem(REV_KEY) || '{}';
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `crumbly_backup_${new Date().toISOString().slice(0,10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  // 4. Data Import / Restore
+  const inputImportJson = document.getElementById('input-import-json');
+  if (inputImportJson) {
+    inputImportJson.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (parsed.b2c && parsed.b2b) {
+            localStorage.setItem(REV_KEY, JSON.stringify(parsed));
+            alert('Backup restored successfully!');
+            renderDashboard();
+          } else {
+            alert('Invalid backup file format.');
+          }
+        } catch(err) {
+          alert('Error parsing JSON backup.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  // 5. Factory Reset
+  const btnClearData = document.getElementById('btn-clear-data');
+  if (btnClearData) {
+    btnClearData.addEventListener('click', () => {
+      if (confirm('CRITICAL WARNING: This will permanently delete ALL orders and settings! Are you sure?')) {
+        if (confirm('Are you ABSOLUTELY sure? This cannot be undone.')) {
+          localStorage.removeItem(REV_KEY);
+          alert('Tracker has been factory reset.');
+          renderDashboard();
+        }
+      }
+    });
   }
 });
