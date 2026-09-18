@@ -4281,3 +4281,26 @@
   font-size: 18px;
   font-weight: 800;
 }
+/* -- MOBILE STICKY BUY BUTTON -- */
+.mobile-sticky-buy {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: rgba(255,253,248,0.95);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+  z-index: 90; /* Below nav, but above content */
+  box-shadow: 0 -4px 20px rgba(38,20,8,0.08);
+}
+@media (max-width: 820px) {
+  .mobile-sticky-buy {
+    display: block;
+  }
+  /* Hide sticky buy when floating cart is active */
+  body:has(.floating-cart.is-visible) .mobile-sticky-buy {
+    display: none;
+  }
+}

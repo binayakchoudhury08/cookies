@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thank You for your Order! — CRUMBLY</title>
+  <meta name="description" content="Your CRUMBLY order is confirmed.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .thank-you-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .thank-you-card {
+      background: #FFFDF8;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(38, 20, 8, 0.05);
+    }
+    .ty-icon {
+      font-size: 64px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .ty-title {
+      font-family: var(--display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 12px;
+    }
+    .ty-subtitle {
+      font-family: var(--sans);
+      font-size: 16px;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .ty-box {
+      background: #f9f4ed;
+      border: 1px solid #e8dccb;
+      padding: 24px;
+      border-radius: 12px;
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    .ty-box h3 {
+      font-family: var(--display);
+      font-size: 18px;
+      margin: 0 0 10px 0;
+      color: var(--ink);
+    }
+    .ty-box p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 10px 0;
+    }
+    .ty-box p:last-child {
+      margin-bottom: 0;
+    }
+    .ty-home-btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="thank-you-page">
+    <a href="index.html" aria-label="CRUMBLY home" style="margin-bottom: 30px; display: inline-block;">
+      <img src="assets/img/brand-logo-crop.webp" alt="CRUMBLY" width="140" height="34">
+    </a>
+
+    <div class="thank-you-card">
+      <span class="ty-icon">🎉</span>
+      <h1 class="ty-title">Order Confirmed!</h1>
+      <p class="ty-subtitle">Thank you for ordering your fresh batch of CRUMBLY mini cookies.</p>
+
+      <div class="ty-box">
+        <h3>📦 What happens next?</h3>
+        <p>Our master bakers are preparing your order using 100% pure dairy butter. Your freshly baked batch will be dispatched shortly.</p>
+        
+        <h3 style="margin-top:20px;">🚚 How to Track Your Order</h3>
+        <p>Once shipped, <strong>your tracking ID will be sent to your email</strong>.</p>
+        <p>You can use that Tracking ID to check your live order status on the <strong>Shiprocket tracking page</strong>.</p>
+      </div>
+
+      <a href="index.html" class="btn ty-home-btn">Return to Homepage ➔</a>
+    </div>
+  </div>
+</body>
+</html>

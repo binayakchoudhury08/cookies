@@ -578,12 +578,12 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
   // Matrix of products
   const PRODUCTS = {
-    'chocolate_mini': { name: 'Double Chocolate', packName: 'Mini Box (80g)', price: 239, mrp: 299, variantId: '48020304986261', img: 'assets/img/double_chocolate_single_box.jpeg' },
-    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', img: 'assets/img/double_chocolate_single_box.jpeg' },
-    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', img: 'assets/img/double_chocolate_duo_pack.jpeg' },
-    'chocochips_mini': { name: 'Choco Chips', packName: 'Mini Box (80g)', price: 199, mrp: 249, variantId: '48020321075349', img: 'assets/img/choco_chips_single_box.jpeg' },
-    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', img: 'assets/img/choco_chips_single_box.jpeg' },
-    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', img: 'assets/img/choco_chips_duo_pack.jpeg' }
+    'chocolate_mini': { name: 'Double Chocolate', packName: 'Mini Box (80g)', price: 239, mrp: 299, variantId: '48020304986261', vid: 'Chocolate.mp4' },
+    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', vid: 'Chocolate.mp4' },
+    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', vid: 'Chocolate.mp4' },
+    'chocochips_mini': { name: 'Choco Chips', packName: 'Mini Box (80g)', price: 199, mrp: 249, variantId: '48020321075349', vid: 'Choco Chips.mp4' },
+    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', vid: 'Choco Chips.mp4' },
+    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', vid: 'Choco Chips.mp4' }
   };
 
   function updateConfiguratorUI() {
@@ -650,52 +650,21 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       }
     }
 
-    // Dynamic Flavour Thumbnail & Image update
-    const thumb1Btn = document.querySelector('.shop-thumb-btn:nth-child(1)');
-    const thumb1Img = thumb1Btn ? thumb1Btn.querySelector('img') : null;
-    const mainImg = document.getElementById('main-product-img');
-    const flavourImg = product.img;
+    // Dynamic Flavour Thumbnail & Image/Video update
+    const mainVid = document.getElementById('main-product-video');
+    const flavourVid = product.vid;
 
-    if (thumb1Img && thumb1Btn) {
-      thumb1Img.src = flavourImg;
-      thumb1Btn.setAttribute('data-src', flavourImg);
-      // Reset active state to the first thumbnail when flavour changes
-      const allThumbs = document.querySelectorAll('.shop-thumb-btn');
-      allThumbs.forEach(t => t.classList.remove('is-active'));
-      thumb1Btn.classList.add('is-active');
-
-      if (mainImg) {
-        // Add fade effect
-        mainImg.style.opacity = '0';
-        setTimeout(() => {
-          mainImg.src = flavourImg;
-          mainImg.style.opacity = '1';
-        }, 200);
-      }
+    if (mainVid && flavourVid && !mainVid.src.includes(flavourVid.replace(' ', '%20'))) {
+      mainVid.style.opacity = '0';
+      setTimeout(() => {
+        mainVid.src = flavourVid;
+        mainVid.style.opacity = '1';
+        mainVid.play().catch(()=>{});
+      }, 200);
     }
   }
 
-  // Thumbnail Click Handler
-  const thumbnails = document.querySelectorAll('.shop-thumb-btn');
-  const mainProductImg = document.getElementById('main-product-img');
-
-  thumbnails.forEach(btn => {
-    btn.addEventListener('click', () => {
-      // Remove active class from all
-      thumbnails.forEach(t => t.classList.remove('is-active'));
-      // Add active class to clicked
-      btn.classList.add('is-active');
-
-      const newSrc = btn.getAttribute('data-src');
-      if (mainProductImg && newSrc) {
-        mainProductImg.style.opacity = '0';
-        setTimeout(() => {
-          mainProductImg.src = newSrc;
-          mainProductImg.style.opacity = '1';
-        }, 200);
-      }
-    });
-  });
+  // Thumbnail Click Handler Removed as thumbnails were removed from UI
 
   function renderFloatingCart() {
     if (!floatingCart) return;

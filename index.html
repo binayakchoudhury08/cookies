@@ -116,6 +116,11 @@
                 <h1 class="hero-brand-name">crumbly</h1>
                 <p class="hero-tagline-text">YOU KNOW YOU WANT IT.</p>
               </div>
+              <div class="hero-rating" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                <span style="color: #F59E0B; font-size: 18px;">★★★★★</span>
+                <span style="color: #F4E8DC; font-size: 13px; font-weight: 600;">4.9/5 (1,240+ Reviews)</span>
+              </div>
+
 
               <p class="sub" style="color:#F4E8DC;margin-top:10px">
                 Mini coin-shaped cookies crafted with 100% pure butter. Double Chocolate, Choco Chips, Vanilla &amp; Red
@@ -290,162 +295,38 @@
 
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ WHY MINI — INTERACTIVE 5-POSTER SWIPE CAROUSEL ═══════════════ -->
+    <!-- ══ THE 5 SECOND TEST CONVERSION ═══════════════ -->
     <section class="sec has-deco" id="why" aria-labelledby="why-h">
       <div class="shell">
         <div class="sec__head rv">
-          <span class="kicker">Small Cookies. Big Satisfaction.</span>
-          <h2 class="dsp h2" id="why-h">Why mini?<br><span class="serif">Delicious in every bite.</span></h2>
-          <p class="sub" style="margin:14px auto 0;text-align:center;max-width:52ch">
-            Traditional bakery cookies are messy. CRUMBLY delivers pure butter satisfaction in a handy coin size.
-          </p>
+          <span class="kicker">The 5 Second Test</span>
+          <h2 class="dsp h2" id="why-h">Is CRUMBLY for you?</h2>
         </div>
 
-        <div class="why-showcase">
-          <!-- Left: Interactive 5-Poster Swipe Carousel & Calibrator -->
-          <div class="why-stage rv">
-            <div class="swipe-carousel" id="poster-carousel">
-              <div class="carousel-track" id="carousel-track">
-                <!-- Slide 1: Double Chocolate -->
-                <div class="carousel-slide">
-                  <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate" class="carousel-img">
-                </div>
-                <!-- Slide 2: Madagascar Vanilla -->
-                <div class="carousel-slide">
-                  <img src="assets/img/slide-vanilla.webp" alt="CRUMBLY Vanilla" class="carousel-img">
-                </div>
-                <!-- Slide 3: Red Velvet -->
-                <div class="carousel-slide">
-                  <img src="assets/img/slide-red-velvet.webp" alt="CRUMBLY Red Velvet" class="carousel-img">
-                </div>
-                <!-- Slide 5: Trio Flavours Overview -->
-                <div class="carousel-slide">
-                  <img src="assets/img/slide-trio-flavours.webp" alt="CRUMBLY All Flavours" class="carousel-img">
-                </div>
-              </div>
-
-              <!-- Carousel Arrow Controls -->
-              <button class="carousel-btn carousel-btn--prev" id="carousel-prev" aria-label="Previous Slide">‹</button>
-              <button class="carousel-btn carousel-btn--next" id="carousel-next" aria-label="Next Slide">›</button>
-
-              <!-- Carousel Dots Indicator -->
-              <div class="carousel-dots" id="carousel-dots">
-                <button class="carousel-dot is-active" data-slide="0" aria-label="Slide 1"></button>
-                <button class="carousel-dot" data-slide="1" aria-label="Slide 2"></button>
-                <button class="carousel-dot" data-slide="2" aria-label="Slide 3"></button>
-                <button class="carousel-dot" data-slide="4" aria-label="Slide 4"></button>
-                <button class="carousel-dot" data-slide="5" aria-label="Slide 5"></button>
-              </div>
-            </div>
-            <p class="carousel-hint">👈 Swipe or use arrows to view flavours 👉</p>
-
-            <!-- Interactive Live Snacking Calculator -->
-            <div class="snack-calc">
-              <div class="snack-calc__head">
-                <span class="snack-calc__title">🧮 Snacking Calibrator</span>
-                <span class="snack-calc__count" id="coin-calc-display">3 Mini Coins</span>
-              </div>
-              <input type="range" min="1" max="10" value="3" class="snack-slider" id="coin-slider"
-                aria-label="Select coin quantity">
-              <div class="snack-slider-labels">
-                <span>1 Coin (Micro Bite)</span>
-                <span>5 Coins (Coffee Pairing)</span>
-                <span>10 Coins (Feast)</span>
-              </div>
-              <div class="snack-metrics">
-                <div class="snack-metric">
-                  <span class="snack-metric__val" id="metric-cal">60</span>
-                  <span class="snack-metric__lbl">Calories</span>
-                </div>
-                <div class="snack-metric">
-                  <span class="snack-metric__val" id="metric-bites">3</span>
-                  <span class="snack-metric__lbl">Clean Bites</span>
-                </div>
-                <div class="snack-metric">
-                  <span class="snack-metric__val" id="metric-crumbs">0.00g</span>
-                  <span class="snack-metric__lbl">Desk Crumbs</span>
-                </div>
-              </div>
-            </div>
+        <div class="why-pillars" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px;">
+          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
+            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">What is it?</h3>
+            <p class="why-pillar__desc">Mini coin-shaped cookies made with 100% pure butter and intense flavors. Zero crumbs, perfect bite-sized indulgence.</p>
           </div>
-
-          <!-- Right: 4 Craft Pillars Grid Matching Brand Poster -->
-          <div class="why-pillars">
-            <div class="why-pillar rv">
-              <div class="why-pillar__ic" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 7v5l3 3" />
-                </svg>
-              </div>
-              <div class="why-pillar__body">
-                <span class="why-pillar__tag">HANDY</span>
-                <h3 class="why-pillar__title">Perfect Coin Size</h3>
-                <p class="why-pillar__desc">
-                  Pop the whole coin in at once. Zero breaking, zero flaky crumbs on your laptop keyboard, desk, or
-                  clothes.
-                </p>
-              </div>
-            </div>
-
-            <div class="why-pillar rv">
-              <div class="why-pillar__ic" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              </div>
-              <div class="why-pillar__body">
-                <span class="why-pillar__tag">HEALTHIER</span>
-                <h3 class="why-pillar__title">100% Pure Butter</h3>
-                <p class="why-pillar__desc">
-                  Baked strictly with pure churned creamery butter for a silky, melting crunch.
-                </p>
-              </div>
-            </div>
-
-            <div class="why-pillar rv">
-              <div class="why-pillar__ic" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-                </svg>
-              </div>
-              <div class="why-pillar__body">
-                <span class="why-pillar__tag">DELICIOUS</span>
-                <h3 class="why-pillar__title">In Every Bite</h3>
-                <p class="why-pillar__desc">
-                  Higher crust-to-core surface ratio delivers maximum cocoa snap and caramelized butter crunch in every
-                  single bite.
-                </p>
-              </div>
-            </div>
-
-            <div class="why-pillar rv">
-              <div class="why-pillar__ic" aria-hidden="true">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M8.5 14.5a4.5 4.5 0 0 0 7 0" />
-                  <circle cx="9" cy="10" r="1" fill="currentColor" stroke="none" />
-                  <circle cx="15" cy="10" r="1" fill="currentColor" stroke="none" />
-                </svg>
-              </div>
-              <div class="why-pillar__body">
-                <span class="why-pillar__tag">TASTY</span>
-                <h3 class="why-pillar__title">Just Better</h3>
-                <p class="why-pillar__desc">
-                  Enjoy exactly as many 20-calorie mini bites as you crave with coffee, tea, or during deep work focus.
-                </p>
-              </div>
-            </div>
+          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
+            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">Who is it for?</h3>
+            <p class="why-pillar__desc">Chocolate lovers, focus-workers craving a clean snack, and anyone who appreciates real bakery craft without the mess.</p>
+          </div>
+          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
+            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">Why buy now?</h3>
+            <p class="why-pillar__desc">Our small batches sell out fast. Batch #001 is currently active with free air shipping on multi-packs. Don't miss out.</p>
+          </div>
+          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
+            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">What do I do next?</h3>
+            <p class="why-pillar__desc">Click below to order your fresh batch right away. Secure 1-click checkout.</p>
+            <a class="btn" href="#shop" style="margin-top: 16px; width: 100%;">Shop Drops ➔</a>
           </div>
         </div>
       </div>
     </section>
-
-
-
+    
     <div class="crumbrule" aria-hidden="true"></div>
-
+    
     <!-- ══ PREMIUM DTC E-COMMERCE STOREFRONT & DROP CATALOG ══ -->
     <section class="shop-sec has-deco" id="shop" aria-labelledby="shop-h">
       <div class="shell-wide">
@@ -463,26 +344,14 @@
         <article class="shop-hero-card rv" id="product-card-chocolate">
           <!-- Left: Product Media Gallery -->
           <div class="shop-product-media-wrapper">
-            <div class="shop-product-media">
+            <div class="shop-product-media" style="position: relative; overflow: hidden; border-radius: 20px; border: 1px solid var(--line);">
               <span class="shop-product-badge">Oven Fresh · Batch #001</span>
-              <div class="shop-media-tag-bottom">🧈 100% Churned Butter</div>
-              <img src="assets/img/slide-double-chocolate.webp" alt="CRUMBLY Double Chocolate Mini Cookies"
-                id="main-product-img">
+              <div class="shop-media-tag-bottom" style="z-index: 10;">🧈 100% Churned Butter</div>
+              <video id="main-product-video" class="shop-product-video" src="Chocolate.mp4" playsinline autoplay loop muted preload="auto" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
             </div>
-
-            <div class="shop-product-thumbnails" id="shop-thumbnails">
-              <button class="shop-thumb-btn is-active" type="button" data-src="assets/img/slide-double-chocolate.webp">
-                <img src="assets/img/slide-double-chocolate.webp" alt="Thumbnail 1">
-              </button>
-              <button class="shop-thumb-btn" type="button" data-src="assets/img/crumbly-packaging.jpg">
-                <img src="assets/img/crumbly-packaging.jpg" alt="Thumbnail 2">
-              </button>
-              <button class="shop-thumb-btn" type="button" data-src="assets/img/cookie-hand-holding.jpg">
-                <img src="assets/img/cookie-hand-holding.jpg" alt="Thumbnail 3">
-              </button>
-            </div>
+            <p style="font-size: 12px; text-align: center; color: var(--muted); margin-top: 10px;">🎥 See the real texture in action</p>
           </div>
-
+          
           <!-- Right: E-Commerce Product Configuration -->
           <div class="shop-product-details">
             <div class="shop-status-and-stock">
@@ -598,22 +467,22 @@
               <!-- Trust & Shipping Micro-Notes -->
               <div class="shop-trust-notes light-trust-grid">
                 <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">⚡</span>
-                  <span><b>Express Dispatch</b><br>24-48h Metros</span>
-                </div>
-                <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">🧈</span>
-                  <span><b>100% Pure Butter</b><br>Premium Quality</span>
+                  <span class="shop-trust-icon">🚚</span>
+                  <span><b>Delivery</b><br>7-8 Days Everywhere<br><small>(No Air by default)</small></span>
                 </div>
                 <div class="shop-trust-note-item">
                   <span class="shop-trust-icon">🛡️</span>
-                  <span><b>Nitrogen Sealed</b><br>Freshness Lock</span>
+                  <span><b>Return Policy</b><br>No Returns/Refunds<br><small>Guaranteed Quality</small></span>
                 </div>
                 <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">🍪</span>
-                  <span><b>Oven Baked</b><br>Zero Preservatives</span>
+                  <span class="shop-trust-icon">💳</span>
+                  <span><b>Secure Payments</b><br>No COD Available</span>
                 </div>
-              </div>
+                <div class="shop-trust-note-item">
+                  <span class="shop-trust-icon">💬</span>
+                  <span><b>Need Help?</b><br><a href="contact.html" style="color:var(--brand); text-decoration:underline;">Contact Us</a></span>
+                </div>
+              </div></div>
             </div>
           </div>
         </article>
@@ -768,6 +637,62 @@
       </div>
     </section>
 
+    
+    <div class="crumbrule" aria-hidden="true"></div>
+
+    <!-- ══ TESTIMONIALS & REVIEWS ══ -->
+    <section class="sec has-deco" id="reviews">
+      <div class="shell">
+        <div class="sec__head rv">
+          <span class="kicker">Real Customer Love</span>
+          <h2 class="dsp h2">What our snackers say</h2>
+        </div>
+        <div class="reviews-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
+          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
+            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"The chocolate coins are incredibly rich. Perfect bite size so there is zero mess on my desk while working."</p>
+            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Rahul S.</div>
+          </div>
+          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
+            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"Loved the pure butter taste! Ordered the Duo box and it finished in two days. Will definitely buy again."</p>
+            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Priya M.</div>
+          </div>
+          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
+            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
+            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"Best cookies I've ever had. You can really taste the premium ingredients. 10/10."</p>
+            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Aman K.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="crumbrule" aria-hidden="true"></div>
+
+    <!-- ══ FAQ ══ -->
+    <section class="sec has-deco" id="faq">
+      <div class="shell">
+        <div class="sec__head rv">
+          <span class="kicker">Got Questions?</span>
+          <h2 class="dsp h2">Frequently Asked Questions</h2>
+        </div>
+        <div class="faq-list rv" style="max-width: 800px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px;">
+          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
+            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">What makes Crumbly different?</h4>
+            <p style="color: var(--muted); font-size: 14px;">Our cookies are baked with 100% pure dairy butter and high-quality chocolate. They are coin-sized to give you the perfect bite without making a mess.</p>
+          </div>
+          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
+            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">How long is the delivery time?</h4>
+            <p style="color: var(--muted); font-size: 14px;">We deliver across India within 7-8 days via surface transport to ensure the cookies arrive safely.</p>
+          </div>
+          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
+            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">Are there returns or COD available?</h4>
+            <p style="color: var(--muted); font-size: 14px;">Because we bake fresh and ship food items, we do not accept returns and we do not offer Cash on Delivery. All payments are 100% secure.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ══ HIGH-END BRAND GRAND FINALE FOOTER ════════════════ -->
     <div class="foot-wrap has-deco">
       <div class="shell">
@@ -826,17 +751,25 @@
             </div>
 
             <div class="foot-col">
-              <h4>Direct Customer Contacts</h4>
+              <h4>Support & Links</h4>
               <ul>
-                <li><a href="https://www.instagram.com/crumbly.blr" target="_blank" rel="noopener">📸 Instagram:
-                    @crumbly.blr</a></li>
-                <li><a href="https://wa.me/917069666910" target="_blank" rel="noopener">💬 WhatsApp: +91 7069666910</a>
-                </li>
-                <li><a href="#waitlist">Drop Waitlist</a></li>
-                <li><a href="#shop">Shop Double Chocolate</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="#faq">FAQ</a></li>
+                <li><a href="contact.html">Track Order (Email Tracking ID sent to you via Shiprocket)</a></li>
               </ul>
-
-              <!-- Customer Helpline Contact Box (Both Numbers) -->
+            </div>
+            <div class="foot-col">
+              <h4>Legal & Policies</h4>
+              <ul>
+                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                <li><a href="terms.html">Terms of Service</a></li>
+                <li><a href="shipping-policy.html">Shipping Policy</a></li>
+                <li><a href="refund-policy.html">Refund Policy</a></li>
+              </ul>
+            </div>
+            
+            <!-- Customer Helpline Contact Box (Both Numbers) -->
               <div class="foot-helpline-box">
                 <span class="foot-helpline-label">Customer Care &amp; Support:</span>
                 <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px;">
@@ -858,6 +791,11 @@
       </div>
     </div>
   </main>
+
+  <!-- Sticky Mobile Buy Button -->
+  <div class="mobile-sticky-buy">
+    <a href="#shop" class="btn btn--hero-primary" style="width:100%; box-shadow: 0 4px 14px rgba(38,20,8,0.4);">Order Now</a>
+  </div>
 
   <div id="floating-cart" class="floating-cart is-hidden">
     <div class="floating-cart-info">
