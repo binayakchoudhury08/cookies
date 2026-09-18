@@ -578,12 +578,12 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
 
   // Matrix of products
   const PRODUCTS = {
-    'chocolate_mini': { name: 'Double Chocolate', packName: 'Mini Box (80g)', price: 239, mrp: 299, variantId: '48020304986261', vid: 'Chocolate.mp4' },
-    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', vid: 'Chocolate.mp4' },
-    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', vid: 'Chocolate.mp4' },
-    'chocochips_mini': { name: 'Choco Chips', packName: 'Mini Box (80g)', price: 199, mrp: 249, variantId: '48020321075349', vid: 'Choco Chips.mp4' },
-    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', vid: 'Choco Chips.mp4' },
-    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', vid: 'Choco Chips.mp4' }
+    'chocolate_mini': { name: 'Double Chocolate', packName: 'Mini Box (80g)', price: 239, mrp: 299, variantId: '48020304986261', vid: 'Double Chocolate Video.mp4' },
+    'chocolate_single': { name: 'Double Chocolate', packName: 'Single Box (180g)', price: 420, mrp: 499, variantId: '48011888132245', vid: 'Double Chocolate Video.mp4' },
+    'chocolate_duo': { name: 'Double Chocolate', packName: 'Duo Box (360g)', price: 829, mrp: 998, variantId: '48011888165013', vid: 'Double Chocolate Video.mp4' },
+    'chocochips_mini': { name: 'Choco Chips', packName: 'Mini Box (80g)', price: 199, mrp: 249, variantId: '48020321075349', vid: 'Chocochips Video.mp4' },
+    'chocochips_single': { name: 'Choco Chips', packName: 'Single Box (180g)', price: 390, mrp: 449, variantId: '47857840423061', vid: 'Chocochips Video.mp4' },
+    'chocochips_duo': { name: 'Choco Chips', packName: 'Duo Box (360g)', price: 759, mrp: 898, variantId: '47857840455829', vid: 'Chocochips Video.mp4' }
   };
 
   function updateConfiguratorUI() {
