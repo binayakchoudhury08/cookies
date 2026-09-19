@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Track Your Order — CRUMBLY</title>
+  <meta name="description" content="Track your CRUMBLY order status in real-time.">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="assets/css/style.css">
+  <style>
+    .track-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: var(--surface);
+      padding: 60px 20px;
+    }
+    .track-card {
+      background: #FFFDF8;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      margin-top: 20px;
+    }
+    .track-input-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .track-input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 2px solid var(--border);
+      font-family: 'Outfit', sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .track-input:focus {
+      border-color: var(--accent);
+    }
+    .track-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      transition: opacity 0.2s;
+    }
+    .track-btn:hover {
+      opacity: 0.9;
+    }
+    .track-btn:disabled {
+      background: var(--muted);
+      cursor: not-allowed;
+    }
+
+    #track-result {
+      margin-top: 30px;
+      display: none;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      background: #e0f7e9;
+      color: #0b7a39;
+      margin-bottom: 15px;
+    }
+    .timeline {
+      margin-top: 20px;
+      text-align: left;
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -27px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .timeline-date {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .timeline-activity {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .timeline-location {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    
+    .error-msg {
+      color: #d93025;
+      font-weight: 600;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="track-page">
+    <a href="index.html" style="text-decoration: none;">
+      <h1 class="logo" style="font-size: 32px; color: var(--accent); margin-bottom: 20px;">CRUMBLY</h1>
+    </a>
+    
+    <div class="track-card">
+      <h2 style="font-family: 'Fredoka', sans-serif; color: var(--text); margin-bottom: 8px;">Track Your Order</h2>
+      <p style="color: var(--muted); font-size: 14px;">Enter the AWB tracking ID sent to your email to check the live status of your oven-fresh cookies.</p>
+      
+      <form id="track-form">
+        <div class="track-input-group">
+          <input type="text" id="awb-input" class="track-input" placeholder="e.g. 123456789012" required>
+          <button type="submit" id="track-btn" class="track-btn">Track</button>
+        </div>
+      </form>
+      
+      <div id="error-msg" class="error-msg"></div>
+
+      <div id="track-result">
+        <div id="current-status" class="status-badge"></div>
+        <div class="timeline" id="timeline-container">
+          <!-- Timeline items injected here -->
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('track-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const awb = document.getElementById('awb-input').value.trim();
+      const btn = document.getElementById('track-btn');
+      const errorDiv = document.getElementById('error-msg');
+      const resultDiv = document.getElementById('track-result');
+      const statusBadge = document.getElementById('current-status');
+      const timelineContainer = document.getElementById('timeline-container');
+      
+      if (!awb) return;
+
+      btn.disabled = true;
+      btn.innerText = 'Searching...';
+      errorDiv.style.display = 'none';
+      resultDiv.style.display = 'none';
+      timelineContainer.innerHTML = '';
+
+      try {
+        const response = await fetch(`/api/track?awb=${awb}`);
+        const data = await response.json();
+        
+        btn.disabled = false;
+        btn.innerText = 'Track';
+
+        if (!response.ok || !data.tracking_data || data.tracking_data.error) {
+          errorDiv.innerText = data.tracking_data?.error || 'Invalid AWB or tracking data not found.';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        const trackingData = data.tracking_data;
+        const mainTrack = trackingData.shipment_track && trackingData.shipment_track[0];
+        const activities = trackingData.shipment_track_activities || [];
+
+        if (!mainTrack) {
+          errorDiv.innerText = 'Tracking information is still generating. Please check back later.';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        // Show status
+        statusBadge.innerText = mainTrack.current_status || 'In Transit';
+        
+        // Build timeline
+        if (activities.length > 0) {
+          activities.forEach(act => {
+            const el = document.createElement('div');
+            el.className = 'timeline-item';
+            
+            const dateStr = act.date ? new Date(act.date).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+            
+            el.innerHTML = `
+              <div class="timeline-date">${dateStr}</div>
+              <div class="timeline-activity">${act.activity || act.status}</div>
+              ${act.location ? `<div class="timeline-location">📍 ${act.location}</div>` : ''}
+            `;
+            timelineContainer.appendChild(el);
+          });
+        } else {
+          timelineContainer.innerHTML = '<div class="timeline-item"><div class="timeline-activity">Order processed. Waiting for carrier pickup.</div></div>';
+        }
+
+        resultDiv.style.display = 'block';
+
+      } catch (err) {
+        btn.disabled = false;
+        btn.innerText = 'Track';
+        errorDiv.innerText = 'Network error. Please try again later.';
+        errorDiv.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>
