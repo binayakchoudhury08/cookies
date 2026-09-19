@@ -240,7 +240,7 @@
 
         <!-- Products Section -->
         <div class="product-section" id="product-container" style="display: none;">
-          <div class="product-icon">🍪</div>
+          <img id="track-product-img" src="" class="product-icon" alt="Product Image" style="object-fit: cover; background: none; box-shadow: 0 5px 15px rgba(0,0,0,0.3);">
           <div class="product-details">
             <h4>Order Contents</h4>
             <p id="product-name">Fetching purchased items...</p>
@@ -341,6 +341,13 @@
         // --- Populate Products ---
         if (products.length > 0) {
           prodContainer.style.display = 'flex';
+          
+          let imgPath = 'assets/img/double_chocolate_single_box.jpeg';
+          if (products[0].name.toLowerCase().includes('chip')) {
+            imgPath = 'assets/img/choco_chips_single_box.jpeg';
+          }
+          document.getElementById('track-product-img').src = imgPath;
+
           // Combine all product names
           const names = products.map(p => `${p.quantity}x ${p.name}`).join(' & ');
           document.getElementById('product-name').innerText = names;
