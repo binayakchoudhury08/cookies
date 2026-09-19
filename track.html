@@ -33,7 +33,41 @@
       font-family: 'Outfit', sans-serif; 
       color: var(--text);
       min-height: 100vh;
+      transition: background 0.5s ease, color 0.5s ease;
     }
+
+    /* Light Theme Overrides */
+    body.light-theme {
+      --bg-dark: #f9f6f0;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(0, 0, 0, 0.08);
+      --text: #2c2520;
+      --muted: #777777;
+      background: radial-gradient(circle at 50% -20%, #ffffff 0%, var(--bg-dark) 80%);
+    }
+    body.light-theme .track-card { box-shadow: 0 20px 50px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,1); }
+    body.light-theme .track-input-group { background: rgba(0,0,0,0.04); }
+    body.light-theme .track-input { color: var(--text); }
+    body.light-theme .track-input::placeholder { color: #888; }
+    body.light-theme .product-section { background: rgba(255,255,255,0.6); }
+    body.light-theme .p-tag { background: rgba(0,0,0,0.05); color: #333; }
+    body.light-theme .summary-item { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.04); }
+    body.light-theme .summary-item strong { color: var(--text); }
+    body.light-theme .step-circle { background: #e0e0e0; border-color: #fff; color: #666; }
+    body.light-theme .step.active .step-circle { color: white; }
+    body.light-theme .step-label { color: #888; }
+    body.light-theme .timeline-activity { color: var(--text); }
+    body.light-theme .timeline-item::before { background: #e0e0e0; border-color: rgba(0,0,0,0.1); }
+    body.light-theme .timeline-item.latest::before { background: var(--accent); border-color: var(--accent); }
+    body.light-theme #map-container { filter: none; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: absolute; top: 20px; right: 20px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+      color: var(--text); padding: 8px 16px; border-radius: 20px; cursor: pointer; font-family: 'Outfit'; font-weight: 600;
+      transition: all 0.3s; backdrop-filter: blur(10px);
+    }
+    .theme-toggle:hover { transform: scale(1.05); }
 
     .track-page { 
       display: flex; flex-direction: column; align-items: center; 
@@ -184,6 +218,8 @@
 </head>
 <body>
 
+  <button class="theme-toggle" id="theme-btn">☀️ Light Mode</button>
+
   <div class="track-page">
     <a href="index.html" class="logo">CRUMBLY</a>
     
@@ -244,6 +280,16 @@
   </div>
 
   <script>
+    const themeBtn = document.getElementById('theme-btn');
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      if (document.body.classList.contains('light-theme')) {
+        themeBtn.innerText = '🌙 Dark Mode';
+      } else {
+        themeBtn.innerText = '☀️ Light Mode';
+      }
+    });
+
     let map = null;
     let marker = null;
 
