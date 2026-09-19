@@ -44,6 +44,11 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 
   <!-- Google Fonts: Fredoka & Outfit matching Crumbly Brand Identity -->
+  <!-- Custom Styles -->
+  <style>
+    .shop-carousel::-webkit-scrollbar { display: none; }
+    .carousel-indicators .dot.active { width: 24px !important; border-radius: 4px !important; background: var(--accent) !important; }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -345,17 +350,37 @@
         <article class="shop-hero-card rv" id="product-card-chocolate">
           <!-- Left: Product Media Gallery -->
           <div class="shop-product-media-wrapper">
-            <div class="shop-product-media" style="position: relative; overflow: hidden; border-radius: 20px; border: 1px solid var(--line);">
-              <span class="shop-product-badge">Oven Fresh · Batch #001</span>
-              <div class="shop-media-tag-bottom" style="z-index: 10;">🧈 100% Churned Butter</div>
-              <video id="main-product-video" class="shop-product-video" src="Double%20Chocolate%20Video.mp4" playsinline autoplay loop muted preload="auto" poster="assets/img/brand-poster-double-chocolate.jpg" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
-            </div>
             
-            <div class="shop-product-image-container" style="margin-top: 15px; border-radius: 20px; overflow: hidden; border: 1px solid var(--line);">
-              <img id="main-product-image" src="assets/img/double_chocolate_single_box.jpeg" alt="Product Image" style="width: 100%; max-height: 400px; display: block; object-fit: cover;">
+            <div class="shop-carousel" id="product-carousel" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; border-radius: 20px; border: 1px solid var(--line); -webkit-overflow-scrolling: touch; scrollbar-width: none;">
+              
+              <!-- Slide 1: Single Box Image -->
+              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
+                <span class="shop-product-badge" style="z-index: 10;">Oven Fresh · Batch #001</span>
+                <img id="carousel-img-1" src="assets/img/double_chocolate_single_box.jpeg" alt="Single Box" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
+              </div>
+              
+              <!-- Slide 2: Duo Box Image -->
+              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
+                <span class="shop-product-badge" style="z-index: 10; background: var(--accent);">Save 15% on Duo Packs</span>
+                <img id="carousel-img-2" src="assets/img/double_chocolate_duo_pack.jpeg" alt="Duo Pack" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
+              </div>
+
+              <!-- Slide 3: Video -->
+              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
+                <div class="shop-media-tag-bottom" style="z-index: 10;">🧈 100% Churned Butter</div>
+                <video id="main-product-video" class="shop-product-video" src="Double%20Chocolate%20Video.mp4" playsinline autoplay loop muted preload="auto" poster="assets/img/brand-poster-double-chocolate.jpg" style="width: 100%; height: 100%; max-height: 480px; object-fit: cover; display: block;"></video>
+              </div>
+              
             </div>
 
-            <p style="font-size: 12px; text-align: center; color: var(--muted); margin-top: 10px;">🎥 Swipe to see the real texture in action</p>
+            <!-- Dots Indicator -->
+            <div class="carousel-indicators" id="carousel-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px;">
+              <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
+              <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
+              <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
+            </div>
+
+            <p style="font-size: 13px; text-align: center; color: var(--muted); margin-top: 12px; font-weight: 500;">👈 Swipe to see all media</p>
           </div>
           
           <!-- Right: E-Commerce Product Configuration -->

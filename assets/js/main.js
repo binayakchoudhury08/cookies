@@ -650,34 +650,46 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       }
     }
 
-    // Dynamic Flavour Thumbnail & Image/Video update
+    // Dynamic Flavour Media update (Carousel)
+    const img1 = document.getElementById('carousel-img-1');
+    const img2 = document.getElementById('carousel-img-2');
     const mainVid = document.getElementById('main-product-video');
-    const mainImg = document.getElementById('main-product-image');
     const flavourVid = product.vid;
-    const flavourImg = product.img;
 
     if (mainVid && flavourVid && !mainVid.src.includes(encodeURI(flavourVid))) {
       mainVid.style.opacity = '0';
-      if (mainImg) mainImg.style.opacity = '0';
+      if (img1) img1.style.opacity = '0';
+      if (img2) img2.style.opacity = '0';
       
       setTimeout(() => {
         mainVid.src = flavourVid;
         if (flavourVid.includes('Double')) {
           mainVid.setAttribute('poster', 'assets/img/brand-poster-double-chocolate.jpg');
+          if (img1) img1.src = 'assets/img/double_chocolate_single_box.jpeg';
+          if (img2) img2.src = 'assets/img/double_chocolate_duo_pack.jpeg';
         } else {
           mainVid.setAttribute('poster', 'assets/img/choco-chips-product.jpg');
+          if (img1) img1.src = 'assets/img/choco_chips_single_box.jpeg';
+          if (img2) img2.src = 'assets/img/choco_chips_duo_pack.jpeg';
         }
         
-        if (mainImg && flavourImg) mainImg.src = flavourImg;
-        
         mainVid.style.opacity = '1';
-        if (mainImg) mainImg.style.opacity = '1';
+        if (img1) img1.style.opacity = '1';
+        if (img2) img2.style.opacity = '1';
         mainVid.play().catch(()=>{});
       }, 200);
     }
   }
 
-  // Thumbnail Click Handler Removed as thumbnails were removed from UI
+  // Setup Carousel Dots listener
+  const carousel = document.getElementById('product-carousel');
+  const dots = document.querySelectorAll('#carousel-dots .dot');
+  if (carousel && dots.length > 0) {
+    carousel.addEventListener('scroll', () => {
+      const index = Math.round(carousel.scrollLeft / carousel.offsetWidth);
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+    });
+  }
 
   function renderFloatingCart() {
     if (!floatingCart) return;
