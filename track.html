@@ -3,68 +3,183 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live Tracking — CRUMBLY</title>
+  <title>Beast Tracker — CRUMBLY</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
   
   <!-- Leaflet CSS for Map -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
   <style>
-    body { background: var(--surface); margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-    .track-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
-    
-    .logo { font-size: 32px; color: var(--accent); margin-bottom: 20px; font-family: 'Fredoka', sans-serif; font-weight: 700; text-decoration: none; display: block; text-align: center; }
-    
-    .track-card {
-      background: #FFFDF8; border: 1px solid var(--border); border-radius: 20px;
-      padding: 30px; max-width: 700px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 10px;
+    :root {
+      --accent: #E9723D;
+      --accent-glow: rgba(233, 114, 61, 0.4);
+      --bg-dark: #12100E;
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --text: #ffffff;
+      --muted: #a0a0a0;
     }
     
-    .track-input-group { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 30px; }
-    .track-input { flex: 1; padding: 12px 16px; border-radius: 12px; border: 2px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 16px; outline: none; }
-    .track-input:focus { border-color: var(--accent); }
-    .track-btn { padding: 12px 24px; border-radius: 12px; background: var(--accent); color: white; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
-    .track-btn:hover { opacity: 0.9; }
-    .track-btn:disabled { background: var(--muted); cursor: not-allowed; }
-
-    #track-result { display: none; }
+    * { box-sizing: border-box; }
     
-    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #faf4eb; padding: 20px; border-radius: 16px; margin-bottom: 25px; }
-    .summary-item { font-size: 14px; }
-    .summary-item span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-    .summary-item strong { color: var(--ink); font-size: 15px; }
+    body { 
+      background: radial-gradient(circle at 50% -20%, #2a1a12 0%, var(--bg-dark) 80%);
+      margin: 0; padding: 0; 
+      font-family: 'Outfit', sans-serif; 
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .track-page { 
+      display: flex; flex-direction: column; align-items: center; 
+      padding: 60px 20px; max-width: 800px; margin: 0 auto;
+    }
+    
+    .logo { 
+      font-size: 36px; color: var(--accent); margin-bottom: 30px; 
+      font-family: 'Fredoka', sans-serif; font-weight: 700; 
+      text-decoration: none; text-shadow: 0 0 20px var(--accent-glow);
+      letter-spacing: -1px;
+    }
+    
+    /* Glassmorphism Container */
+    .track-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px; width: 100%;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 { font-family: 'Fredoka', sans-serif; font-size: 28px; margin: 0 0 10px 0; font-weight: 600; }
+    p.subtitle { color: var(--muted); font-size: 15px; margin: 0 0 30px 0; }
+
+    /* Search Input */
+    .track-input-group { 
+      display: flex; gap: 12px; margin-bottom: 35px; 
+      background: rgba(0,0,0,0.3); border-radius: 16px; padding: 6px;
+      border: 1px solid var(--glass-border);
+    }
+    .track-input { 
+      flex: 1; padding: 14px 20px; border-radius: 12px; 
+      background: transparent; border: none; color: white;
+      font-family: 'Outfit', sans-serif; font-size: 16px; outline: none; 
+    }
+    .track-input::placeholder { color: #666; }
+    .track-btn { 
+      padding: 14px 32px; border-radius: 12px; 
+      background: var(--accent); color: white; font-weight: 700; 
+      border: none; cursor: pointer; transition: all 0.3s;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+    .track-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 25px var(--accent-glow); }
+    .track-btn:disabled { background: #333; box-shadow: none; color: #666; cursor: not-allowed; transform: none; }
+
+    #track-result { display: none; animation: fadeUp 0.6s ease; }
+    
+    /* Product Section */
+    .product-section {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 20px;
+      margin-bottom: 30px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .product-icon {
+      width: 60px; height: 60px; border-radius: 12px;
+      background: linear-gradient(135deg, #2a1a12, var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .product-details h4 { margin: 0 0 5px 0; font-size: 18px; font-weight: 600; }
+    .product-details p { margin: 0; color: var(--muted); font-size: 14px; }
+    .product-tags { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .p-tag { 
+      background: rgba(255,255,255,0.05); padding: 4px 10px; 
+      border-radius: 8px; font-size: 12px; font-weight: 600; color: #ddd; 
+    }
+    
+    /* Summary Grid */
+    .summary-grid { 
+      display: grid; grid-template-columns: 1fr 1fr; gap: 15px; 
+      margin-bottom: 35px; 
+    }
+    .summary-item { 
+      background: rgba(255,255,255,0.02); padding: 16px; 
+      border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+    }
+    .summary-item span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+    .summary-item strong { color: white; font-size: 16px; font-weight: 600; }
 
     /* Progress Bar */
-    .progress-wrapper { position: relative; display: flex; justify-content: space-between; margin: 40px 0 30px; }
-    .progress-line { position: absolute; top: 12px; left: 0; right: 0; height: 4px; background: #e0d5c1; z-index: 1; border-radius: 2px; }
-    .progress-line-fill { position: absolute; top: 12px; left: 0; height: 4px; background: var(--accent); z-index: 2; transition: width 0.5s ease; border-radius: 2px; }
+    .progress-wrapper { position: relative; display: flex; justify-content: space-between; margin: 50px 0 40px; }
+    .progress-line { position: absolute; top: 16px; left: 0; right: 0; height: 4px; background: rgba(255,255,255,0.1); z-index: 1; border-radius: 2px; }
+    .progress-line-fill { position: absolute; top: 16px; left: 0; height: 4px; background: var(--accent); z-index: 2; transition: width 1s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 2px; box-shadow: 0 0 10px var(--accent-glow); }
     
-    .step { position: relative; z-index: 3; text-align: center; width: 60px; }
-    .step-circle { width: 28px; height: 28px; border-radius: 50%; background: #e0d5c1; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-weight: bold; font-size: 12px; border: 3px solid #FFFDF8; transition: all 0.3s; }
-    .step.active .step-circle, .step.completed .step-circle { background: var(--accent); }
-    .step-label { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.2; }
-    .step.active .step-label { color: var(--accent); }
+    .step { position: relative; z-index: 3; text-align: center; width: 70px; }
+    .step-circle { 
+      width: 36px; height: 36px; border-radius: 50%; background: #222; 
+      color: #666; display: flex; align-items: center; justify-content: center; 
+      margin: 0 auto 10px; font-weight: bold; font-size: 14px; 
+      border: 4px solid var(--bg-dark); transition: all 0.5s ease; 
+    }
+    .step.active .step-circle { background: var(--accent); color: white; box-shadow: 0 0 20px var(--accent-glow); border-color: rgba(233,114,61,0.2); }
+    .step.completed .step-circle { background: var(--accent); color: white; }
+    .step-label { font-size: 12px; font-weight: 600; color: #666; line-height: 1.2; transition: color 0.3s; }
+    .step.active .step-label, .step.completed .step-label { color: white; }
 
     /* Map */
-    #map-container { height: 250px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; display: none; }
+    #map-container { 
+      height: 280px; border-radius: 16px; overflow: hidden; 
+      border: 1px solid var(--glass-border); margin-bottom: 35px; 
+      display: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      filter: invert(90%) hue-rotate(180deg) brightness(85%) contrast(110%);
+    }
 
+    h3 { font-family: 'Fredoka', sans-serif; font-size: 20px; margin-bottom: 20px; font-weight: 500; }
+    
     /* Timeline */
-    .timeline { position: relative; padding-left: 24px; border-left: 2px dashed var(--border); margin-left: 10px; margin-top: 10px; }
-    .timeline-item { position: relative; margin-bottom: 24px; }
-    .timeline-item::before { content: ''; position: absolute; left: -32px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: #faf4eb; border: 2px solid var(--accent); }
-    .timeline-item.latest::before { background: var(--accent); box-shadow: 0 0 0 4px rgba(233, 114, 61, 0.2); }
+    .timeline { position: relative; padding-left: 28px; border-left: 2px solid rgba(255,255,255,0.1); margin-left: 10px; }
+    .timeline-item { position: relative; margin-bottom: 28px; animation: fadeUp 0.5s ease backwards; }
+    .timeline-item:nth-child(2) { animation-delay: 0.1s; }
+    .timeline-item:nth-child(3) { animation-delay: 0.2s; }
+    .timeline-item:nth-child(4) { animation-delay: 0.3s; }
+
+    .timeline-item::before { 
+      content: ''; position: absolute; left: -35px; top: 4px; 
+      width: 12px; height: 12px; border-radius: 50%; background: #222; 
+      border: 2px solid rgba(255,255,255,0.2); 
+    }
+    .timeline-item.latest::before { 
+      background: var(--accent); border-color: var(--accent);
+      box-shadow: 0 0 15px var(--accent-glow); 
+    }
     
-    .timeline-date { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
-    .timeline-activity { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-    .timeline-location { font-size: 13px; color: var(--text); }
+    .timeline-date { font-size: 12px; color: var(--accent); font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+    .timeline-activity { font-size: 16px; font-weight: 600; color: white; margin-bottom: 4px; }
+    .timeline-location { font-size: 13px; color: var(--muted); }
     
-    .error-msg { color: #d93025; font-weight: 600; margin-top: 20px; display: none; text-align: center; }
+    .error-msg { 
+      background: rgba(217, 48, 37, 0.1); color: #ff6b6b; border: 1px solid rgba(217, 48, 37, 0.2);
+      padding: 15px; border-radius: 12px; font-weight: 500; margin-bottom: 20px; 
+      display: none; text-align: center; 
+    }
+
+    /* Custom Leaflet overrides for dark mode feel */
+    .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: #222; color: white; }
   </style>
 </head>
 <body>
@@ -73,12 +188,12 @@
     <a href="index.html" class="logo">CRUMBLY</a>
     
     <div class="track-card">
-      <h2 style="font-family: 'Fredoka', sans-serif; margin-bottom: 8px; font-size: 24px;">Advanced Order Tracking</h2>
-      <p style="color: var(--muted); font-size: 14px; margin-bottom: 10px;">Enter your AWB tracking ID to see live shipping details and map location.</p>
+      <h2>Beast Mode Tracker</h2>
+      <p class="subtitle">Enter your AWB tracking ID for deep insights, live coordinates, and product details.</p>
       
       <form id="track-form">
         <div class="track-input-group">
-          <input type="text" id="awb-input" class="track-input" placeholder="e.g. 1319461125820" required>
+          <input type="text" id="awb-input" class="track-input" placeholder="e.g. 1319461125820" required autocomplete="off">
           <button type="submit" id="track-btn" class="track-btn">Track Order</button>
         </div>
       </form>
@@ -86,11 +201,21 @@
       <div id="error-msg" class="error-msg"></div>
 
       <div id="track-result">
+
+        <!-- Products Section -->
+        <div class="product-section" id="product-container" style="display: none;">
+          <div class="product-icon">🍪</div>
+          <div class="product-details">
+            <h4>Order Contents</h4>
+            <p id="product-name">Fetching purchased items...</p>
+            <div class="product-tags" id="product-tags-container"></div>
+          </div>
+        </div>
         
         <!-- Summary Grid -->
         <div class="summary-grid">
           <div class="summary-item"><span>AWB Number</span><strong id="r-awb">-</strong></div>
-          <div class="summary-item"><span>Courier Partner</span><strong id="r-courier">-</strong></div>
+          <div class="summary-item"><span>Courier</span><strong id="r-courier">-</strong></div>
           <div class="summary-item"><span>Consignee</span><strong id="r-name">-</strong></div>
           <div class="summary-item"><span>Route</span><strong id="r-route">-</strong></div>
         </div>
@@ -100,27 +225,17 @@
           <div class="progress-line"></div>
           <div class="progress-line-fill" id="progress-fill" style="width: 0%;"></div>
           
-          <div class="step" id="step-0">
-            <div class="step-circle">1</div><div class="step-label">Processing</div>
-          </div>
-          <div class="step" id="step-1">
-            <div class="step-circle">2</div><div class="step-label">Picked Up</div>
-          </div>
-          <div class="step" id="step-2">
-            <div class="step-circle">3</div><div class="step-label">In Transit</div>
-          </div>
-          <div class="step" id="step-3">
-            <div class="step-circle">4</div><div class="step-label">Out for Delivery</div>
-          </div>
-          <div class="step" id="step-4">
-            <div class="step-circle">5</div><div class="step-label">Delivered</div>
-          </div>
+          <div class="step" id="step-0"><div class="step-circle">1</div><div class="step-label">Processing</div></div>
+          <div class="step" id="step-1"><div class="step-circle">2</div><div class="step-label">Picked Up</div></div>
+          <div class="step" id="step-2"><div class="step-circle">3</div><div class="step-label">In Transit</div></div>
+          <div class="step" id="step-3"><div class="step-circle">4</div><div class="step-label">Out for Delivery</div></div>
+          <div class="step" id="step-4"><div class="step-circle">5</div><div class="step-label">Delivered</div></div>
         </div>
 
         <!-- Live Map -->
         <div id="map-container"></div>
         
-        <h3 style="font-family: 'Fredoka', sans-serif; font-size: 18px; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid var(--border);">Detailed Tracking History</h3>
+        <h3>Logistics Timeline</h3>
         <!-- Timeline -->
         <div class="timeline" id="timeline-container"></div>
         
@@ -141,6 +256,7 @@
       const resultDiv = document.getElementById('track-result');
       const timelineContainer = document.getElementById('timeline-container');
       const mapContainer = document.getElementById('map-container');
+      const prodContainer = document.getElementById('product-container');
       
       if (!awb) return;
 
@@ -148,6 +264,7 @@
       btn.innerText = 'Locating...';
       errorDiv.style.display = 'none';
       resultDiv.style.display = 'none';
+      prodContainer.style.display = 'none';
       timelineContainer.innerHTML = '';
       mapContainer.style.display = 'none';
 
@@ -158,8 +275,8 @@
         btn.disabled = false;
         btn.innerText = 'Track Order';
 
-        if (!response.ok || !data.tracking_data || data.error) {
-          errorDiv.innerText = data.error || 'Invalid AWB or tracking data not found.';
+        if (!response.ok || !data.tracking_data) {
+          errorDiv.innerText = data.error || 'Tracking data not found. Check your AWB.';
           errorDiv.style.display = 'block';
           return;
         }
@@ -167,48 +284,56 @@
         const trackingData = data.tracking_data;
         const mainTrack = trackingData.shipment_track && trackingData.shipment_track[0];
         const activities = trackingData.shipment_track_activities || [];
+        const products = data.products || [];
 
         if (!mainTrack) {
-          errorDiv.innerText = 'Tracking information is still generating. Please check back later.';
+          errorDiv.innerText = 'Shipment is still processing in warehouse.';
           errorDiv.style.display = 'block';
           return;
         }
 
-        // 1. Populate Summary
+        // --- Populate Products ---
+        if (products.length > 0) {
+          prodContainer.style.display = 'flex';
+          // Combine all product names
+          const names = products.map(p => `${p.quantity}x ${p.name}`).join(' & ');
+          document.getElementById('product-name').innerText = names;
+          
+          const tagsHtml = products.map(p => `
+            <span class="p-tag">₹${p.price}</span>
+            <span class="p-tag">SKU: ${p.sku}</span>
+          `).join('');
+          document.getElementById('product-tags-container').innerHTML = tagsHtml;
+        }
+
+        // --- Populate Summary ---
         document.getElementById('r-awb').innerText = mainTrack.awb_code || awb;
         document.getElementById('r-courier').innerText = mainTrack.courier_name || 'Assigned Courier';
         document.getElementById('r-name').innerText = mainTrack.consignee_name || 'Customer';
-        
-        const origin = mainTrack.origin || 'Warehouse';
-        const dest = mainTrack.destination || mainTrack.delivered_to || 'Destination';
-        document.getElementById('r-route').innerText = `${origin} ➔ ${dest}`;
+        document.getElementById('r-route').innerText = `${mainTrack.origin || 'WH'} ➔ ${mainTrack.destination || 'Home'}`;
 
-        // 2. Determine Progress Status
-        // shipment_status codes: 
-        // 6, 19 = Out for pickup, 17 = Picked up, 18 = In Transit, 7 = Delivered, 19 = Out for Delivery (sometimes 19 is used for pickup too)
-        // Let's rely on standard strings or codes
+        // --- Progress Status ---
         let stepIndex = 0;
         const sStatus = (mainTrack.current_status || '').toLowerCase();
         
-        if (sStatus.includes('pick') && sStatus.includes('out')) stepIndex = 1; // Out for pickup
-        if (sStatus.includes('picked up')) stepIndex = 1;
-        if (sStatus.includes('transit') || sStatus.includes('shipped') || sStatus.includes('dispatched')) stepIndex = 2;
+        if (sStatus.includes('pick') || sStatus.includes('manifest')) stepIndex = 1; 
+        if (sStatus.includes('transit') || sStatus.includes('shipped')) stepIndex = 2;
         if (sStatus.includes('out for delivery')) stepIndex = 3;
         if (sStatus.includes('delivered')) stepIndex = 4;
 
-        // Reset steps
         for(let i=0; i<=4; i++) {
           document.getElementById('step-'+i).className = 'step';
         }
-        // Fill steps
         for(let i=0; i<=stepIndex; i++) {
           document.getElementById('step-'+i).classList.add(i === stepIndex ? 'active' : 'completed');
         }
-        // Fill bar width
-        const fillWidths = ['0%', '25%', '50%', '75%', '100%'];
-        document.getElementById('progress-fill').style.width = fillWidths[stepIndex];
+        
+        // Slight delay for smooth progress animation
+        setTimeout(() => {
+          document.getElementById('progress-fill').style.width = ['0%', '25%', '50%', '75%', '100%'][stepIndex];
+        }, 100);
 
-        // 3. Populate Timeline
+        // --- Timeline & Coordinates ---
         let latestLat = null;
         let latestLng = null;
         
@@ -226,7 +351,6 @@
             `;
             timelineContainer.appendChild(el);
 
-            // Snag latest coordinates if available
             if (!latestLat && act.latitude && act.longitude && act.latitude !== "0" && act.latitude !== "") {
               latestLat = parseFloat(act.latitude);
               latestLng = parseFloat(act.longitude);
@@ -236,14 +360,14 @@
           timelineContainer.innerHTML = '<div class="timeline-item latest"><div class="timeline-activity">Order processed. Waiting for carrier pickup.</div></div>';
         }
 
-        // 4. Map rendering
+        // --- Map ---
         if (latestLat && latestLng) {
           mapContainer.style.display = 'block';
           
           if (!map) {
             map = L.map('map-container').setView([latestLat, latestLng], 12);
             L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-              attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+              attribution: '&copy; OSM contributors'
             }).addTo(map);
             marker = L.marker([latestLat, latestLng]).addTo(map);
           } else {
@@ -253,8 +377,6 @@
           }
           
           marker.bindPopup(`<b>Latest Location:</b><br>${activities[0].location}`).openPopup();
-          
-          // Fix map sizing issue when div becomes visible
           setTimeout(() => map.invalidateSize(), 300);
         }
 

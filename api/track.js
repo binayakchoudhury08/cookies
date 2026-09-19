@@ -11,8 +11,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'AWB number is required' });
   }
 
-  const SHIPROCKET_EMAIL = 'api1@crumbly.com';
-  const SHIPROCKET_PASSWORD = '9zP0E*qzE9NTO$EBYWmBu*%yeW&oqe!C';
+  const SHIPROCKET_EMAIL = 'api2@crumbly.com';
+  const SHIPROCKET_PASSWORD = 'CG1VcDAs@fPGcFyDV6xK7n8JdY$XuinL';
 
   try {
     // 1. Authenticate with Shiprocket to get a fresh JWT token
@@ -51,7 +51,28 @@ export default async function handler(req, res) {
       return res.status(trackingResponse.status).json({ error: 'Tracking data not found or invalid AWB', trackingData });
     }
 
-    return res.status(200).json(trackingData);
+    // 3. Extract Order ID and fetch Product Details
+    let products = [];
+    try {
+      const orderId = trackingData.tracking_data?.shipment_track?.[0]?.order_id;
+      if (orderId) {
+        const orderResponse = await fetch(`https://apiv2.shiprocket.in/v1/external/orders/show/${orderId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (orderResponse.ok) {
+          const orderData = await orderResponse.json();
+          products = orderData.data?.products || [];
+        }
+      }
+    } catch (e) {
+      console.error('Failed to fetch order details', e);
+    }
+
+    return res.status(200).json({ tracking_data: trackingData.tracking_data, products });
 
   } catch (error) {
     console.error('API Error:', error);
