@@ -11,8 +11,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'AWB number is required' });
   }
 
-  const SHIPROCKET_EMAIL = 'crumblyblr@gmail.com';
-  const SHIPROCKET_PASSWORD = 'Crumbly123@';
+  const SHIPROCKET_EMAIL = 'api1@crumbly.com';
+  const SHIPROCKET_PASSWORD = '9zP0E*qzE9NTO$EBYWmBu*%yeW&oqe!C';
 
   try {
     // 1. Authenticate with Shiprocket to get a fresh JWT token
