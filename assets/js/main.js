@@ -664,11 +664,9 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
       setTimeout(() => {
         mainVid.src = flavourVid;
         if (flavourVid.includes('Double')) {
-          mainVid.setAttribute('poster', 'assets/img/brand-poster-double-chocolate.jpg');
           if (img1) img1.src = 'assets/img/double_chocolate_single_box.jpeg';
           if (img2) img2.src = 'assets/img/double_chocolate_duo_pack.jpeg';
         } else {
-          mainVid.setAttribute('poster', 'assets/img/choco-chips-product.jpg');
           if (img1) img1.src = 'assets/img/choco_chips_single_box.jpeg';
           if (img2) img2.src = 'assets/img/choco_chips_duo_pack.jpeg';
         }
