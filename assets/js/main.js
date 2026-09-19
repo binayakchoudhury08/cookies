@@ -654,7 +654,7 @@ ADVANCED REAL-TIME CRUMB PHYSICS, 3D TILT & AUDIO ENGINE
     const mainVid = document.getElementById('main-product-video');
     const flavourVid = product.vid;
 
-    if (mainVid && flavourVid && !mainVid.src.includes(flavourVid.replace(' ', '%20'))) {
+    if (mainVid && flavourVid && !mainVid.src.includes(encodeURI(flavourVid))) {
       mainVid.style.opacity = '0';
       setTimeout(() => {
         mainVid.src = flavourVid;

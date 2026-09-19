@@ -3,161 +3,135 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Track Your Order — CRUMBLY</title>
-  <meta name="description" content="Track your CRUMBLY order status in real-time.">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <title>Live Tracking — CRUMBLY</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
   <link rel="stylesheet" href="assets/css/style.css">
-  <style>
-    .track-page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      background: var(--surface);
-      padding: 60px 20px;
-    }
-    .track-card {
-      background: #FFFDF8;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 40px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      margin-top: 20px;
-    }
-    .track-input-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .track-input {
-      flex: 1;
-      padding: 12px 16px;
-      border-radius: 12px;
-      border: 2px solid var(--border);
-      font-family: 'Outfit', sans-serif;
-      font-size: 16px;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-    .track-input:focus {
-      border-color: var(--accent);
-    }
-    .track-btn {
-      padding: 12px 24px;
-      border-radius: 12px;
-      background: var(--accent);
-      color: white;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      font-family: 'Outfit', sans-serif;
-      transition: opacity 0.2s;
-    }
-    .track-btn:hover {
-      opacity: 0.9;
-    }
-    .track-btn:disabled {
-      background: var(--muted);
-      cursor: not-allowed;
-    }
+  
+  <!-- Leaflet CSS for Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    #track-result {
-      margin-top: 30px;
-      display: none;
-    }
-    .status-badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 700;
-      background: #e0f7e9;
-      color: #0b7a39;
-      margin-bottom: 15px;
-    }
-    .timeline {
-      margin-top: 20px;
-      text-align: left;
-      position: relative;
-      padding-left: 20px;
-      border-left: 2px solid var(--border);
-    }
-    .timeline-item {
-      position: relative;
-      margin-bottom: 20px;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -27px;
-      top: 4px;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--accent);
-    }
-    .timeline-date {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 4px;
-    }
-    .timeline-activity {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-    }
-    .timeline-location {
-      font-size: 12px;
-      color: var(--muted);
+  <style>
+    body { background: var(--surface); margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
+    .track-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 20px; }
+    
+    .logo { font-size: 32px; color: var(--accent); margin-bottom: 20px; font-family: 'Fredoka', sans-serif; font-weight: 700; text-decoration: none; display: block; text-align: center; }
+    
+    .track-card {
+      background: #FFFDF8; border: 1px solid var(--border); border-radius: 20px;
+      padding: 30px; max-width: 700px; width: 100%; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 10px;
     }
     
-    .error-msg {
-      color: #d93025;
-      font-weight: 600;
-      margin-top: 20px;
-      display: none;
-    }
+    .track-input-group { display: flex; gap: 10px; margin-top: 15px; margin-bottom: 30px; }
+    .track-input { flex: 1; padding: 12px 16px; border-radius: 12px; border: 2px solid var(--border); font-family: 'Outfit', sans-serif; font-size: 16px; outline: none; }
+    .track-input:focus { border-color: var(--accent); }
+    .track-btn { padding: 12px 24px; border-radius: 12px; background: var(--accent); color: white; font-weight: 700; border: none; cursor: pointer; transition: opacity 0.2s; }
+    .track-btn:hover { opacity: 0.9; }
+    .track-btn:disabled { background: var(--muted); cursor: not-allowed; }
+
+    #track-result { display: none; }
+    
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; background: #faf4eb; padding: 20px; border-radius: 16px; margin-bottom: 25px; }
+    .summary-item { font-size: 14px; }
+    .summary-item span { display: block; color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+    .summary-item strong { color: var(--ink); font-size: 15px; }
+
+    /* Progress Bar */
+    .progress-wrapper { position: relative; display: flex; justify-content: space-between; margin: 40px 0 30px; }
+    .progress-line { position: absolute; top: 12px; left: 0; right: 0; height: 4px; background: #e0d5c1; z-index: 1; border-radius: 2px; }
+    .progress-line-fill { position: absolute; top: 12px; left: 0; height: 4px; background: var(--accent); z-index: 2; transition: width 0.5s ease; border-radius: 2px; }
+    
+    .step { position: relative; z-index: 3; text-align: center; width: 60px; }
+    .step-circle { width: 28px; height: 28px; border-radius: 50%; background: #e0d5c1; color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px; font-weight: bold; font-size: 12px; border: 3px solid #FFFDF8; transition: all 0.3s; }
+    .step.active .step-circle, .step.completed .step-circle { background: var(--accent); }
+    .step-label { font-size: 11px; font-weight: 600; color: var(--muted); line-height: 1.2; }
+    .step.active .step-label { color: var(--accent); }
+
+    /* Map */
+    #map-container { height: 250px; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; display: none; }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 24px; border-left: 2px dashed var(--border); margin-left: 10px; margin-top: 10px; }
+    .timeline-item { position: relative; margin-bottom: 24px; }
+    .timeline-item::before { content: ''; position: absolute; left: -32px; top: 4px; width: 14px; height: 14px; border-radius: 50%; background: #faf4eb; border: 2px solid var(--accent); }
+    .timeline-item.latest::before { background: var(--accent); box-shadow: 0 0 0 4px rgba(233, 114, 61, 0.2); }
+    
+    .timeline-date { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 4px; }
+    .timeline-activity { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .timeline-location { font-size: 13px; color: var(--text); }
+    
+    .error-msg { color: #d93025; font-weight: 600; margin-top: 20px; display: none; text-align: center; }
   </style>
 </head>
 <body>
 
   <div class="track-page">
-    <a href="index.html" style="text-decoration: none;">
-      <h1 class="logo" style="font-size: 32px; color: var(--accent); margin-bottom: 20px;">CRUMBLY</h1>
-    </a>
+    <a href="index.html" class="logo">CRUMBLY</a>
     
     <div class="track-card">
-      <h2 style="font-family: 'Fredoka', sans-serif; color: var(--text); margin-bottom: 8px;">Track Your Order</h2>
-      <p style="color: var(--muted); font-size: 14px;">Enter the AWB tracking ID sent to your email to check the live status of your oven-fresh cookies.</p>
+      <h2 style="font-family: 'Fredoka', sans-serif; margin-bottom: 8px; font-size: 24px;">Advanced Order Tracking</h2>
+      <p style="color: var(--muted); font-size: 14px; margin-bottom: 10px;">Enter your AWB tracking ID to see live shipping details and map location.</p>
       
       <form id="track-form">
         <div class="track-input-group">
-          <input type="text" id="awb-input" class="track-input" placeholder="e.g. 123456789012" required>
-          <button type="submit" id="track-btn" class="track-btn">Track</button>
+          <input type="text" id="awb-input" class="track-input" placeholder="e.g. 1319461125820" required>
+          <button type="submit" id="track-btn" class="track-btn">Track Order</button>
         </div>
       </form>
       
       <div id="error-msg" class="error-msg"></div>
 
       <div id="track-result">
-        <div id="current-status" class="status-badge"></div>
-        <div class="timeline" id="timeline-container">
-          <!-- Timeline items injected here -->
+        
+        <!-- Summary Grid -->
+        <div class="summary-grid">
+          <div class="summary-item"><span>AWB Number</span><strong id="r-awb">-</strong></div>
+          <div class="summary-item"><span>Courier Partner</span><strong id="r-courier">-</strong></div>
+          <div class="summary-item"><span>Consignee</span><strong id="r-name">-</strong></div>
+          <div class="summary-item"><span>Route</span><strong id="r-route">-</strong></div>
         </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrapper">
+          <div class="progress-line"></div>
+          <div class="progress-line-fill" id="progress-fill" style="width: 0%;"></div>
+          
+          <div class="step" id="step-0">
+            <div class="step-circle">1</div><div class="step-label">Processing</div>
+          </div>
+          <div class="step" id="step-1">
+            <div class="step-circle">2</div><div class="step-label">Picked Up</div>
+          </div>
+          <div class="step" id="step-2">
+            <div class="step-circle">3</div><div class="step-label">In Transit</div>
+          </div>
+          <div class="step" id="step-3">
+            <div class="step-circle">4</div><div class="step-label">Out for Delivery</div>
+          </div>
+          <div class="step" id="step-4">
+            <div class="step-circle">5</div><div class="step-label">Delivered</div>
+          </div>
+        </div>
+
+        <!-- Live Map -->
+        <div id="map-container"></div>
+        
+        <h3 style="font-family: 'Fredoka', sans-serif; font-size: 18px; margin-bottom: 15px; padding-top: 15px; border-top: 1px solid var(--border);">Detailed Tracking History</h3>
+        <!-- Timeline -->
+        <div class="timeline" id="timeline-container"></div>
+        
       </div>
-      
     </div>
   </div>
 
   <script>
+    let map = null;
+    let marker = null;
+
     document.getElementById('track-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
@@ -165,26 +139,27 @@
       const btn = document.getElementById('track-btn');
       const errorDiv = document.getElementById('error-msg');
       const resultDiv = document.getElementById('track-result');
-      const statusBadge = document.getElementById('current-status');
       const timelineContainer = document.getElementById('timeline-container');
+      const mapContainer = document.getElementById('map-container');
       
       if (!awb) return;
 
       btn.disabled = true;
-      btn.innerText = 'Searching...';
+      btn.innerText = 'Locating...';
       errorDiv.style.display = 'none';
       resultDiv.style.display = 'none';
       timelineContainer.innerHTML = '';
+      mapContainer.style.display = 'none';
 
       try {
         const response = await fetch(`/api/track?awb=${awb}`);
         const data = await response.json();
         
         btn.disabled = false;
-        btn.innerText = 'Track';
+        btn.innerText = 'Track Order';
 
-        if (!response.ok || !data.tracking_data || data.tracking_data.error) {
-          errorDiv.innerText = data.tracking_data?.error || 'Invalid AWB or tracking data not found.';
+        if (!response.ok || !data.tracking_data || data.error) {
+          errorDiv.innerText = data.error || 'Invalid AWB or tracking data not found.';
           errorDiv.style.display = 'block';
           return;
         }
@@ -199,14 +174,48 @@
           return;
         }
 
-        // Show status
-        statusBadge.innerText = mainTrack.current_status || 'In Transit';
+        // 1. Populate Summary
+        document.getElementById('r-awb').innerText = mainTrack.awb_code || awb;
+        document.getElementById('r-courier').innerText = mainTrack.courier_name || 'Assigned Courier';
+        document.getElementById('r-name').innerText = mainTrack.consignee_name || 'Customer';
         
-        // Build timeline
+        const origin = mainTrack.origin || 'Warehouse';
+        const dest = mainTrack.destination || mainTrack.delivered_to || 'Destination';
+        document.getElementById('r-route').innerText = `${origin} ➔ ${dest}`;
+
+        // 2. Determine Progress Status
+        // shipment_status codes: 
+        // 6, 19 = Out for pickup, 17 = Picked up, 18 = In Transit, 7 = Delivered, 19 = Out for Delivery (sometimes 19 is used for pickup too)
+        // Let's rely on standard strings or codes
+        let stepIndex = 0;
+        const sStatus = (mainTrack.current_status || '').toLowerCase();
+        
+        if (sStatus.includes('pick') && sStatus.includes('out')) stepIndex = 1; // Out for pickup
+        if (sStatus.includes('picked up')) stepIndex = 1;
+        if (sStatus.includes('transit') || sStatus.includes('shipped') || sStatus.includes('dispatched')) stepIndex = 2;
+        if (sStatus.includes('out for delivery')) stepIndex = 3;
+        if (sStatus.includes('delivered')) stepIndex = 4;
+
+        // Reset steps
+        for(let i=0; i<=4; i++) {
+          document.getElementById('step-'+i).className = 'step';
+        }
+        // Fill steps
+        for(let i=0; i<=stepIndex; i++) {
+          document.getElementById('step-'+i).classList.add(i === stepIndex ? 'active' : 'completed');
+        }
+        // Fill bar width
+        const fillWidths = ['0%', '25%', '50%', '75%', '100%'];
+        document.getElementById('progress-fill').style.width = fillWidths[stepIndex];
+
+        // 3. Populate Timeline
+        let latestLat = null;
+        let latestLng = null;
+        
         if (activities.length > 0) {
-          activities.forEach(act => {
+          activities.forEach((act, idx) => {
             const el = document.createElement('div');
-            el.className = 'timeline-item';
+            el.className = 'timeline-item' + (idx === 0 ? ' latest' : '');
             
             const dateStr = act.date ? new Date(act.date).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' }) : '';
             
@@ -216,16 +225,44 @@
               ${act.location ? `<div class="timeline-location">📍 ${act.location}</div>` : ''}
             `;
             timelineContainer.appendChild(el);
+
+            // Snag latest coordinates if available
+            if (!latestLat && act.latitude && act.longitude && act.latitude !== "0" && act.latitude !== "") {
+              latestLat = parseFloat(act.latitude);
+              latestLng = parseFloat(act.longitude);
+            }
           });
         } else {
-          timelineContainer.innerHTML = '<div class="timeline-item"><div class="timeline-activity">Order processed. Waiting for carrier pickup.</div></div>';
+          timelineContainer.innerHTML = '<div class="timeline-item latest"><div class="timeline-activity">Order processed. Waiting for carrier pickup.</div></div>';
+        }
+
+        // 4. Map rendering
+        if (latestLat && latestLng) {
+          mapContainer.style.display = 'block';
+          
+          if (!map) {
+            map = L.map('map-container').setView([latestLat, latestLng], 12);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+              attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+            }).addTo(map);
+            marker = L.marker([latestLat, latestLng]).addTo(map);
+          } else {
+            map.setView([latestLat, latestLng], 12);
+            marker.setLatLng([latestLat, latestLng]);
+            map.invalidateSize();
+          }
+          
+          marker.bindPopup(`<b>Latest Location:</b><br>${activities[0].location}`).openPopup();
+          
+          // Fix map sizing issue when div becomes visible
+          setTimeout(() => map.invalidateSize(), 300);
         }
 
         resultDiv.style.display = 'block';
 
       } catch (err) {
         btn.disabled = false;
-        btn.innerText = 'Track';
+        btn.innerText = 'Track Order';
         errorDiv.innerText = 'Network error. Please try again later.';
         errorDiv.style.display = 'block';
       }
