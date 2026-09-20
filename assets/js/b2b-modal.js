@@ -64,12 +64,13 @@ document.addEventListener('DOMContentLoaded', () => {
   async function initRevDB() {
     if (!supabase) return;
     try {
-      const [b2cReq, b2bReq, cliReq, flavReq, settingsReq] = await Promise.all([
+      const [b2cReq, b2bReq, cliReq, flavReq, settingsReq, expReq] = await Promise.all([
         supabase.from('tracker_b2c').select('*'),
         supabase.from('tracker_b2b').select('*'),
         supabase.from('tracker_clients').select('*'),
         supabase.from('tracker_flavours').select('*'),
-        supabase.from('tracker_settings').select('*')
+        supabase.from('tracker_settings').select('*'),
+        supabase.from('tracker_expenses').select('*')
       ]);
       
       const db = loadRevDB();
@@ -84,6 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (db.b2c) { for (let o of db.b2c) await supabase.from('tracker_b2c').insert({ id: o.id, date: o.date, type: o.type, flavour: o.flavour, size: o.size || '80g', qty: o.qty, unit_cost: o.unitCost, price: o.price, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.clients) { for (let c of db.clients) await supabase.from('tracker_clients').insert({ name: c }); }
+        if (db.expenses) { for (let o of db.expenses) await supabase.from('tracker_expenses').insert({ id: o.id, date: o.date, category: o.category, amount: o.amount, note: o.note }); }
         
         const boxCogsInit = { '80g': 71.25, '180g': 147.00 }; // rough fallback if missing
         if (db.supplierFlavours) { 
@@ -102,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (b2bReq.data) db.b2b = b2bReq.data.map(o => ({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unitCost: o.unit_cost, cost: o.cost, advance: o.advance, cogs: o.cogs, profit: o.profit }));
       if (cliReq.data) db.clients = cliReq.data.map(c => c.name);
       if (flavReq.data) db.supplierFlavours = flavReq.data.map(f => ({ supplier: f.supplier, flavour: f.flavour, b2bCogs: f.b2b_cogs, boxCogs: f.box_cogs || {} }));
+      if (expReq && expReq.data) db.expenses = expReq.data.map(o => ({ id: o.id, date: o.date, category: o.category, amount: o.amount, note: o.note }));
       if (settingsReq && settingsReq.data) {
         const boxSizesRow = settingsReq.data.find(r => r.key === 'box_sizes');
         if (boxSizesRow && boxSizesRow.value) {
@@ -550,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Expense Form Logic ---
   const formExpense = document.getElementById('form-expense');
   if (formExpense) {
-    formExpense.addEventListener('submit', (e) => {
+    formExpense.addEventListener('submit', async (e) => {
       e.preventDefault();
       const db = loadRevDB();
       const expense = {
@@ -563,6 +566,14 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!db.expenses) db.expenses = [];
       db.expenses.push(expense);
       saveRevDB(db);
+      
+      if (supabase) {
+        const { error } = await supabase.from('tracker_expenses').insert({
+          id: expense.id, date: expense.date, category: expense.category, amount: expense.amount, note: expense.note
+        });
+        if (error) alert('Supabase Insert Error: ' + error.message);
+      }
+
       formExpense.reset();
       document.getElementById('exp-date').value = new Date().toISOString().slice(0, 10);
       renderExpenses();
@@ -1005,12 +1016,18 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       document.querySelectorAll('.btn-del-exp').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', async (e) => {
           if(!confirm('Delete this expense?')) return;
           const id = e.currentTarget.dataset.id;
           const db = loadRevDB();
           db.expenses = db.expenses.filter(x => x.id !== id);
           saveRevDB(db);
+          
+          if (supabase) {
+            const { error } = await supabase.from('tracker_expenses').delete().eq('id', id);
+            if (error) alert('Supabase Delete Error: ' + error.message);
+          }
+
           renderExpenses();
           renderDashboard();
         });
