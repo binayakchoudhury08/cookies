@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const form = document.getElementById('form-add-expense');
   if (form) {
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
       const expData = {
@@ -15,13 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
         category: document.getElementById('exp-in-cat').value,
         amount: +document.getElementById('exp-in-amount').value,
         vendor: document.getElementById('exp-in-vendor').value,
-        method: document.getElementById('exp-in-method').value
+        paymentMethod: document.getElementById('exp-in-method').value
       };
 
-      DB.addExpense(expData);
+      await DB.addExpense(expData);
       
       // Redirect back to dashboard expenses tab
-      setTimeout(() => window.location.href = 'admin.html#expenses', 500);
+      window.location.href = 'admin.html#expenses';
     });
   }
 });

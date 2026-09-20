@@ -405,7 +405,7 @@ const CRUMBLY_DB = (() => {
 
     // Expenses
     getExpenses: () => loadDB().expenses || [],
-    addExpense: (expenseData) => {
+    addExpense: async (expenseData) => {
       const db = loadDB();
       const newId = "EXP-" + (100 + db.expenses.length + 1);
       const newExpense = {
@@ -417,9 +417,14 @@ const CRUMBLY_DB = (() => {
       db.expenses.unshift(newExpense);
       saveDB(db);
       if (supabase) {
-        supabase.from('expenses').insert({
-          id: newExpense.id, date: newExpense.date, category: newExpense.category, title: newExpense.title, amount: newExpense.amount, vendor: newExpense.vendor, payment_method: newExpense.paymentMethod, receipt_no: newExpense.receiptNo, notes: newExpense.notes
-        }).then();
+        try {
+          const response = await supabase.from('expenses').insert({
+            id: newExpense.id, date: newExpense.date, category: newExpense.category, title: newExpense.title, amount: newExpense.amount, vendor: newExpense.vendor, payment_method: newExpense.paymentMethod, receipt_no: newExpense.receiptNo, notes: newExpense.notes
+          });
+          console.log("Supabase insert response:", response);
+        } catch (e) {
+          console.error("Supabase insert error:", e);
+        }
       }
       return newExpense;
     },
