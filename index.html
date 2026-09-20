@@ -99,10 +99,44 @@
       <button class="icon-btn" type="button" data-sound aria-pressed="false" aria-label="Play background music">
         <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
-      <a class="btn btn--sm" href="#shop">Shop Drops</a>
+      <a class="btn btn--sm desktop-only-btn" href="#shop">Shop Drops</a>
+      <button class="icon-btn mobile-menu-toggle" type="button" aria-label="Toggle Menu" aria-expanded="false">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
       <span class="nazar-dot" title="Nazar Battu / Good Luck Ritual" aria-hidden="true"></span>
     </div>
   </header>
+
+  <!-- Mobile Glassmorphism Menu Overlay -->
+  <div class="mobile-menu-overlay" aria-hidden="true">
+    <div class="mobile-menu-inner">
+      <div class="mobile-menu-header">
+        <span class="hero-brand-name" style="font-size: 2.2rem; margin: 0;">crumbly</span>
+        <button class="icon-btn mobile-menu-close" type="button" aria-label="Close Menu">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <nav class="mobile-menu-links">
+        <a href="#home" class="mobile-menu-link">Home</a>
+        <a href="#flavours" class="mobile-menu-link">Flavours</a>
+        <a href="#why" class="mobile-menu-link">Why Mini?</a>
+        <a href="#shop" class="mobile-menu-link">Shop Drops</a>
+        <a href="#waitlist" class="mobile-menu-link">Waitlist</a>
+        <a href="track.html" class="mobile-menu-link">Track Order</a>
+      </nav>
+      <div class="mobile-menu-footer">
+        <a href="https://www.instagram.com/crumbly.blr" target="_blank">Instagram</a>
+        <a href="https://wa.me/917069666910" target="_blank">WhatsApp</a>
+      </div>
+    </div>
+  </div>
 
   <main id="main">
 

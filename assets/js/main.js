@@ -1208,3 +1208,35 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+/* ══════════════════════════════════════════════════════════
+   PREMIUM MOBILE MENU LOGIC
+   ══════════════════════════════════════════════════════════ */
+(() => {
+  const toggleBtn = document.querySelector('.mobile-menu-toggle');
+  const closeBtn = document.querySelector('.mobile-menu-close');
+  const overlay = document.querySelector('.mobile-menu-overlay');
+  const links = document.querySelectorAll('.mobile-menu-link');
+
+  if (!toggleBtn || !overlay) return;
+
+  const openMenu = () => {
+    overlay.classList.add('is-open');
+    document.body.classList.add('menu-open');
+    toggleBtn.setAttribute('aria-expanded', 'true');
+  };
+
+  const closeMenu = () => {
+    overlay.classList.remove('is-open');
+    document.body.classList.remove('menu-open');
+    toggleBtn.setAttribute('aria-expanded', 'false');
+  };
+
+  toggleBtn.addEventListener('click', openMenu);
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
+
+  // Close menu when clicking any link
+  links.forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+})();
