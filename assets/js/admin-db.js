@@ -367,7 +367,6 @@ const CRUMBLY_DB = (() => {
       }
 
       saveDB(db);
-      return newOrder;
       if (supabase) {
         supabase.from('orders').insert({
           id: newOrder.id, date: newOrder.date, customer_name: newOrder.customerName, customer_phone: newOrder.customerPhone, customer_email: newOrder.customerEmail, shipping_address: newOrder.shippingAddress, city: newOrder.city, items: newOrder.items, total_amount: newOrder.totalAmount, payment_status: newOrder.paymentStatus, payment_method: newOrder.paymentMethod, fulfillment_status: newOrder.fulfillmentStatus, carrier: newOrder.carrier, awb: newOrder.awb, notes: newOrder.notes
@@ -379,6 +378,7 @@ const CRUMBLY_DB = (() => {
            }).then();
         }
       }
+      return newOrder;
     },
     updateOrderStatus: (orderId, newStatus) => {
       const db = loadDB();
@@ -393,12 +393,12 @@ const CRUMBLY_DB = (() => {
           if (newStatus === "Packed & Ready") log.status = "Picked Up";
         }
         saveDB(db);
-        return order;
         if (supabase) {
           supabase.from('orders').update({ fulfillment_status: newStatus }).eq('id', orderId).then();
           const log = db.logistics.find(l => l.orderId === orderId);
           if (log) supabase.from('logistics').update({ status: log.status }).eq('order_id', orderId).then();
         }
+        return order;
       }
       return null;
     },
@@ -416,12 +416,12 @@ const CRUMBLY_DB = (() => {
       };
       db.expenses.unshift(newExpense);
       saveDB(db);
-      return newExpense;
       if (supabase) {
         supabase.from('expenses').insert({
           id: newExpense.id, date: newExpense.date, category: newExpense.category, title: newExpense.title, amount: newExpense.amount, vendor: newExpense.vendor, payment_method: newExpense.paymentMethod, receipt_no: newExpense.receiptNo, notes: newExpense.notes
         }).then();
       }
+      return newExpense;
     },
     deleteExpense: (id) => {
       const db = loadDB();
@@ -438,8 +438,8 @@ const CRUMBLY_DB = (() => {
       if (item) {
         item.currentQty = Math.max(0, +(item.currentQty + adjustmentQty).toFixed(2));
         saveDB(db);
-        return item;
         if (supabase) supabase.from('inventory').update({ current_qty: item.currentQty }).eq('id', invId).then();
+        return item;
       }
       return null;
     },
@@ -449,8 +449,8 @@ const CRUMBLY_DB = (() => {
       const newItem = { id: newId, ...itemData };
       db.inventory.push(newItem);
       saveDB(db);
-      return newItem;
       if (supabase) supabase.from('inventory').insert({ id: newItem.id, name: newItem.name, category: newItem.category, current_qty: newItem.currentQty, min_threshold: newItem.minThreshold, unit: newItem.unit, unit_cost: newItem.unitCost, supplier: newItem.supplier }).then();
+      return newItem;
     },
 
     // Baking Batches
@@ -465,8 +465,8 @@ const CRUMBLY_DB = (() => {
       };
       db.batches.unshift(newBatch);
       saveDB(db);
-      return newBatch;
       if (supabase) supabase.from('batches').insert({ id: newBatch.id, date: newBatch.date, flavour: newBatch.flavour, target_qty: newBatch.targetQty, actual_yield: newBatch.actualYield, reject_qty: newBatch.rejectQty, baker: newBatch.baker, oven_temp: newBatch.ovenTemp, pass_rate: newBatch.passRate, expiry_date: newBatch.expiryDate }).then();
+      return newBatch;
     },
 
     // Logistics & Dispatch
@@ -477,8 +477,8 @@ const CRUMBLY_DB = (() => {
       if (log) {
         log.status = status;
         saveDB(db);
-        return log;
         if (supabase) supabase.from('logistics').update({ status: status }).eq('id', logId).then();
+        return log;
       }
       return null;
     },
@@ -495,8 +495,8 @@ const CRUMBLY_DB = (() => {
       };
       db.crmLeads.unshift(newLead);
       saveDB(db);
-      return newLead;
       if (supabase) supabase.from('crm_leads').insert({ id: newLead.id, date: newLead.date, name: newLead.name, email: newLead.email, phone: newLead.phone, address: newLead.address, flavours: newLead.flavours, status: newLead.status }).then();
+      return newLead;
     },
     updateLeadStatus: (leadId, status) => {
       const db = loadDB();
@@ -504,8 +504,8 @@ const CRUMBLY_DB = (() => {
       if (lead) {
         lead.status = status;
         saveDB(db);
-        return lead;
         if (supabase) supabase.from('crm_leads').update({ status: status }).eq('id', leadId).then();
+        return lead;
       }
       return null;
     },
@@ -519,8 +519,8 @@ const CRUMBLY_DB = (() => {
       if (!db.suppliers) db.suppliers = [];
       db.suppliers.push(newSupplier);
       saveDB(db);
-      return newSupplier;
       if (supabase) supabase.from('suppliers').insert({ id: newSupplier.id, name: newSupplier.name, supplies: newSupplier.supplies, phone: newSupplier.phone, email: newSupplier.email }).then();
+      return newSupplier;
     },
     deleteSupplier: (id) => {
       const db = loadDB();
@@ -540,8 +540,8 @@ const CRUMBLY_DB = (() => {
       if (!db.b2bClients) db.b2bClients = [];
       db.b2bClients.push(newClient);
       saveDB(db);
-      return newClient;
       if (supabase) supabase.from('b2b_clients').insert({ id: newClient.id, name: newClient.name }).then();
+      return newClient;
     },
     deleteB2BClient: (id) => {
       const db = loadDB();

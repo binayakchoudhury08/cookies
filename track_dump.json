@@ -1,0 +1,85 @@
+{
+  "tracking_data": {
+    "track_status": 1,
+    "shipment_status": 19,
+    "shipment_track": [
+      {
+        "id": 1590622048,
+        "awb_code": "1319461125820",
+        "courier_company_id": 33,
+        "shipment_id": 1590622048,
+        "order_id": 1594405741,
+        "pickup_date": "",
+        "delivered_date": "",
+        "weight": "0.2",
+        "packages": 1,
+        "current_status": "Out for Pickup",
+        "current_status_id": 19,
+        "delivered_to": "Osmanabad",
+        "destination": "Osmanabad",
+        "consignee_name": "Akash",
+        "origin": "Bangalore",
+        "courier_agent_details": null,
+        "courier_name": "Xpressbees Air",
+        "edd": "",
+        "pod": "Available",
+        "pod_status": "OTP Based delivery",
+        "rto_delivered_date": "NA",
+        "return_awb_code": "",
+        "updated_time_stamp": "2026-09-19 16:10:00"
+      }
+    ],
+    "shipment_track_activities": [
+      {
+        "date": "2026-09-19 16:10:00",
+        "status": "9",
+        "activity": "Pickup Not Done",
+        "location": "RTO/CHD, BANGALORE, KARNATAKA",
+        "sr-status": "NA",
+        "sr-status-label": "NA",
+        "latitude": "12.890523911",
+        "longitude": "77.640853882"
+      },
+      {
+        "date": "2026-09-19 10:47:01",
+        "status": 6,
+        "activity": "Out for pickup",
+        "location": "Bangalore",
+        "sr-status": 19,
+        "sr-status-label": "OUT FOR PICKUP"
+      },
+      {
+        "date": "2026-09-19 00:08:00",
+        "status": "OFP",
+        "activity": "Out For Pickup",
+        "location": "RTO/CHD, BANGALORE, KARNATAKA",
+        "sr-status": "19",
+        "sr-status-label": "OUT FOR PICKUP"
+      },
+      {
+        "date": "2026-09-18 17:05:00",
+        "status": "DRC",
+        "activity": "Data Received",
+        "location": "RTO/CHD, BANGALORE, KARNATAKA",
+        "sr-status": "NA",
+        "sr-status-label": "NA"
+      }
+    ],
+    "track_url": "https://shiprocket.co/tracking/1319461125820",
+    "etd": "",
+    "qc_response": "",
+    "qc_img_url": [],
+    "is_return": false,
+    "order_tag": "",
+    "npr": {
+      "reason": "",
+      "pick_exception_reason_code": "",
+      "attempts": 0
+    },
+    "ndr": {
+      "reason": "",
+      "undelivered_reason_code": "",
+      "attempts": 0
+    }
+  }
+}
