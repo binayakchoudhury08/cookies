@@ -766,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if(tbody) {
         const tr = document.createElement('tr');
         const star = o.pinned ? '⭐' : '☆';
+        const oMargin = o.amount > 0 ? ((o.profit / o.amount) * 100).toFixed(1) : 0;
         
         tr.innerHTML = `
           <td style="cursor:pointer;" class="btn-pin" data-id="${o.id}" data-type="${o.type}">${star}</td>
@@ -774,6 +775,8 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${o.desc}</td>
           <td>${o.qtyStr}</td>
           <td>₹${o.amount}</td>
+          <td style="color: ${o.profit >= 0 ? '#117838' : '#e03131'}; font-weight: 500;">₹${Number(o.profit).toFixed(2)}</td>
+          <td style="color: ${oMargin >= 0 ? '#117838' : '#e03131'}; font-weight: 500;">${oMargin}%</td>
           <td>₹${o.advance}</td>
           <td class="b2b-action-col" style="white-space: nowrap;">
             <button type="button" class="b2b-btn-submit" data-action="edit" data-id="${o.id}" data-type="${o.type}" style="padding:4px 8px; font-size:12px; margin:2px; background:#4a90e2; width:auto; display:inline-block;">Edit</button>
