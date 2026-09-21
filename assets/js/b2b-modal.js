@@ -860,7 +860,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elTotalTitle = document.querySelector('.b2b-kpi-main .b2b-kpi-title');
     if (elTotalTitle) elTotalTitle.textContent = `TOTAL REVENUE (₹${(target/100000).toLocaleString()} LAKH GOAL)`;
 
-    const allTimeTotalProfit = (allTimeProfitB2C + allTimeProfitB2B) - totalExpenses; // True Net Profit
+    const allTimeTotalProfit = totalRev - totalExpenses; // True Net Profit (Revenue - All Expenses)
     const margin = totalRev > 0 ? ((allTimeTotalProfit / totalRev) * 100).toFixed(1) : 0;
 
     const elTotal = document.getElementById('b2b-val-total');
@@ -1083,8 +1083,11 @@ document.addEventListener('DOMContentLoaded', () => {
       db.b2c.forEach(o => { totalB2C += (o.price || 0); profitB2C += (o.profit || 0); });
       db.b2b.forEach(o => { totalB2B += (o.cost || 0); profitB2B += (o.profit || 0); });
       
+      let totalExpenses = 0;
+      if (db.expenses) db.expenses.forEach(e => totalExpenses += e.amount);
+
       const totalRev = totalB2C + totalB2B;
-      const totalProfit = profitB2C + profitB2B;
+      const totalProfit = totalRev - totalExpenses;
       const pct = Math.min(100, (totalRev / 1000000) * 100).toFixed(1);
       const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
       
@@ -1182,8 +1185,11 @@ document.addEventListener('DOMContentLoaded', () => {
       db.b2c.forEach(o => { totalB2C += (o.price || 0); profitB2C += (o.profit || 0); });
       db.b2b.forEach(o => { totalB2B += (o.cost || 0); profitB2B += (o.profit || 0); });
       
+      let totalExpenses = 0;
+      if (db.expenses) db.expenses.forEach(e => totalExpenses += e.amount);
+
       const totalRev = totalB2C + totalB2B;
-      const totalProfit = profitB2C + profitB2B;
+      const totalProfit = totalRev - totalExpenses;
       const target = parseInt(localStorage.getItem('CRUMBLY_B2B_GOAL')) || 1000000;
       const pct = Math.min(100, (totalRev / target) * 100).toFixed(1);
       const margin = totalRev > 0 ? ((totalProfit / totalRev) * 100).toFixed(1) : 0;
