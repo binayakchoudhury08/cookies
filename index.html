@@ -923,6 +923,7 @@
         <button class="b2b-tab" data-target="b2b-pane-b2c">B2C POS</button>
         <button class="b2b-tab" data-target="b2b-pane-b2b">B2B POS</button>
         <button class="b2b-tab" data-target="b2b-pane-expenses">Expenses</button>
+        <button class="b2b-tab" data-target="b2b-pane-liabilities">Liabilities</button>
         <button class="b2b-tab" data-target="b2b-pane-settings">Settings</button>
       </div>
 
@@ -981,7 +982,7 @@
           </div>
 
           <h3 class="b2b-section-title" style="margin-top:24px; font-size:14px; color:#555;">Profit & Margins</h3>
-          <div class="b2b-kpi-grid" style="margin-top: 12px; grid-template-columns: repeat(4, 1fr);">
+          <div class="b2b-kpi-grid" style="margin-top: 12px; grid-template-columns: repeat(5, 1fr);">
             <div class="b2b-kpi-card" style="background: #eefdf4; border: 1px solid #c7f2d5;">
               <span class="b2b-kpi-title" style="color: #20A352;">TOTAL PROFIT</span>
               <span class="b2b-kpi-val" id="b2b-val-profit" style="color: #117838;">₹0</span>
@@ -997,6 +998,10 @@
             <div class="b2b-kpi-card" style="background: #fdf5f5; border: 1px solid #f5c6c6;">
               <span class="b2b-kpi-title" style="color: #c92a2a;">TOTAL EXPENSES</span>
               <span class="b2b-kpi-val" id="b2b-val-expenses" style="color: #e03131;">₹0</span>
+            </div>
+            <div class="b2b-kpi-card" style="background: #fff5f5; border: 1px solid #ffc9c9;">
+              <span class="b2b-kpi-title" style="color: #c92a2a;">PENDING LIABILITIES</span>
+              <span class="b2b-kpi-val" id="b2b-val-dash-liab" style="color: #e03131;">₹0</span>
             </div>
             <div class="b2b-kpi-card" style="background: #f8f9fa;">
               <span class="b2b-kpi-title">BLENDED MARGIN</span>
@@ -1229,6 +1234,57 @@
                 </tr>
               </thead>
               <tbody id="expense-ledger-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Liabilities Pane -->
+        <div id="b2b-pane-liabilities" class="b2b-tab-pane">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 class="b2b-section-title">Log Liability / Personal Reimbursement</h3>
+            <div class="b2b-kpi-card" style="background: #fff5f5; border: 1px solid #ffc9c9; padding: 10px 16px; margin: 0; min-width: 150px;">
+              <span class="b2b-kpi-title" style="color: #c92a2a; margin-bottom:4px; font-size:11px;">OUTSTANDING LIABILITY</span>
+              <span class="b2b-kpi-val" id="b2b-val-liabilities" style="color: #e03131; font-size: 18px;">₹0</span>
+            </div>
+          </div>
+          
+          <form id="form-liability" class="b2b-form" style="margin-top: 16px;">
+            <div class="b2b-responsive-grid-3">
+              <div class="b2b-form-group">
+                <label>Date</label>
+                <input type="date" id="liab-date" required>
+              </div>
+              <div class="b2b-form-group">
+                <label>Paid By (Person)</label>
+                <input type="text" id="liab-person" placeholder="e.g. Binayak" required>
+              </div>
+              <div class="b2b-form-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="liab-amount" required min="1">
+              </div>
+            </div>
+            <div class="b2b-form-group" style="margin-top:12px;">
+              <label>Reason / Description</label>
+              <input type="text" id="liab-note" placeholder="e.g. Emergency packing tape, petrol for delivery..." required>
+            </div>
+            <button type="submit" class="b2b-btn-submit">Add Liability</button>
+          </form>
+
+          <h3 class="b2b-section-title" style="margin-top:32px;">Liabilities Ledger</h3>
+          <div class="b2b-table-wrap">
+            <table class="b2b-table">
+              <thead>
+                <tr>
+                  <th>DATE</th>
+                  <th>PAID BY</th>
+                  <th>DESCRIPTION</th>
+                  <th>AMOUNT (₹)</th>
+                  <th>STATUS</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody id="liability-ledger-body">
               </tbody>
             </table>
           </div>

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Database structure in LocalStorage (Offline First)
   const REV_KEY = 'CRUMBLY_REVENUE_DB_V1';
   function loadRevDB() {
-    let db = { b2c: [], b2b: [], expenses: [], clients: [], flavours: [], supplierFlavours: [], boxSizes: ['80g', '180g'] };
+    let db = { b2c: [], b2b: [], expenses: [], liabilities: [], clients: [], flavours: [], supplierFlavours: [], boxSizes: ['80g', '180g'] };
     try {
       const data = localStorage.getItem(REV_KEY);
       if (data) {
@@ -64,13 +64,14 @@ document.addEventListener('DOMContentLoaded', () => {
   async function initRevDB() {
     if (!supabase) return;
     try {
-      const [b2cReq, b2bReq, cliReq, flavReq, settingsReq, expReq] = await Promise.all([
+      const [b2cReq, b2bReq, cliReq, flavReq, settingsReq, expReq, liabReq] = await Promise.all([
         supabase.from('tracker_b2c').select('*'),
         supabase.from('tracker_b2b').select('*'),
         supabase.from('tracker_clients').select('*'),
         supabase.from('tracker_flavours').select('*'),
         supabase.from('tracker_settings').select('*'),
-        supabase.from('tracker_expenses').select('*')
+        supabase.from('tracker_expenses').select('*'),
+        supabase.from('tracker_liabilities').select('*')
       ]);
       
       const db = loadRevDB();
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (db.b2b) { for (let o of db.b2b) await supabase.from('tracker_b2b').insert({ id: o.id, date: o.date, type: o.type, client: o.client, flavour: o.flavour, unit: o.unit, size: o.size, kg: o.kg, unit_cost: o.unitCost, cost: o.cost, advance: o.advance, cogs: o.cogs || 0, profit: o.profit || 0 }); }
         if (db.clients) { for (let c of db.clients) await supabase.from('tracker_clients').insert({ name: c }); }
         if (db.expenses) { for (let o of db.expenses) await supabase.from('tracker_expenses').insert({ id: o.id, date: o.date, category: o.category, amount: o.amount, note: o.note }); }
+        if (db.liabilities) { for (let o of db.liabilities) await supabase.from('tracker_liabilities').insert({ id: o.id, date: o.date, person: o.person, amount: o.amount, note: o.note, status: o.status }); }
         
         const boxCogsInit = { '80g': 71.25, '180g': 147.00 }; // rough fallback if missing
         if (db.supplierFlavours) { 
@@ -105,6 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cliReq.data) db.clients = cliReq.data.map(c => c.name);
       if (flavReq.data) db.supplierFlavours = flavReq.data.map(f => ({ supplier: f.supplier, flavour: f.flavour, b2bCogs: f.b2b_cogs, boxCogs: f.box_cogs || {} }));
       if (expReq && expReq.data) db.expenses = expReq.data.map(o => ({ id: o.id, date: o.date, category: o.category, amount: o.amount, note: o.note }));
+      if (liabReq && liabReq.data) db.liabilities = liabReq.data.map(o => ({ id: o.id, date: o.date, person: o.person, amount: o.amount, note: o.note, status: o.status }));
       if (settingsReq && settingsReq.data) {
         const boxSizesRow = settingsReq.data.find(r => r.key === 'box_sizes');
         if (boxSizesRow && boxSizesRow.value) {
@@ -149,6 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await initRevDB();
       renderSettings();
       renderExpenses();
+      renderLiabilities();
       renderDashboard(); 
     } else {
       pinError.style.display = 'block';
@@ -582,6 +586,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Liability Form Logic ---
+  const formLiability = document.getElementById('form-liability');
+  if (formLiability) {
+    formLiability.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const db = loadRevDB();
+      const liability = {
+        id: 'liab-'+Date.now().toString(),
+        date: document.getElementById('liab-date').value ? new Date(document.getElementById('liab-date').value).toISOString() : new Date().toISOString(),
+        person: document.getElementById('liab-person').value,
+        amount: parseFloat(document.getElementById('liab-amount').value) || 0,
+        note: document.getElementById('liab-note').value,
+        status: 'Pending'
+      };
+      if (!db.liabilities) db.liabilities = [];
+      db.liabilities.push(liability);
+      saveRevDB(db);
+      
+      if (supabase) {
+        const { error } = await supabase.from('tracker_liabilities').insert({
+          id: liability.id, date: liability.date, person: liability.person, amount: liability.amount, note: liability.note, status: liability.status
+        });
+        if (error) alert('Supabase Insert Error: ' + error.message);
+      }
+
+      formLiability.reset();
+      document.getElementById('liab-date').value = new Date().toISOString().slice(0, 10);
+      renderLiabilities();
+      alert('Liability logged successfully!');
+    });
+  }
+
   // Edit / Delete Delegation
   const tbody = document.getElementById('b2b-ledger-body');
   if (tbody) {
@@ -811,6 +847,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const elExpenses = document.getElementById('b2b-val-expenses');
     if(elExpenses) elExpenses.textContent = `₹${totalExpenses.toLocaleString()}`;
 
+    let totalPendingLiab = 0;
+    if (db.liabilities) {
+      db.liabilities.forEach(l => {
+        if (l.status !== 'Paid') totalPendingLiab += l.amount;
+      });
+    }
+
     // Calculate AI Insights
     let maxOrder = 0;
     const flavourCounts = {};
@@ -879,6 +922,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(elProfitB2B) elProfitB2B.textContent = `₹${allTimeProfitB2B.toLocaleString()}`;
     const elProfitB2C = document.getElementById('b2b-val-b2c-profit');
     if(elProfitB2C) elProfitB2C.textContent = `₹${allTimeProfitB2C.toLocaleString()}`;
+    const elLiab = document.getElementById('b2b-val-dash-liab');
+    if(elLiab) elLiab.textContent = `₹${totalPendingLiab.toLocaleString()}`;
     const elMargin = document.getElementById('b2b-val-margin');
     if(elMargin) elMargin.textContent = `${margin}%`;
 
@@ -1033,6 +1078,81 @@ document.addEventListener('DOMContentLoaded', () => {
 
           renderExpenses();
           renderDashboard();
+        });
+      });
+    }
+  }
+
+  // Render Liabilities
+  function renderLiabilities() {
+    const db = loadRevDB();
+    const tbody = document.getElementById('liability-ledger-body');
+    const valLiabilities = document.getElementById('b2b-val-liabilities');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    
+    let totalOutstanding = 0;
+
+    if (db.liabilities) {
+      db.liabilities.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(liab => {
+        if (liab.status !== 'Paid') totalOutstanding += liab.amount;
+        
+        const dDate = new Date(liab.date);
+        const ymd = dDate.toISOString().slice(0, 10);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${ymd}</td>
+          <td><b>${liab.person}</b></td>
+          <td>${liab.note || '-'}</td>
+          <td style="color:#e03131;">₹${liab.amount}</td>
+          <td>
+            ${liab.status === 'Paid' 
+              ? '<span class="status-badge" style="background:#eefdf4; color:#20A352;">Paid</span>' 
+              : '<span class="status-badge" style="background:#fff5f5; color:#e03131;">Pending</span>'
+            }
+          </td>
+          <td style="white-space:nowrap;">
+            ${liab.status !== 'Paid' ? `<button type="button" class="b2b-btn-submit btn-pay-liab" data-id="${liab.id}" style="padding:4px 8px; font-size:12px; margin-right:4px; background:#4a90e2; width:auto; display:inline-block;">Mark Paid</button>` : ''}
+            <button type="button" class="b2b-btn-icon btn-del-liab" data-id="${liab.id}" style="color:red;" title="Delete Liability">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      if (valLiabilities) valLiabilities.textContent = '₹' + totalOutstanding;
+
+      document.querySelectorAll('.btn-pay-liab').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          if(!confirm('Mark this amount as reimbursed/paid?')) return;
+          const id = e.currentTarget.dataset.id;
+          const db = loadRevDB();
+          const target = db.liabilities.find(x => x.id === id);
+          if (target) {
+             target.status = 'Paid';
+             saveRevDB(db);
+             
+             if (supabase) {
+               const { error } = await supabase.from('tracker_liabilities').update({ status: 'Paid' }).eq('id', id);
+               if (error) alert('Supabase Update Error: ' + error.message);
+             }
+             renderLiabilities();
+          }
+        });
+      });
+
+      document.querySelectorAll('.btn-del-liab').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          if(!confirm('Delete this entry?')) return;
+          const id = e.currentTarget.dataset.id;
+          const db = loadRevDB();
+          db.liabilities = db.liabilities.filter(x => x.id !== id);
+          saveRevDB(db);
+          
+          if (supabase) {
+            const { error } = await supabase.from('tracker_liabilities').delete().eq('id', id);
+            if (error) alert('Supabase Delete Error: ' + error.message);
+          }
+          renderLiabilities();
         });
       });
     }
