@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>CRUMBLY — You know you want it.</title>
   <meta name="description"
-    content="CRUMBLY — mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats. 100% Pure Butter. You know you want it. Launch now active.">
+    content="CRUMBLY — mini coin cookies in Double Chocolate, Choco Chips and Red Velvet. 100% pure butter.">
   <link rel="canonical" href="https://crumblyblr.shop/">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#E9723D">
@@ -34,7 +34,7 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="CRUMBLY — You know you want it.">
   <meta property="og:description"
-    content="Mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats. 100% pure butter. You know you want it.">
+    content="CRUMBLY — mini coin cookies in Double Chocolate, Choco Chips and Red Velvet. 100% pure butter.">
   <meta property="og:locale" content="en_IN">
   <meta property="og:image" content="assets/img/brand-logo-square-master.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -60,29 +60,30 @@
 
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"Product","name":"CRUMBLY",
-  "description":"Mini coin-shaped cookies in Double Chocolate, Madagascar Vanilla, Red Velvet, and Wholesome Oats.",
+  "description":"Mini coin-shaped cookies in Double Chocolate, Choco Chips and Red Velvet.",
   "brand":{"@type":"Brand","name":"CRUMBLY"},
   "offers":{"@type":"Offer","availability":"https://schema.org/InStock"}}
   </script>
 
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/redesign.css">
+  <link rel="stylesheet" href="assets/css/crumbly-v2.css">
 </head>
 
 <body class="nojs">
   <a class="skip" href="#main">Skip to content</a>
 
-  <header class="nav" data-nav>
+  <header class="nav nav--transparent" data-nav>
     <div style="display:flex;align-items:center;margin-right:auto;">
       <a class="brand" href="#home" aria-label="CRUMBLY home">
-        <img class="brand__logo-img" src="assets/img/brand-logo-crop.webp" alt="CRUMBLY — You know you want it."
-          width="140" height="34">
-        <span class="brand__text">CRUMBLY</span>
+        <img class="brand__logo-img logo--light" src="assets/img/brand-logo-light.webp" alt="CRUMBLY — You know you want it." width="140" height="34">
+        <img class="brand__logo-img logo--dark" src="assets/img/brand-logo-transparent.webp" alt="CRUMBLY — You know you want it." width="140" height="34">
       </a>
       <div class="nav__social" style="display:flex; gap:16px; margin-left: 20px; align-items:center;">
         <a href="https://www.instagram.com/crumbly.blr" target="_blank"
-          style="font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;">Instagram</a>
+          style="font-size:13px;font-weight:700;text-decoration:none;">Instagram</a>
         <a href="https://wa.me/917069666910" target="_blank"
-          style="font-size:13px;font-weight:700;color:var(--ink);text-decoration:none;">WhatsApp</a>
+          style="font-size:13px;font-weight:700;text-decoration:none;">WhatsApp</a>
       </div>
     </div>
 
@@ -90,8 +91,7 @@
       <a href="#home" data-nl aria-current="true">Home</a>
       <a href="#flavours" data-nl>Flavours</a>
       <a href="#why" data-nl>Why Mini?</a>
-      <a href="#shop" data-nl>Shop Drops</a>
-      <a href="#waitlist" data-nl>Waitlist</a>
+      <a href="#reviews" data-nl>Reviews</a>
       <a href="track.html">Track Order</a>
     </nav>
 
@@ -99,7 +99,7 @@
       <button class="icon-btn" type="button" data-sound aria-pressed="false" aria-label="Play background music">
         <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span>
       </button>
-      <a class="btn btn--sm desktop-only-btn" href="#shop">Shop Drops</a>
+      <a class="btn btn--sm desktop-only-btn btn-nav-order" href="#flavours">Order Now</a>
       <button class="icon-btn mobile-menu-toggle" type="button" aria-label="Toggle Menu" aria-expanded="false">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -127,8 +127,7 @@
         <a href="#home" class="mobile-menu-link">Home</a>
         <a href="#flavours" class="mobile-menu-link">Flavours</a>
         <a href="#why" class="mobile-menu-link">Why Mini?</a>
-        <a href="#shop" class="mobile-menu-link">Shop Drops</a>
-        <a href="#waitlist" class="mobile-menu-link">Waitlist</a>
+        <a href="#reviews" class="mobile-menu-link">Reviews</a>
         <a href="track.html" class="mobile-menu-link">Track Order</a>
       </nav>
       <div class="mobile-menu-footer">
@@ -140,44 +139,37 @@
 
   <main id="main">
 
-    <!-- ══ HERO — Clean Brand Typography & High-Contrast CTA Buttons ══ -->
-    <section class="hero" id="home" data-seq-section aria-labelledby="h1">
-      <div class="hero__stage">
-        <div class="hero__win">
-          <canvas class="hero__canvas" data-seq="hero" data-count="120" data-dir="assets/hero"
-            aria-hidden="true"></canvas>
-          <div class="hero__scrim" aria-hidden="true"></div>
+    <!-- ══ HERO — Full-Bleed Edge-to-Edge Scroll Video / Canvas (Section 2 & 10) ══ -->
+    <section class="hero-fullbleed" id="home" data-seq-section aria-labelledby="h1">
+      <div class="hero-fullbleed__pin">
+        <canvas class="hero-fullbleed__canvas" data-seq="hero" data-count="120" data-dir="assets/hero"
+          aria-hidden="true"></canvas>
+        <div class="hero-fullbleed__scrim" aria-hidden="true"></div>
 
-
-
-          <div class="hero__copy" data-hero-copy>
-            <div class="shell">
-              <div class="hero-title-group rv" id="h1">
-                <h1 class="hero-brand-name">crumbly</h1>
-                <p class="hero-tagline-text">YOU KNOW YOU WANT IT.</p>
-              </div>
-              <div class="hero-rating" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-                <span style="color: #F59E0B; font-size: 18px;">★★★★★</span>
-                <span style="color: #F4E8DC; font-size: 13px; font-weight: 600;">4.9/5 (1,240+ Reviews)</span>
-              </div>
-
-
-              <p class="sub" style="color:#F4E8DC;margin-top:10px">
-                Mini coin-shaped cookies crafted with 100% pure butter. Double Chocolate, Choco Chips, Vanilla &amp; Red
-                Velvet. Perfectly chewy, tasty and guwy.
-              </p>
-
-              <div class="hero__cta">
-                <a class="btn btn--hero-primary" href="#shop">Order Chocolate Drops</a>
-                <a class="btn btn--hero-ghost" href="#flavours">Explore 4 Flavours</a>
-              </div>
-              <p class="hero__note">Fresh Batch Dispatching Daily. Direct 1-Click Shopify Checkout.</p>
-            </div>
+        <!-- Side / Bottom-Left Positioned Copy — leaves center cookie video 100% visible -->
+        <div class="hero-fullbleed__content">
+          <div class="hero-title-group" id="h1">
+            <h1 class="hero-fullbleed__brand">crumbly</h1>
+            <p class="hero-fullbleed__tagline">YOU KNOW YOU WANT IT.</p>
           </div>
+          <p class="hero-fullbleed__flavours">
+            Double Chocolate · Choco Chips · Red Velvet
+          </p>
+          <div class="hero-fullbleed__cta">
+            <a class="btn-main" href="#flavours">
+              <span>Choose your flavour</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <polyline points="19 12 12 19 5 12"></polyline>
+              </svg>
+            </a>
+          </div>
+        </div>
 
-          <span class="scrollhint" data-hint aria-hidden="true">
-            <span class="scrollhint__mouse"></span>Scroll to explore
-          </span>
+        <!-- Bottom Row (Reference 1: onehart.in) -->
+        <div class="hero-fullbleed__bottom-row">
+          <span>3 FLAVOURS · 100% PURE BUTTER · SHIPS PAN-INDIA</span>
+          <a href="#flavours" class="hero-fullbleed__scroll-hint">SCROLL ↓</a>
         </div>
       </div>
     </section>
@@ -222,8 +214,8 @@
                 <circle cx="9" cy="10" r=".9" fill="currentColor" stroke="none" />
                 <circle cx="15" cy="10" r=".9" fill="currentColor" stroke="none" />
               </svg></span>
-            <span class="strip__t">Big Satisfaction</span>
-            <span class="strip__d">3x flavor intensity in every tiny coin.</span>
+            <span class="strip__t">Ships Pan-India</span>
+            <span class="strip__d">7–8 days to your door.</span>
           </div>
         </div>
       </div>
@@ -231,629 +223,596 @@
 
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ OUR 4 ARTISANAL FLAVOURS — SINGLE ROW ALIGNED WITH SWIPE & ARROWS ════════ -->
-    <section class="sec has-deco" id="flavours" aria-labelledby="fl-h">
+    <!-- ══ OUR FLAVOURS — three connected panels, expand on hover ════════ -->
+    <section class="fl2" id="flavours" aria-labelledby="fl-h">
       <div class="shell-wide">
-        <div class="sec__head rv">
-          <span class="kicker">Discover Our 4 Artisanal Flavours</span>
-          <h2 class="dsp h2-flavours" id="fl-h">Our flavours</h2>
-          <p class="sub" style="margin:10px auto 0;text-align:center;max-width:54ch">
-            Swipe to explore our lineup. Watch each artisanal flavour baked to perfection.
-          </p>
-        </div>
-
-        <div class="flavours-slider-wrapper rv">
-          <!-- Previous / Next Slider Navigation Arrows -->
-          <button class="flav-nav-btn flav-nav-prev" id="flav-slide-prev" aria-label="Previous Flavour">‹</button>
-          <button class="flav-nav-btn flav-nav-next" id="flav-slide-next" aria-label="Next Flavour">›</button>
-
-          <!-- Horizontal One-Row Track (Video Only · Compact Details) -->
-          <div class="flavours-row-track" id="flavours-track">
-            <!-- Flavour 1: Double Chocolate (Video Only · Available Now) -->
-            <article class="flav-card-slide" data-flav-card="choc">
-              <div class="flav-media-box">
-                <video class="flav-card-video" src="Chocolate.mp4" playsinline autoplay loop muted
-                  preload="auto"></video>
-              </div>
-
-              <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-live">⚡ Launch Active</span>
-                <h3 class="flav-card-title">Double Chocolate</h3>
-                <p class="flav-card-desc">
-                  Dark cocoa coin cookies with 100% pure dairy butter.
-                </p>
-                <div class="flav-card-cta">
-                  <a class="btn btn--sm" href="#shop" style="width:100%;">Order Chocolate ➔</a>
-                </div>
-              </div>
-            </article>
-
-
-            <!-- Flavour 2: Choco Chips -->
-            <article class="flav-card-slide" data-flav-card="choc-chips">
-              <div class="flav-media-box">
-                <video class="flav-card-video" src="Choco Chips.mp4" playsinline autoplay loop muted
-                  preload="auto"></video>
-              </div>
-
-              <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-live">⚡ Launch Active</span>
-                <h3 class="flav-card-title">Choco Chips</h3>
-                <p class="flav-card-desc">
-                  Classic chewy, tasty and guwy cookies bursting with rich chocolate chips.
-                </p>
-                <div class="flav-card-cta">
-                  <a class="btn btn--sm" href="#shop" style="width:100%;">Order Choco Chips ➔</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Flavour 3: Madagascar Vanilla (Video Only · VIP Access) -->
-            <article class="flav-card-slide" data-flav-card="van">
-              <div class="flav-media-box">
-                <video class="flav-card-video" src="Vanilla.mp4" playsinline autoplay loop muted preload="auto"></video>
-              </div>
-
-              <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🍦 WAITLIST ONLY</span>
-                <h3 class="flav-card-title">Madagascar Vanilla</h3>
-                <p class="flav-card-desc">
-                  Bourbon vanilla caviar &amp; golden butter. Dropping this Friday.
-                </p>
-                <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
-                </div>
-              </div>
-            </article>
-
-            <!-- Flavour 3: Red Velvet (Video Only · VIP Access) -->
-            <article class="flav-card-slide" data-flav-card="red">
-              <div class="flav-media-box">
-                <video class="flav-card-video" src="red velvet new.mp4" playsinline autoplay loop muted
-                  preload="auto"></video>
-              </div>
-
-              <div class="flav-card-content">
-                <span class="flav-card-badge flav-badge-vip">🍓 WAITLIST ONLY</span>
-                <h3 class="flav-card-title">Red Velvet</h3>
-                <p class="flav-card-desc">
-                  Cocoa buttermilk dough topped with white chocolate drops.
-                </p>
-                <div class="flav-card-cta">
-                  <a class="btn btn--ghost btn--sm" href="#waitlist" style="width:100%;">Join Waitlist ➔</a>
-                </div>
-              </div>
-            </article>
-
-
+        <div class="fl2__head">
+          <span class="fl2__kicker"><span class="fl2__kicker-dot"></span> BATCH #001 · 100% PURE DAIRY BUTTER</span>
+          <h2 id="fl-h" class="fl2__title">Our Signature Flavours</h2>
+          <p class="fl2__sub">Three distinct flavour profiles, each baked to one-bite perfection. Crisp golden rim, meltingly rich centre, zero crumbs on your desk.</p>
+          <div class="fl2__perks">
+            <span class="fl2__perk-item">🧈 100% Real Butter</span>
+            <span class="fl2__perk-item">🍪 One-Bite Zero Mess</span>
+            <span class="fl2__perk-item">🍫 Belgian &amp; Dutch Cocoa</span>
+            <span class="fl2__perk-item">🌿 100% Eggless &amp; Veg</span>
+            <span class="fl2__perk-item">📦 Ships Pan-India</span>
           </div>
         </div>
+        <div class="fl2__rail">
+          <!-- Flavour 1: Choco Chips -->
+          <article class="fl2__panel" style="--tone:#A0612B; --deep:#3D230F;">
+            <img class="fl2__img" src="assets/img/choco_chips_single_box.jpeg" alt="Crumbly Choco Chips mini coin cookies in the 180g box" width="960" height="1280" loading="lazy" decoding="async">
+            <div class="fl2__shade" aria-hidden="true"></div>
+            <div class="fl2__content">
+              <span class="fl2__note">★ 4.9 · The Golden Classic</span>
+              <h3 class="fl2__name"><a class="fl2__link" href="choco-chips.html">Choco Chips</a></h3>
+              <div class="fl2__tasting">
+                <span>Golden Butter</span>
+                <span>Belgian Chips</span>
+                <span>Chewy Centre</span>
+              </div>
+              <p class="fl2__rating"><span aria-hidden="true">★★★★★</span> 4.9 · 128 reviews</p>
+              <div class="fl2__more">
+                <div class="fl2__more-inner">
+                  <p class="fl2__desc">Golden churned butter dough loaded with Belgian chocolate chips. Crisp edge, chewy fudgy middle.</p>
+                  <ul class="fl2__packs" aria-label="Choco Chips pack sizes">
+                    <li><a href="choco-chips.html?pack=mini"><b>80g</b><span data-price="choco-chips:mini">₹239</span></a></li>
+                    <li><a href="choco-chips.html?pack=single"><b>180g</b><span data-price="choco-chips:single">₹420</span></a></li>
+                    <li><a href="choco-chips.html?pack=duo"><b>Duo 360g</b><span data-price="choco-chips:duo">₹780</span></a></li>
+                  </ul>
+                  <a class="fl2__cta" href="choco-chips.html">Order Choco Chips</a>
+                </div>
+              </div>
+              <p class="fl2__from">From <span data-price="choco-chips:mini">₹239</span></p>
+            </div>
+          </article>
 
-        <p class="flav-swipe-hint">👈 Swipe or scroll horizontally to see all flavours 👉</p>
+          <!-- Flavour 2: Double Chocolate -->
+          <article class="fl2__panel" style="--tone:#5A2C18; --deep:#1E0D06;">
+            <img class="fl2__img" src="assets/img/double_chocolate_single_box.jpeg" alt="Crumbly Double Chocolate mini coin cookies in the 180g box" width="960" height="1280" loading="lazy" decoding="async">
+            <div class="fl2__shade" aria-hidden="true"></div>
+            <div class="fl2__content">
+              <span class="fl2__note">★ 5.0 · Pure Cocoa Indulgence</span>
+              <h3 class="fl2__name"><a class="fl2__link" href="double-chocolate.html">Double Chocolate</a></h3>
+              <div class="fl2__tasting">
+                <span>Dutch Cocoa</span>
+                <span>Dark Chunks</span>
+                <span>Fudgy Bite</span>
+              </div>
+              <p class="fl2__rating"><span aria-hidden="true">★★★★★</span> 5.0 · 214 reviews</p>
+              <div class="fl2__more">
+                <div class="fl2__more-inner">
+                  <p class="fl2__desc">Dark cocoa dough with dark chocolate chunks. Deep, fudgy and not too sweet.</p>
+                  <ul class="fl2__packs" aria-label="Double Chocolate pack sizes">
+                    <li><a href="double-chocolate.html?pack=mini"><b>80g</b><span data-price="double-chocolate:mini">₹239</span></a></li>
+                    <li><a href="double-chocolate.html?pack=single"><b>180g</b><span data-price="double-chocolate:single">₹420</span></a></li>
+                    <li><a href="double-chocolate.html?pack=duo"><b>Duo 360g</b><span data-price="double-chocolate:duo">₹780</span></a></li>
+                  </ul>
+                  <a class="fl2__cta" href="double-chocolate.html">Order Double Chocolate</a>
+                </div>
+              </div>
+              <p class="fl2__from">From <span data-price="double-chocolate:mini">₹239</span></p>
+            </div>
+          </article>
+
+          <!-- Flavour 3: Red Velvet (Zero-Pink Artisan Velvet Tone) -->
+          <article class="fl2__panel" style="--tone:#42151B; --deep:#180608;">
+            <img class="fl2__img" src="assets/img/red_velvet_single_box.jpeg" alt="Crumbly Red Velvet mini coin cookies in the 180g box" width="960" height="1280" loading="lazy" decoding="async">
+            <div class="fl2__shade" aria-hidden="true"></div>
+            <div class="fl2__content">
+              <span class="fl2__note fl2__note--new">★ 4.9 · Velvet Cocoa Drop</span>
+              <h3 class="fl2__name"><a class="fl2__link" href="red-velvet.html">Red Velvet</a></h3>
+              <div class="fl2__tasting">
+                <span>Cocoa Buttermilk</span>
+                <span>White Choc Drops</span>
+                <span>Velvety Melt</span>
+              </div>
+              <p class="fl2__rating"><span aria-hidden="true">★★★★★</span> 4.9 · 86 reviews</p>
+              <div class="fl2__more">
+                <div class="fl2__more-inner">
+                  <p class="fl2__desc">Cocoa buttermilk dough with white chocolate drops. Soft, rich and delicately tangy.</p>
+                  <ul class="fl2__packs" aria-label="Red Velvet pack sizes">
+                    <li><a href="red-velvet.html?pack=mini"><b>80g</b><span data-price="red-velvet:mini">₹239</span></a></li>
+                    <li><a href="red-velvet.html?pack=single"><b>180g</b><span data-price="red-velvet:single">₹420</span></a></li>
+                    <li><a href="red-velvet.html?pack=duo"><b>Duo 360g</b><span data-price="red-velvet:duo">₹780</span></a></li>
+                  </ul>
+                  <a class="fl2__cta" href="red-velvet.html">Order Red Velvet</a>
+                </div>
+              </div>
+              <p class="fl2__from">From <span data-price="red-velvet:mini">₹239</span></p>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ THE 5 SECOND TEST CONVERSION ═══════════════ -->
-    <section class="sec has-deco" id="why" aria-labelledby="why-h">
-      <div class="shell">
-        <div class="sec__head rv">
-          <span class="kicker">The 5 Second Test</span>
-          <h2 class="dsp h2" id="why-h">Is CRUMBLY for you?</h2>
+    <!-- ══ IS CRUMBLY FOR YOU? — static prompt image generation & small pointers ══ -->
+    <section class="why2" id="why" aria-labelledby="why-h">
+      <div class="shell-wide why2__wrap">
+        <div class="why2__content">
+          <span class="why2__kicker">The 5-Second Test</span>
+          <h2 class="why2__title" id="why-h">Is CRUMBLY for you?</h2>
+          <p class="why2__lede">Nod at two of these and you'll fall in love from the very first bite.</p>
+
+          <div class="why2__pointers">
+            <div class="why2__pointer">
+              <span class="why2__pointer-bullet" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+              <div class="why2__pointer-text">
+                <h3 class="why2__pointer-title">What is it?</h3>
+                <p class="why2__pointer-desc">Mini coin-shaped cookies made with 100% pure churned butter and intense cocoa. One clean bite, zero crumbs on your desk.</p>
+              </div>
+            </div>
+
+            <div class="why2__pointer">
+              <span class="why2__pointer-bullet" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+              <div class="why2__pointer-text">
+                <h3 class="why2__pointer-title">Who is it for?</h3>
+                <p class="why2__pointer-desc">Chocolate lovers, desk snackers, and anyone craving artisanal bakery taste without sticky fingers or messy keyboard crumbs.</p>
+              </div>
+            </div>
+
+            <div class="why2__pointer">
+              <span class="why2__pointer-bullet" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+              <div class="why2__pointer-text">
+                <h3 class="why2__pointer-title">Why buy now?</h3>
+                <p class="why2__pointer-desc">Batch #001 is freshly baked in three signature flavours and ships pan-India in sealed boxes within 7–8 days.</p>
+              </div>
+            </div>
+
+            <div class="why2__pointer">
+              <span class="why2__pointer-bullet" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+              <div class="why2__pointer-text">
+                <h3 class="why2__pointer-title">What do I do next?</h3>
+                <p class="why2__pointer-desc">Pick your favourite flavour, choose 80g, 180g or the Duo 360g pack, and check out securely in seconds.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="why2__action">
+            <a href="#flavours" class="btn-main why2__btn">
+              <span>Choose your flavour</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+            </a>
+          </div>
         </div>
 
-        <div class="why-pillars" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px;">
-          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
-            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">What is it?</h3>
-            <p class="why-pillar__desc">Mini coin-shaped cookies made with 100% pure butter and intense flavors. Zero crumbs, perfect bite-sized indulgence.</p>
-          </div>
-          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
-            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">Who is it for?</h3>
-            <p class="why-pillar__desc">Chocolate lovers, focus-workers craving a clean snack, and anyone who appreciates real bakery craft without the mess.</p>
-          </div>
-          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
-            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">Why buy now?</h3>
-            <p class="why-pillar__desc">Our small batches sell out fast. Batch #001 is currently active with free air shipping on multi-packs. Don't miss out.</p>
-          </div>
-          <div class="why-pillar rv" style="background: #FFFDF8; padding: 24px; border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 10px 30px rgba(38,20,8,0.05);">
-            <h3 class="why-pillar__title" style="color: var(--brand); margin-bottom: 12px; font-size: 20px;">What do I do next?</h3>
-            <p class="why-pillar__desc">Click below to order your fresh batch right away. Secure 1-click checkout.</p>
-            <a class="btn" href="#shop" style="margin-top: 16px; width: 100%;">Shop Drops ➔</a>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <div class="crumbrule" aria-hidden="true"></div>
-    
-    <!-- ══ PREMIUM DTC E-COMMERCE STOREFRONT & DROP CATALOG ══ -->
-    <section class="shop-sec has-deco" id="shop" aria-labelledby="shop-h">
-      <div class="shell-wide">
-        <div class="sec__head rv">
-          <span class="kicker">Fresh Artisanal Oven Drops</span>
-          <h2 class="dsp h2" id="shop-h">Shop Fresh Drops.<br><span class="serif">Order in 1-Click via Shopify.</span>
-          </h2>
-          <p class="sub" style="margin:14px auto 0;text-align:center;max-width:52ch">
-            Baked fresh every morning with 100% churned dairy butter. Instant checkout with free air shipping on
-            multi-packs.
-          </p>
-        </div>
-
-        <!-- HERO PRODUCT CARD: DOUBLE CHOCOLATE (LIVE & READY TO ORDER) -->
-        <article class="shop-hero-card rv" id="product-card-chocolate">
-          <!-- Left: Product Media Gallery -->
-          <div class="shop-product-media-wrapper">
-            
-            <div class="shop-carousel" id="product-carousel" style="display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; border-radius: 20px; border: 1px solid var(--line); -webkit-overflow-scrolling: touch; scrollbar-width: none;">
-              
-              <!-- Slide 1: Single Box Image -->
-              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
-                <span class="shop-product-badge" style="z-index: 10;">Oven Fresh · Batch #001</span>
-                <img id="carousel-img-1" src="assets/img/double_chocolate_single_box.jpeg" alt="Single Box" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
-              </div>
-              
-              <!-- Slide 2: Duo Box Image -->
-              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
-                <span class="shop-product-badge" style="z-index: 10; background: var(--accent);">Save 15% on Duo Packs</span>
-                <img id="carousel-img-2" src="assets/img/double_chocolate_duo_pack.jpeg" alt="Duo Pack" style="width: 100%; max-height: 480px; object-fit: cover; display: block;">
-              </div>
-
-              <!-- Slide 3: Video -->
-              <div class="shop-carousel-item" style="flex: 0 0 100%; scroll-snap-align: center; position: relative;">
-                <div class="shop-media-tag-bottom" style="z-index: 10;">🧈 100% Churned Butter</div>
-                <video id="main-product-video" class="shop-product-video" src="Double%20Chocolate%20Video.mp4" playsinline autoplay loop muted controls preload="auto" style="width: 100%; height: 100%; max-height: 480px; object-fit: cover; display: block;"></video>
-              </div>
-              
-            </div>
-
-            <!-- Dots Indicator -->
-            <div class="carousel-indicators" id="carousel-dots" style="display: flex; justify-content: center; gap: 8px; margin-top: 15px;">
-              <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
-              <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
-              <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line); transition: 0.3s;"></span>
-            </div>
-
-            <p style="font-size: 13px; text-align: center; color: var(--muted); margin-top: 12px; font-weight: 500;">👈 Swipe to see all media</p>
-          </div>
-          
-          <!-- Right: E-Commerce Product Configuration -->
-          <div class="shop-product-details">
-            <div class="shop-status-and-stock">
-              <div class="shop-live-status">
-                <span class="shop-live-status-dot"></span>
-                <span>Launch Active</span>
-              </div>
-              <div class="shop-stock-pill" id="shop-batch-scarcity">
-                <span class="shop-fire-icon">🔥</span>
-                <span>Batch #001: <b>84% Claimed</b></span>
-              </div>
-            </div>
-
-            <h3 class="shop-product-title">Double Chocolate Mini Coins</h3>
-            <p class="shop-product-desc">
-              Rich artisanal dark cocoa & 100% pure churned creamery butter. Baked fresh for an intense cocoa snap.
-            </p>
-
-            <div class="light-config-wrapper">
-              <!-- Flavour Selection -->
-              <div class="shop-config-block">
-                <div class="shop-variant-label">
-                  <span>Select Flavour:</span>
-                  <span id="flavour-selection-summary" class="shop-selection-pill">Double Chocolate</span>
-                </div>
-                <div class="shop-pack-picker" id="flavour-picker">
-                  <button class="shop-pack-btn is-active" type="button" data-flavour="chocolate">
-                    <div class="shop-pack-top-row">
-                      <span class="shop-pack-icon">🍫</span>
-                      <span class="shop-pack-title">Double Chocolate</span>
-                    </div>
-                  </button>
-                  <button class="shop-pack-btn" type="button" data-flavour="chocochips">
-                    <div class="shop-pack-top-row">
-                      <span class="shop-pack-icon">🍪</span>
-                      <span class="shop-pack-title">Choco Chips</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Pack Selection -->
-              <div class="shop-config-block">
-                <div class="shop-variant-label">
-                  <span>Select Pack:</span>
-                  <span id="pack-selection-summary" class="shop-selection-pill">Single Box (180g)</span>
-                </div>
-                <div class="shop-pack-picker" id="pack-picker">
-                  <button class="shop-pack-btn" type="button" data-pack="mini">
-                    <div class="shop-pack-top-row">
-                      <span class="shop-pack-title">Mini Box</span>
-                    </div>
-                    <span class="shop-pack-coins">80g Box</span>
-                    <div class="shop-pack-price-row">
-                      <span class="shop-pack-price"><strike>₹299</strike> ₹239</span>
-                    </div>
-                  </button>
-                  <button class="shop-pack-btn is-active" type="button" data-pack="single">
-                    <div class="shop-pack-top-row">
-                      <span class="shop-pack-title">Single Box</span>
-                    </div>
-                    <span class="shop-pack-coins">180g Box</span>
-                    <div class="shop-pack-price-row">
-                      <span class="shop-pack-price"><strike>₹499</strike> ₹420</span>
-                    </div>
-                  </button>
-                  <button class="shop-pack-btn best-value-btn" type="button" data-pack="duo">
-                    <span class="shop-pack-badge-tag glowing">🔥 BEST VALUE</span>
-                    <div class="shop-pack-top-row">
-                      <span class="shop-pack-title">Duo Box</span>
-                    </div>
-                    <span class="shop-pack-coins">360g (2x 180g)</span>
-                    <div class="shop-pack-price-row">
-                      <span class="shop-pack-price"><strike>₹998</strike> ₹829</span>
-                    </div>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Dynamic Savings & Reward Callout -->
-              <div class="shop-savings-banner" id="shop-savings-banner">
-                <span class="shop-savings-icon">🎁</span>
-                <span id="shop-savings-text">You save <b>₹79</b> today · Fresh Oven-Baked Dispatch Guarantee!</span>
-              </div>
-
-              <!-- Quantity Selector & Add To Cart Button -->
-              <div class="shop-actions-row light-mode-actions">
-                <div class="shop-qty-wrap">
-                  <span class="shop-qty-lbl">Qty:</span>
-                  <div class="shop-qty-box">
-                    <button class="shop-qty-btn" id="qty-minus-btn" type="button" aria-label="Decrease quantity"
-                      disabled>−</button>
-                    <span class="shop-qty-val" id="qty-display">1</span>
-                    <button class="shop-qty-btn" id="qty-plus-btn" type="button"
-                      aria-label="Increase quantity">+</button>
-                  </div>
-                </div>
-
-                <!-- Add to Cart Button (Adds to Local State) -->
-                <button class="btn shop-buy-now-btn light-glow-btn" id="add-to-cart-btn" type="button">
-                  <span class="shop-btn-shine"></span>
-                  <span class="shop-btn-text" id="add-to-cart-text">Add to Cart • ₹420</span>
-                </button>
-              </div>
-
-              <!-- Payment Security Badges -->
-              <div class="shop-security-badges" style="color:var(--muted)">
-                <span>🔒 Secure Shopify Checkout</span>
-                <span class="shop-sec-divider">·</span>
-                <span>⚡ UPI / GPay / Cards</span>
-              </div>
-
-              <!-- Trust & Shipping Micro-Notes -->
-              <div class="shop-trust-notes light-trust-grid">
-                <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">🚚</span>
-                  <span><b>Delivery</b><br>7-8 Days Everywhere<br><small>(No Air by default)</small></span>
-                </div>
-                <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">🛡️</span>
-                  <span><b>Return Policy</b><br>No Returns/Refunds<br><small>Guaranteed Quality</small></span>
-                </div>
-                <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">💳</span>
-                  <span><b>Secure Payments</b><br>No COD Available</span>
-                </div>
-                <div class="shop-trust-note-item">
-                  <span class="shop-trust-icon">💬</span>
-                  <span><b>Need Help?</b><br><a href="contact.html" style="color:var(--brand); text-decoration:underline;">Contact Us</a></span>
-                </div>
-              </div></div>
-            </div>
-          </div>
-        </article>
-
-        <!-- EXTENSIBLE MULTI-PRODUCT DROP QUEUE (3 UPCOMING PRODUCT RELEASES IN 1 ROW) -->
-        <div class="sec__head rv" style="margin-top:var(--sp-6);margin-bottom:var(--sp-3)">
-          <span class="kicker">Weekly Drop Schedule</span>
-          <h3 class="dsp h3">Upcoming Flavour Drops</h3>
-          <p class="sub" style="margin:8px auto 0;text-align:center;font-size:14px;">
-            New flavours releasing back-to-back. Join the waitlist for secret 24-hour early access.
-          </p>
-        </div>
-
-        <div class="shop-upcoming-grid">
-          <!-- Drop 02: Madagascar Vanilla -->
-          <div class="shop-drop-card rv">
-            <div class="shop-drop-thumb">
-              <img src="assets/img/slide-vanilla.webp" alt="CRUMBLY Madagascar Vanilla">
-            </div>
-            <div class="shop-drop-info">
-              <span class="shop-drop-tag">⏳ Drop 02 · Releasing This Friday</span>
-              <h4 class="shop-drop-title">Madagascar Vanilla</h4>
-              <p style="font-size:12px;color:var(--muted);line-height:1.45;">
-                Bourbon vanilla caviar &amp; golden churned butter.
-              </p>
-              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
-              <a href="#waitlist" class="btn btn--ghost btn--sm"
-                style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
-            </div>
-          </div>
-
-          <!-- Drop 03: Red Velvet -->
-          <div class="shop-drop-card rv">
-            <div class="shop-drop-thumb">
-              <img src="assets/img/slide-red-velvet.webp" alt="CRUMBLY Red Velvet">
-            </div>
-            <div class="shop-drop-info">
-              <span class="shop-drop-tag">🔥 Drop 03 · Next Week Special</span>
-              <h4 class="shop-drop-title">Red Velvet</h4>
-              <p style="font-size:12px;color:var(--muted);line-height:1.45;">
-                Cocoa buttermilk dough &amp; white chocolate drops.
-              </p>
-              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
-              <a href="#waitlist" class="btn btn--ghost btn--sm"
-                style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
-            </div>
-          </div>
-
-          <!-- Drop 04: Wholesome Oats -->
-          <div class="shop-drop-card rv">
-            <div class="shop-drop-thumb">
-              <img src="assets/img/slide-oats.webp" alt="CRUMBLY Wholesome Oats">
-            </div>
-            <div class="shop-drop-info">
-              <span class="shop-drop-tag">🌾 Drop 04 · Coming Soon</span>
-              <h4 class="shop-drop-title">Wholesome Oats</h4>
-              <p style="font-size:12px;color:var(--muted);line-height:1.45;">
-                Toasted whole grain oats and warm cinnamon spice.
-              </p>
-              <div class="shop-drop-price">From ₹449 · Waitlist Only</div>
-              <a href="#waitlist" class="btn btn--ghost btn--sm"
-                style="margin-top:4px;padding:8px 14px;font-size:10.5px">Join Drop Waitlist ➔</a>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ══ SECTION B: WAITLIST SECTION (VANILLA, RED VELVET, OATS) ══ -->
-    <section class="vip-sec has-deco" id="waitlist" aria-labelledby="vip-h">
-      <div class="shell">
-        <div class="vip-card rv">
-          <!-- Left: Waitlist narrative & benefits -->
-          <div class="vip-left-info">
-            <span class="vip-badge-pill">🍦 Test Kitchen · R&amp;D Early Access</span>
-            <h2 class="dsp vip-left-title" id="vip-h">
-              Waitlist Early Access.<br><span class="serif" style="color:#D5BEA7;">Vanilla, Velvet &amp; Oats.</span>
-            </h2>
-            <p style="font-size:13.5px;color:#D5BEA7;line-height:1.55;">
-              Our master bakers are perfecting upcoming batches. Waitlist members get first priority access.
-            </p>
-
-            <div class="vip-perks-box">
-              <strong>🎁 Waitlist Privileges:</strong>
-              <div>• Secret <b>24-Hour Early Drop Link</b></div>
-              <div>• Complimentary <b>Mini Taster Pouch</b></div>
-              <div>• Guaranteed oven batch priority</div>
-            </div>
-          </div>
-
-          <!-- Right: Compact VIP Waitlist Form -->
-          <div class="vip-form-box">
-            <h3 style="font-family:var(--display);font-size:16px;font-weight:800;color:#FFFDF8;">Join The Waitlist</h3>
-
-            <div class="vip-flav-select">
-              <label class="vip-checkbox-label">
-                <input type="checkbox" id="vip-check-vanilla" checked>
-                <span>🍦 Madagascar Vanilla</span>
-              </label>
-              <label class="vip-checkbox-label">
-                <input type="checkbox" id="vip-check-redvelvet" checked>
-                <span>🍓 Red Velvet</span>
-              </label>
-
-            </div>
-
-            <div>
-              <label for="vip-name"
-                style="font-size:9.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#F4E8DC;display:block;margin-bottom:3px">Your
-                Name</label>
-              <input type="text" id="vip-name" class="inp vip-inp" placeholder="John Doe">
-            </div>
-
-            <div>
-              <label for="vip-phone"
-                style="font-size:9.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#F4E8DC;display:block;margin-bottom:3px">WhatsApp
-                Number</label>
-              <input type="tel" id="vip-phone" class="inp vip-inp" placeholder="+91 7069666910">
-            </div>
-
-            <div>
-              <label for="vip-email"
-                style="font-size:9.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#F4E8DC;display:block;margin-bottom:3px">Email
-                Address</label>
-              <input type="email" id="vip-email" class="inp vip-inp" placeholder="you@example.com">
-            </div>
-
-            <div>
-              <label for="vip-address"
-                style="font-size:9.5px;font-weight:800;letter-spacing:0.16em;text-transform:uppercase;color:#F4E8DC;display:block;margin-bottom:3px">Delivery
-                Address &amp; Pincode</label>
-              <input type="text" id="vip-address" class="inp vip-inp"
-                placeholder="House/Flat No, Street, City, Pincode">
-            </div>
-
-            <p id="vip-err" style="color:#E85B46;font-size:12px;min-height:14px;margin:0;"></p>
-
-            <button class="btn" type="button" id="vip-submit-btn"
-              style="background:#F4E8DC;color:#261408;width:100%;padding:13px 20px;font-size:12px">
-              Join Waitlist ➔
-            </button>
-
-            <!-- Success note -->
-            <div id="vip-success-box"
-              style="display:none;background:rgba(16,185,129,0.2);border:1px solid #10B981;border-radius:12px;padding:12px;font-size:12.5px;color:#A7F3D0;text-align:center;">
-              🎉 <strong>You're on the Waitlist!</strong> We will WhatsApp &amp; email you the secret link the moment
-              upcoming drops go live!
+        <div class="why2__media">
+          <div class="why2__media-frame">
+            <img class="why2__static-img" src="assets/img/is_crumbly_prompt.jpg" alt="Artisanal CRUMBLY mini coin cookies freshly baked with pure churned butter and rich chocolate" width="800" height="600" loading="lazy" decoding="async">
+            <div class="why2__media-badge">
+              <span class="why2__badge-dot"></span>
+              <span>100% Pure Butter · Zero Palm Oil</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ TESTIMONIALS & REVIEWS ══ -->
-    <section class="sec has-deco" id="reviews">
+    <!-- ══ NEW CUSTOMER REVIEWS SECTION (SECTION 7) ══ -->
+    <section class="reviews-sec has-deco" id="reviews">
       <div class="shell">
         <div class="sec__head rv">
           <span class="kicker">Real Customer Love</span>
           <h2 class="dsp h2">What our snackers say</h2>
         </div>
-        <div class="reviews-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px;">
-          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
-            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
-            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"The chocolate coins are incredibly rich. Perfect bite size so there is zero mess on my desk while working."</p>
-            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Rahul S.</div>
+
+        <!-- Rating Summary Box -->
+        <div class="reviews-summary-wrap rv">
+          <div class="reviews-score-box">
+            <div class="reviews-score-num">4.9</div>
+            <div class="reviews-score-stars">★★★★★</div>
+            <div class="reviews-score-count">Based on 428 verified reviews</div>
           </div>
-          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
-            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
-            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"Loved the pure butter taste! Ordered the Duo box and it finished in two days. Will definitely buy again."</p>
-            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Priya M.</div>
+
+          <div class="reviews-bars">
+            <div class="reviews-bar-row">
+              <span>5★</span>
+              <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width: 88%;"></div></div>
+              <span>88%</span>
+            </div>
+            <div class="reviews-bar-row">
+              <span>4★</span>
+              <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width: 10%;"></div></div>
+              <span>10%</span>
+            </div>
+            <div class="reviews-bar-row">
+              <span>3★</span>
+              <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width: 2%;"></div></div>
+              <span>2%</span>
+            </div>
+            <div class="reviews-bar-row">
+              <span>2★</span>
+              <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width: 0%;"></div></div>
+              <span>0%</span>
+            </div>
+            <div class="reviews-bar-row">
+              <span>1★</span>
+              <div class="reviews-bar-track"><div class="reviews-bar-fill" style="width: 0%;"></div></div>
+              <span>0%</span>
+            </div>
           </div>
-          <div class="review-card rv" style="background: #FFF; padding: 24px; border-radius: 16px; border: 1px solid var(--line);">
-            <div style="color: #F59E0B; margin-bottom: 12px; font-size: 18px;">★★★★★</div>
-            <p style="font-style: italic; color: var(--ink); margin-bottom: 16px;">"Best cookies I've ever had. You can really taste the premium ingredients. 10/10."</p>
-            <div style="font-weight: 700; font-size: 14px; color: var(--brand);">— Aman K.</div>
+
+          <div>
+            <button class="btn-main" type="button" id="open-write-review-btn">
+              <span>Write a review</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9"></path>
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+              </svg>
+            </button>
           </div>
+        </div>
+
+        <!-- Filter Buttons -->
+        <div class="reviews-filters rv">
+          <button type="button" class="reviews-filter-btn is-active" data-filter="all">All</button>
+          <button type="button" class="reviews-filter-btn" data-filter="Double Chocolate">Double Chocolate</button>
+          <button type="button" class="reviews-filter-btn" data-filter="Choco Chips">Choco Chips</button>
+          <button type="button" class="reviews-filter-btn" data-filter="Red Velvet">Red Velvet</button>
+          <button type="button" class="reviews-filter-btn" data-filter="verified">✓ Verified Only</button>
+        </div>
+
+        <!-- Review Cards Grid -->
+        <div class="reviews-grid-3 rv" id="reviews-list">
+          <!-- Card 1 -->
+          <article class="snacker-review-card" data-flavour="Double Chocolate" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Double Chocolate</span>
+              </div>
+              <p class="snacker-review-text">"The chocolate coins are incredibly rich. Perfect bite size so there is zero mess on my desk while working."</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Rahul S.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
+
+          <!-- Card 2 -->
+          <article class="snacker-review-card" data-flavour="Double Chocolate" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Double Chocolate</span>
+              </div>
+              <p class="snacker-review-text">"Loved the pure butter taste! Ordered the Duo box and it finished in two days. Will definitely buy again."</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Priya M.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
+
+          <!-- Card 3 -->
+          <article class="snacker-review-card" data-flavour="Choco Chips" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Choco Chips</span>
+              </div>
+              <p class="snacker-review-text">"Best cookies I've ever had. You can really taste the premium ingredients. 10/10."</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Aman K.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
+
+          <!-- Card 4 -->
+          <article class="snacker-review-card" data-flavour="Red Velvet" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Red Velvet</span>
+              </div>
+              <p class="snacker-review-text">"The white chocolate drops melt right into the cocoa buttermilk cookie. It's unreal. Glad I tried the new Red Velvet batch!"</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Shreya T.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
+
+          <!-- Card 5 -->
+          <article class="snacker-review-card" data-flavour="Choco Chips" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Choco Chips</span>
+              </div>
+              <p class="snacker-review-text">"Crisp buttery edge and chewy gooey center. The coin format makes it dangerously easy to finish a box in one sitting."</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Vikram B.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
+
+          <!-- Card 6 -->
+          <article class="snacker-review-card" data-flavour="Red Velvet" data-verified="true">
+            <div>
+              <div class="snacker-review-top">
+                <span class="snacker-review-stars">★★★★★</span>
+                <span class="snacker-review-tag">Red Velvet</span>
+              </div>
+              <p class="snacker-review-text">"Packaging was clean and cookies arrived in perfect shape with zero broken pieces. Pure butter quality shows."</p>
+            </div>
+            <div class="snacker-review-footer">
+              <span class="snacker-review-author">— Ananya D.</span>
+              <span class="snacker-review-badge">✓ Verified buyer</span>
+            </div>
+          </article>
         </div>
       </div>
     </section>
+
+    <!-- Write a Review Modal Window -->
+    <div id="write-review-modal" class="review-modal-backdrop" aria-hidden="true">
+      <div class="review-modal-box">
+        <button type="button" class="review-modal-close" id="close-review-modal-btn" aria-label="Close review modal">&times;</button>
+        <h3 style="font-family:var(--crumbly-font-brand); font-size:24px; color:var(--crumbly-brown); margin-bottom:6px;">Write a Review</h3>
+        <p style="font-size:13.5px; color:var(--crumbly-muted); margin-bottom:20px;">Share your genuine snacking experience with fellow cookie lovers.</p>
+
+        <form id="write-review-form">
+          <label style="font-size:12px; font-weight:800; color:var(--crumbly-brown); display:block;">Overall Rating *</label>
+          <div class="review-star-picker" id="review-star-picker">
+            <span data-val="1" class="is-active">★</span>
+            <span data-val="2" class="is-active">★</span>
+            <span data-val="3" class="is-active">★</span>
+            <span data-val="4" class="is-active">★</span>
+            <span data-val="5" class="is-active">★</span>
+          </div>
+          <input type="hidden" id="review-rating-val" value="5">
+
+          <div style="margin-bottom:14px;">
+            <label for="review-author-name" style="font-size:12px; font-weight:800; color:var(--crumbly-brown); display:block; margin-bottom:4px;">Your Name *</label>
+            <input type="text" id="review-author-name" required placeholder="e.g. Rahul S." class="inp" style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid var(--line); font-family:inherit;">
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label for="review-flavour-select" style="font-size:12px; font-weight:800; color:var(--crumbly-brown); display:block; margin-bottom:4px;">Flavour Reviewed *</label>
+            <select id="review-flavour-select" required style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid var(--line); font-family:inherit; background:#FFF;">
+              <option value="Double Chocolate">Double Chocolate</option>
+              <option value="Choco Chips">Choco Chips</option>
+              <option value="Red Velvet">Red Velvet</option>
+            </select>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label for="review-text-content" style="font-size:12px; font-weight:800; color:var(--crumbly-brown); display:block; margin-bottom:4px;">Your Review (Min 10 characters) *</label>
+            <textarea id="review-text-content" required rows="4" minlength="10" placeholder="What did you think of the bite, texture and flavor?" class="inp" style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid var(--line); font-family:inherit;"></textarea>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label for="review-order-id" style="font-size:12px; font-weight:800; color:var(--crumbly-brown); display:block; margin-bottom:4px;">Order ID (Optional - for Verified Badge)</label>
+            <input type="text" id="review-order-id" placeholder="e.g. CR-10482 or AWB #" class="inp" style="width:100%; padding:12px 16px; border-radius:12px; border:1px solid var(--line); font-family:inherit;">
+          </div>
+
+          <button type="submit" class="btn-main" style="width:100%; justify-content:center; margin-top:8px;">Submit Review</button>
+        </form>
+
+        <div id="review-form-success" style="display:none; text-align:center; padding:30px 10px;">
+          <div style="font-size:48px; margin-bottom:12px;">🎉</div>
+          <h4 style="font-family:var(--crumbly-font-brand); font-size:22px; color:var(--crumbly-brown); margin-bottom:8px;">Thank You for Your Review!</h4>
+          <p style="font-size:14px; color:var(--crumbly-muted);">Your review has been submitted successfully and will appear once verified.</p>
+        </div>
+      </div>
+    </div>
 
     <div class="crumbrule" aria-hidden="true"></div>
 
-    <!-- ══ FAQ ══ -->
-    <section class="sec has-deco" id="faq">
-      <div class="shell">
-        <div class="sec__head rv">
-          <span class="kicker">Got Questions?</span>
-          <h2 class="dsp h2">Frequently Asked Questions</h2>
+    <!-- ══ FAQ SECTION (SECTION 8) ══ -->
+    <section class="faq2" id="faq" aria-labelledby="faq-h">
+      <div class="shell-wide faq2__wrap">
+        <div class="faq2__intro">
+          <h2 class="faq2__title" id="faq-h">Questions, answered</h2>
+          <p class="faq2__lede">The short answer is on every line. Tap one for the details.</p>
+          <div class="faq2__help">
+            <p class="faq2__help-t">Still curious?</p>
+            <p class="faq2__help-d">Message us and a real person replies, Mon–Sat, 10am–7pm.</p>
+            <a class="btn-main" href="https://wa.me/917069666910" target="_blank" rel="noopener"><span>Chat on WhatsApp</span></a>
+          </div>
         </div>
-        <div class="faq-list rv" style="max-width: 800px; margin: 40px auto 0; display: flex; flex-direction: column; gap: 16px;">
-          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
-            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">What makes Crumbly different?</h4>
-            <p style="color: var(--muted); font-size: 14px;">Our cookies are baked with 100% pure dairy butter and high-quality chocolate. They are coin-sized to give you the perfect bite without making a mess.</p>
-          </div>
-          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
-            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">How long is the delivery time?</h4>
-            <p style="color: var(--muted); font-size: 14px;">We deliver across India within 7-8 days via surface transport to ensure the cookies arrive safely.</p>
-          </div>
-          <div class="faq-item" style="background: #FFF; padding: 20px; border-radius: 12px; border: 1px solid var(--line);">
-            <h4 style="font-family: var(--display); font-size: 18px; margin-bottom: 8px;">Are there returns or COD available?</h4>
-            <p style="color: var(--muted); font-size: 14px;">Because we bake fresh and ship food items, we do not accept returns and we do not offer Cash on Delivery. All payments are 100% secure.</p>
-          </div>
+        <div class="faq2__list">
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a0" id="faq2-q0">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="9.5" cy="10" r="1.2" fill="currentColor" stroke="none"/><circle cx="14.5" cy="13.5" r="1.2" fill="currentColor" stroke="none"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">What makes Crumbly different?</span>
+                    <span class="faq2__a">Real butter, real chocolate, one clean bite.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a0" role="region" aria-labelledby="faq2-q0">
+                <div class="faq2__panel-inner"><p>Every coin is baked with 100% pure churned dairy butter and dark chocolate. Because each cookie is coin-sized, you get the full flavour and chewy centre in one bite, with no crumbs on your fingers or keyboard.</p></div>
+              </div>
+            </div>
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a1" id="faq2-q1">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h11v9H3z"/><path d="M14 10h4l3 3v3h-7"/><circle cx="7" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">How long does delivery take?</span>
+                    <span class="faq2__a">Delivered anywhere in India in 7–8 days, with tracking.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a1" role="region" aria-labelledby="faq2-q1">
+                <div class="faq2__panel-inner"><p>We ship pan-India by surface courier. Your tracking ID arrives by email and WhatsApp as soon as your box ships, and you can follow every step on our <a href="track.html">Track Order</a> page.</p></div>
+              </div>
+            </div>
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a2" id="faq2-q2">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">What if my box arrives damaged?</span>
+                    <span class="faq2__a">Damaged in transit? We replace it or refund you.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a2" role="region" aria-labelledby="faq2-q2">
+                <div class="faq2__panel-inner"><p>WhatsApp us photos of the box within 48 hours of delivery and we'll send a replacement or refund you. We're prepaid only (UPI, cards, net banking), and because cookies are food we can't take back a box that arrived fine. <a href="refund-policy.html">Read the refund policy</a>.</p></div>
+              </div>
+            </div>
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a3" id="faq2-q3">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M4 10h16M10 4v16"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">Which flavours can I order?</span>
+                    <span class="faq2__a">Three flavours, three box sizes, all ready to ship.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a3" role="region" aria-labelledby="faq2-q3">
+                <div class="faq2__panel-inner"><p>Choose Double Chocolate, Choco Chips or Red Velvet, each in a Mini 80g box, a Single 180g box or a Duo pack of two 180g boxes.</p></div>
+              </div>
+            </div>
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a4" id="faq2-q4">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 8l7-5 7 5M5 16l7 5 7-5"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">How should I store them?</span>
+                    <span class="faq2__a">Stays fresh for up to 30 days in a sealed box.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a4" role="region" aria-labelledby="faq2-q4">
+                <div class="faq2__panel-inner"><p>Keep the box sealed in a cool, dry place away from sunlight. For a gooey centre, warm a few coins in the microwave for 8–10 seconds before eating.</p></div>
+              </div>
+            </div>
+            <div class="faq2__item">
+              <h3 class="faq2__h">
+                <button type="button" class="faq2__btn" aria-expanded="false" aria-controls="faq2-a5" id="faq2-q5">
+                  <span class="faq2__icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20C7 20 4 17 4 13c0-6 7-9 15-9 0 8-3 16-8 16z"/><path d="M4 20c4-6 8-9 12-11"/></svg></span>
+                  <span class="faq2__text">
+                    <span class="faq2__q">Are Crumbly cookies vegetarian?</span>
+                    <span class="faq2__a">100% eggless and vegetarian.</span>
+                  </span>
+                  <span class="faq2__toggle" aria-hidden="true"></span>
+                </button>
+              </h3>
+              <div class="faq2__panel" id="faq2-a5" role="region" aria-labelledby="faq2-q5">
+                <div class="faq2__panel-inner"><p>All Crumbly coin cookies are eggless and vegetarian. We use dairy butter, with no egg, gelatin or animal rennet.</p></div>
+              </div>
+            </div>
         </div>
       </div>
     </section>
 
-    <!-- ══ HIGH-END BRAND GRAND FINALE FOOTER ════════════════ -->
-    <div class="foot-wrap has-deco">
-      <div class="shell">
-        <footer class="foot-card rv">
-          <!-- 4-Pillar Trust Strip -->
-          <div class="foot-trust-strip">
-            <div class="foot-trust-item">
-              <span class="foot-trust-icon">🧈</span>
-              <div class="foot-trust-text">
-                <strong>100% Pure Butter</strong>
-                <span>Real dairy craft</span>
-              </div>
-            </div>
-            <div class="foot-trust-item">
-              <span class="foot-trust-icon">✨</span>
-              <div class="foot-trust-text">
-                <strong>Premium Quality</strong>
-                <span>Zero cheap oils</span>
-              </div>
-            </div>
-            <div class="foot-trust-item">
-              <span class="foot-trust-icon">⚡</span>
-              <div class="foot-trust-text">
-                <strong>Express Air Dispatch</strong>
-                <span>Oven to doorstep</span>
-              </div>
-            </div>
-            <div class="foot-trust-item">
-              <span class="foot-trust-icon">🍪</span>
-              <div class="foot-trust-text">
-                <strong>Small Batch Daily</strong>
-                <span>Fresh every morning</span>
-              </div>
+    <!-- ══ LONG INFORMATIVE LUXURY FOOTER (ALL PAGES) ══════ -->
+    <footer class="ft2" id="footer">
+      <div class="shell-wide">
+        <div class="ft2__top">
+          <div class="ft2__pitch">
+            <p class="ft2__brand">crumbly</p>
+            <p class="ft2__tag">You know you want it.</p>
+            <p class="ft2__story">Mini coin cookies baked with 100% pure butter in Bengaluru, packed by hand and shipped across India.</p>
+          </div>
+          <nav class="ft2__flavours" aria-label="Shop by flavour">
+            <a class="ft2__fl" href="choco-chips.html" style="--tone:#A0612B;">
+              <img src="assets/img/choco_chips_single_box.jpeg" alt="" width="96" height="128" loading="lazy">
+              <span class="ft2__fl-name">Choco Chips</span>
+              <span class="ft2__fl-meta">80g · 180g · Duo</span>
+            </a>
+            <a class="ft2__fl" href="double-chocolate.html" style="--tone:#5A2C18;">
+              <img src="assets/img/double_chocolate_single_box.jpeg" alt="" width="96" height="128" loading="lazy">
+              <span class="ft2__fl-name">Double Chocolate</span>
+              <span class="ft2__fl-meta">80g · 180g · Duo</span>
+            </a>
+            <a class="ft2__fl" href="red-velvet.html" style="--tone:#42151B;">
+              <img src="assets/img/red_velvet_single_box.jpeg" alt="" width="96" height="128" loading="lazy">
+              <span class="ft2__fl-name">Red Velvet</span>
+              <span class="ft2__fl-meta">80g · 180g · Duo</span>
+            </a>
+          </nav>
+        </div>
+
+        <div class="ft2__grid">
+          <div class="ft2__col">
+            <h4>Shop</h4>
+            <ul>
+              <li><a href="index.html#flavours">All flavours</a></li>
+              <li><a href="index.html#why">Is CRUMBLY for you?</a></li>
+              <li><a href="index.html#reviews">Customer reviews</a></li>
+              <li><a href="index.html#faq">Questions</a></li>
+            </ul>
+          </div>
+          <div class="ft2__col">
+            <h4>Help</h4>
+            <ul>
+              <li><a href="tel:+917069666910">Call +91 70696 66910</a></li>
+              <li><a href="https://wa.me/917069666910" target="_blank" rel="noopener">WhatsApp us</a></li>
+              <li><a href="mailto:crumblyblr@gmail.com">crumblyblr@gmail.com</a></li>
+              <li class="ft2__muted">Mon–Sat, 10am–7pm IST</li>
+            </ul>
+            <p class="ft2__note">Box arrived damaged? WhatsApp us photos within 48 hours and we'll replace it.</p>
+          </div>
+          <div class="ft2__col">
+            <h4>Orders &amp; policies</h4>
+            <ul>
+              <li><a href="track.html" class="ft2__strong">Track your order</a></li>
+              <li><a href="refund-policy.html">Refund &amp; cancellation</a></li>
+              <li><a href="shipping-policy.html">Shipping &amp; delivery</a></li>
+              <li><a href="privacy-policy.html">Privacy policy</a></li>
+              <li><a href="terms.html">Terms of service</a></li>
+              <li><a href="contact.html">Contact &amp; grievances</a></li>
+            </ul>
+          </div>
+          <div class="ft2__col">
+            <h4>Follow the batch</h4>
+            <p class="ft2__muted ft2__p">New batches and flavours show up on Instagram first.</p>
+            <div class="ft2__social">
+              <a href="https://www.instagram.com/crumbly.blr" target="_blank" rel="noopener" class="ft2__pill">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+                @crumbly.blr
+              </a>
+              <a href="https://wa.me/917069666910" target="_blank" rel="noopener" class="ft2__pill">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7L4 20z"/></svg>
+                WhatsApp
+              </a>
             </div>
           </div>
+        </div>
 
-          <!-- Main Footer Grid -->
-          <div class="foot-main-grid">
-            <div class="foot-brand-col">
-              <span class="foot-brand-name-huge">crumbly</span>
-              <p class="foot-tagline">YOU KNOW YOU WANT IT.</p>
-              <p class="foot-desc">
-                Re-engineering the cookie snacking ritual from the dough up. Real butter coin cookies designed for
-                clean, one-bite satisfaction.
-              </p>
-            </div>
+        <div class="ft2__legal">
+          <span class="ft2__fssai">FSSAI Lic. No. 11224333000542</span>
+          <span>CRUMBLY BAKES PRIVATE LIMITED · 14/2, Indiranagar 100ft Road, Bengaluru, Karnataka 560038</span>
+        </div>
 
-            <div class="foot-col">
-              <h4>Quick Navigation &amp; Support</h4>
-              <ul>
-                <li><a href="#home">Home Experience</a></li>
-                <li><a href="#flavours">4 Artisanal Flavours</a></li>
-                <li><a href="#why">The 5-Second Test</a></li>
-                <li><a href="#shop">Shop Fresh Drops</a></li>
-                <li><a href="contact.html">Contact Us / Support</a></li>
-              </ul>
-              
-              <!-- Customer Helpline Contact Box (Both Numbers) -->
-              <div class="foot-helpline-box" style="margin-top: 20px;">
-                <span class="foot-helpline-label">Customer Care &amp; Support:</span>
-                <div style="display:flex;flex-direction:column;gap:4px;margin-top:2px;">
-                  <a href="tel:+917069666910" class="foot-helpline-val" style="color:#FFFDF9;">📞 +91 7069666910</a>
-                  <a href="tel:+917008246057" class="foot-helpline-val" style="color:#FFFDF9;">📞 +91 7008246057</a>
-                </div>
-                <span style="font-size:11px;color:#D5BEA7;margin-top:2px;display:block;">Direct call &amp; WhatsApp support for
-                  orders, bulk drops &amp; queries</span>
-              </div>
-            </div>
-
-            <div class="foot-col">
-              <h4>Tracking &amp; Policies</h4>
-              <p style="font-size: 13px; color: #D5BEA7; line-height: 1.6; margin-bottom: 16px;">
-                <strong><a href="track.html" style="color: #FFFDF9; text-decoration: underline;">Track Order:</a></strong> After shipping, the tracking ID will be shown in your email, and from that ID you can check it on our Tracking Page here.
-              </p>
-              <ul style="border-top: 1px solid rgba(244,232,220,0.2); padding-top: 16px;">
-                <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                <li><a href="terms.html">Terms of Service</a></li>
-                <li><a href="shipping-policy.html">Shipping Policy</a></li>
-                <li><a href="refund-policy.html">Refund Policy</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <!-- Footer Bottom Bar -->
-          <div class="foot-base">
-            <span>© 2026 CRUMBLY Inc. All rights reserved. Handcrafted Mini Cookies.</span>
-            <span>CRUMBLY — YOU KNOW YOU WANT IT.</span>
-          </div>
-        </footer>
+        <div class="ft2__bottom">
+          <span>© 2026 CRUMBLY BAKES PRIVATE LIMITED. All rights reserved.</span>
+          <span class="ft2__pay">Secure checkout by Shopify <i aria-hidden="true"></i> UPI <i aria-hidden="true"></i> Cards <i aria-hidden="true"></i> Net banking</span>
+        </div>
       </div>
-    </div>
+      <div class="ft2__word" aria-hidden="true">crumbly</div>
+    </footer>
   </main>
 
   <!-- Sticky Mobile Buy Button -->
   <div class="mobile-sticky-buy">
-    <a href="#shop" class="btn btn--hero-primary" style="width:100%; box-shadow: 0 4px 14px rgba(38,20,8,0.4);">Order Now</a>
+    <a href="#flavours" class="btn btn--hero-primary" style="width:100%; box-shadow: 0 4px 14px rgba(38,20,8,0.4);">Order Now</a>
   </div>
 
   <div id="floating-cart" class="floating-cart is-hidden">
@@ -1546,6 +1505,9 @@
   <script src="assets/js/admin-db.js"></script>
   <script src="assets/js/b2b-modal.js?v=3" defer></script>
   <script src="assets/js/main.js" defer></script>
+  <script src="assets/js/shop-config.js" defer></script>
+  <script src="assets/js/redesign.js" defer></script>
+  <script src="assets/js/crumbly-v2.js" defer></script>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

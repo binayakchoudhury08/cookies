@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 680" width="100%" height="100%" style="font-family:'Outfit','Plus Jakarta Sans',sans-serif; background:#FAF5EE; border-radius:16px; border:2px solid #261408; box-shadow:0 12px 30px rgba(38,20,8,0.08);">
+  <!-- Background Card -->
+  <rect x="0" y="0" width="500" height="680" rx="16" fill="#FAF5EE"/>
+  
+  <!-- Veg Green Mark Top Right -->
+  <g transform="translate(440, 24)">
+    <rect x="0" y="0" width="28" height="28" rx="4" fill="#FFFFFF" stroke="#0F8A43" stroke-width="2.5"/>
+    <circle cx="14" cy="14" r="7" fill="#0F8A43"/>
+  </g>
+
+  <!-- Crumbly Logo / Brand Header -->
+  <text x="32" y="48" font-size="28" font-weight="900" fill="#261408" letter-spacing="-0.5">crumbly</text>
+  <text x="32" y="66" font-size="9" font-weight="800" fill="#E9723D" letter-spacing="1.5">100% PURE BUTTER · ZERO PALM OIL</text>
+
+  <!-- Title & Barcode Divider -->
+  <text x="32" y="102" font-size="26" font-weight="900" fill="#261408">Nutrition Information</text>
+  <text x="32" y="122" font-size="12" font-weight="700" fill="#5E3B24">FLAVOUR: RED VELVET COIN COOKIES</text>
+  <rect x="32" y="132" width="436" height="8" fill="#261408"/>
+
+  <text x="32" y="156" font-size="13" font-weight="600" fill="#261408">Serving Size: 30g (~6 Mini Coins)</text>
+  <text x="32" y="174" font-size="13" font-weight="500" fill="#5E3B24">Servings Per Box: Approx. 6 (180g)</text>
+  
+  <rect x="32" y="184" width="436" height="4" fill="#261408"/>
+  <text x="32" y="202" font-size="11" font-weight="700" fill="#5E3B24">Amount Per 100g / Per Serving (30g)</text>
+
+  <!-- Energy / Calories Big Row -->
+  <rect x="32" y="210" width="436" height="38" rx="4" fill="rgba(233,114,61,0.08)"/>
+  <text x="42" y="235" font-size="16" font-weight="900" fill="#261408">Energy (Calories)</text>
+  <text x="380" y="235" font-size="16" font-weight="900" fill="#E9723D">502 kcal / 150 kcal</text>
+
+  <!-- Nutrition Table -->
+  <g transform="translate(32, 258)" font-size="13">
+    <!-- Row 1 -->
+    <line x1="0" y1="0" x2="436" y2="0" stroke="#261408" stroke-width="1.5"/>
+    <text x="8" y="18" font-weight="700" fill="#261408">Total Fat</text>
+    <text x="390" y="18" font-weight="700" fill="#261408">27.8g / 8.3g</text>
+
+    <!-- Sub row -->
+    <line x1="16" y1="26" x2="436" y2="26" stroke="#D5BEA7" stroke-width="1"/>
+    <text x="24" y="42" font-weight="500" fill="#5E3B24">Saturated Fatty Acids (Pure Butter)</text>
+    <text x="390" y="42" font-weight="500" fill="#5E3B24">17.2g / 5.2g</text>
+
+    <line x1="16" y1="50" x2="436" y2="50" stroke="#D5BEA7" stroke-width="1"/>
+    <text x="24" y="66" font-weight="500" fill="#5E3B24">Trans Fat</text>
+    <text x="410" y="66" font-weight="700" fill="#0F8A43">0.0g</text>
+
+    <line x1="0" y1="74" x2="436" y2="74" stroke="#261408" stroke-width="1.5"/>
+    <text x="8" y="92" font-weight="700" fill="#261408">Cholesterol (from Natural Dairy)</text>
+    <text x="390" y="92" font-weight="700" fill="#261408">59mg / 18mg</text>
+
+    <line x1="0" y1="100" x2="436" y2="100" stroke="#261408" stroke-width="1.5"/>
+    <text x="8" y="118" font-weight="700" fill="#261408">Carbohydrates</text>
+    <text x="390" y="118" font-weight="700" fill="#261408">57.4g / 17.2g</text>
+
+    <line x1="16" y1="126" x2="436" y2="126" stroke="#D5BEA7" stroke-width="1"/>
+    <text x="24" y="142" font-weight="500" fill="#5E3B24">Total Sugars</text>
+    <text x="390" y="142" font-weight="500" fill="#5E3B24">33.5g / 10.0g</text>
+
+    <line x1="16" y1="150" x2="436" y2="150" stroke="#D5BEA7" stroke-width="1"/>
+    <text x="24" y="166" font-weight="500" fill="#5E3B24">Added Sugars (Cane Sugar)</text>
+    <text x="390" y="166" font-weight="500" fill="#5E3B24">28.9g / 8.7g</text>
+
+    <line x1="0" y1="174" x2="436" y2="174" stroke="#261408" stroke-width="1.5"/>
+    <text x="8" y="192" font-weight="700" fill="#261408">Protein</text>
+    <text x="400" y="192" font-weight="700" fill="#261408">7.3g / 2.2g</text>
+
+    <line x1="0" y1="200" x2="436" y2="200" stroke="#261408" stroke-width="1.5"/>
+    <text x="8" y="218" font-weight="700" fill="#261408">Sodium</text>
+    <text x="390" y="218" font-weight="700" fill="#261408">208mg / 62mg</text>
+    <line x1="0" y1="226" x2="436" y2="226" stroke="#261408" stroke-width="2"/>
+  </g>
+
+  <!-- Ingredients Block -->
+  <g transform="translate(32, 500)">
+    <text x="0" y="14" font-size="11" font-weight="800" fill="#261408" letter-spacing="0.5">INGREDIENTS:</text>
+    <text x="0" y="30" font-size="10.5" font-weight="500" fill="#5E3B24" width="436">
+      <tspan x="0" dy="0">100% Pure Dairy Butter, Refined Wheat Flour, Dutch Cocoa Powder,</tspan>
+      <tspan x="0" dy="14">Belgian White Chocolate Drops (Milk Powder, Sugar, Cocoa Butter),</tspan>
+      <tspan x="0" dy="14">Natural Beetroot Extract (for color), Cane Sugar, Vanilla, Sea Salt, INS 500ii.</tspan>
+    </text>
+    <text x="0" y="85" font-size="10" font-weight="700" fill="#C2410C">ALLERGEN DECLARATION: Contains Milk &amp; Wheat (Gluten). 100% Eggless.</text>
+    <text x="0" y="105" font-size="9.5" font-weight="600" fill="#8E684E">Baked fresh in small batches daily · Store sealed in a cool, dry place.</text>
+    <text x="0" y="125" font-size="10" font-weight="800" fill="#261408">FSSAI Lic. No. 11224333000542 · Artisanal Craft Bakery</text>
+  </g>
+</svg>

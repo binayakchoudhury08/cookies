@@ -1006,6 +1006,7 @@ class Sequence {
     this.updateBounds = this.updateBounds.bind(this);
     this.size = this.size.bind(this);
     addEventListener('resize', () => { this.updateBounds(); this.size(); }, { passive: true });
+    addEventListener('load', () => this.updateBounds());
     this.updateBounds();
     this.size();
 
@@ -1082,10 +1083,16 @@ class Sequence {
     const w = iw * s, h = ih * s;
     this.ctx.drawImage(img, (cw - w) / 2, (ch - h) / 2, w, h);
     this.painted = i;
+    if (!this._shown) { this._shown = true; this.cv.classList.add('is-painted'); }
   }
 
   progress() {
     const sy = window.scrollY;
+    // "pass" mode: the footage plays once while the section scrolls through the screen
+    if (this.section.dataset.seqMode === 'pass') {
+      const span = innerHeight + this.secHeight;
+      return Math.min(1, Math.max(0, (innerHeight - (this.secTop - sy)) / span));
+    }
     const travel = this.secHeight - innerHeight;
     if (travel > 0) return Math.min(1, Math.max(0, (sy - (this.secTop - 0.5 * (innerHeight - this.cv.height))) / travel));
     const span = innerHeight + this.secHeight;
